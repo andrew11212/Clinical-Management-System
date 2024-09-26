@@ -4,6 +4,7 @@ using Clinical_Management_System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Clinical_Management_System.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240926130333_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,6 +34,7 @@ namespace Clinical_Management_System.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("AllergyName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PatientId", "DoctorId");
@@ -90,6 +94,7 @@ namespace Clinical_Management_System.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("DiseaseName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PatientId", "DoctorId");
@@ -117,7 +122,7 @@ namespace Clinical_Management_System.Data.Migrations
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Floor")
+                    b.Property<int>("Floor")
                         .HasColumnType("int");
 
                     b.Property<string>("Government")
@@ -165,7 +170,7 @@ namespace Clinical_Management_System.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Floor")
+                    b.Property<int>("Floor")
                         .HasColumnType("int");
 
                     b.Property<string>("Government")
@@ -181,6 +186,7 @@ namespace Clinical_Management_System.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("Photo")
+                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<int>("SpecializationId")
@@ -205,14 +211,12 @@ namespace Clinical_Management_System.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<byte[]>("Dimage")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
-
-                    b.Property<byte[]>("PrevioseResults")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("UploadedResult")
-                        .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
 
@@ -230,9 +234,11 @@ namespace Clinical_Management_System.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Dose")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Duration")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MedicineName")
@@ -242,7 +248,7 @@ namespace Clinical_Management_System.Data.Migrations
                     b.Property<int>("PrescriptionId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Rep")
+                    b.Property<int>("Rep")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -275,7 +281,7 @@ namespace Clinical_Management_System.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Floor")
+                    b.Property<int>("Floor")
                         .HasColumnType("int");
 
                     b.Property<string>("Government")
@@ -295,6 +301,7 @@ namespace Clinical_Management_System.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("Photo")
+                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Ppassword")
@@ -325,14 +332,8 @@ namespace Clinical_Management_System.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Laps")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("NextVisit")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Radiologies")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
