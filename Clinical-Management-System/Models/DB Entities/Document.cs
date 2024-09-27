@@ -9,6 +9,7 @@ namespace Clinical_Management_System.Models.DB_Entities
         public int DocumentId { get; set; }
 
         public DateTime CreatedDate { get; set; }
+        [Required(ErrorMessage = "Please Provide a Photo of the Document")]
         public byte[] Image { get; set; }
 
         public int PatientId { get; set; }
