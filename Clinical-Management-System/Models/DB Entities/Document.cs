@@ -6,12 +6,13 @@ namespace Clinical_Management_System.Models.DB_Entities
     public class Document
     {
         [Key]
-        public int Id { get; set; }
+        public int DocumentId { get; set; }
 
         public DateTime CreatedDate { get; set; }
         public byte[] Image { get; set; }
 
-       
+        public int PatientId { get; set; }
+        public int? PrescriptionId { get; set; }
         public Patient Patient { get; set; }
         public Prescription? Prescription { get; set; }
     }

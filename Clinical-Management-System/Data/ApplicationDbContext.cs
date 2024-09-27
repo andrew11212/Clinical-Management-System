@@ -14,7 +14,6 @@ namespace Clinical_Management_System.Data
 
         }
 
-        public DbSet<ApplicationUser> applicationUsers { get; set; }
 
         #region DB Entities
         public DbSet<Specialization> Specializations { get; set; }
@@ -31,9 +30,26 @@ namespace Clinical_Management_System.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
 		{
-            builder.Entity<Allergy>().HasKey(a => new { a.PatientId, a.DoctorId });
+            builder.Entity<Allergy>().HasKey(a => new { a.PatientId, a.Name });
 
-            builder.Entity<ChronicDisease>().HasKey(cd => new { cd.PatientId, cd.DoctorId });
+            builder.Entity<ChronicDisease>().HasKey(cd => new { cd.PatientId, cd.Name });
+
+            builder.Entity<Prescription>().HasMany(p => p.Medicines).WithOne(m => m.Prescription).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Prescription>().HasMany(p => p.Documents).WithOne(d => d.Prescription).OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Patient>().HasMany(p => p.Documents).WithOne(d => d.Patient).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Patient>().HasMany(p => p.Allergies).WithOne(a => a.Patient).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Patient>().HasMany(p => p.ChronicDiseases).WithOne(c => c.Patient).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Patient>().HasMany(p => p.Appointments).WithOne(a => a.Patient).OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Doctor>().HasMany(d => d.Clinics).WithOne(c => c.Doctor).OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Clinic>().HasMany(c => c.Appointments).WithOne(a => a.Clinic).OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Specialization>().HasMany(s => s.Doctors).WithOne(d => d.Specialization).OnDelete(DeleteBehavior.Cascade);
+
+            
+
 
             base.OnModelCreating(builder);
 		}

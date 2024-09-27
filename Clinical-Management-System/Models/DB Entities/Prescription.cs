@@ -6,14 +6,14 @@ namespace Clinical_Management_System.Models.DB_Entities
     public class Prescription
     {
         [Key]
-        public int Id { get; set; }
+        public int PrescriptionId { get; set; }
         [Required]
         public string DiagnosisName { get; set; }
         [Required]
         public DateTime DateTime { get; set; }
 
         
-     
+        public int AppointmentId { get; set; }
         public Appointment Appointment { get; set; }
 
 

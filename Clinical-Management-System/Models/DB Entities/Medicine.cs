@@ -6,7 +6,7 @@ namespace Clinical_Management_System.Models.DB_Entities
     public class Medicine
     {
         [Key]
-        public int Id { get; set; }
+        public int MedicineId { get; set; }
         [Required]
         public string MedicineName { get; set; }
         [Required]
@@ -15,7 +15,7 @@ namespace Clinical_Management_System.Models.DB_Entities
         public string Duration { get; set; }
         [Required]
         public int Repeat { get; set; }
-  
+        public int PrescriptionId { get; set; }
         public Prescription Prescription { get; set; }
     }
 
