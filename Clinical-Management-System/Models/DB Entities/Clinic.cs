@@ -6,7 +6,7 @@ namespace Clinical_Management_System.Models.DB_Entities
     public class Clinic
     {
         [Key]
-        public int Id { get; set; }
+        public int ClinicId { get; set; }
 
 
         [Required]
@@ -25,6 +25,8 @@ namespace Clinical_Management_System.Models.DB_Entities
         public string Government { get; set; }
         [Required]
         public int Floor { get; set; }
+
+        public int DoctorId { get; set; }
       
         public Doctor Doctor { get; set; }
 

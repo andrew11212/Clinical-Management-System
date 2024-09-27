@@ -6,7 +6,7 @@ namespace Clinical_Management_System.Models.DB_Entities
     public class Doctor
     {
         [Key]
-        public int Id { get; set; }
+        public int DoctorId { get; set; }
         
     
         public byte[]? Photo { get; set; }
@@ -31,9 +31,11 @@ namespace Clinical_Management_System.Models.DB_Entities
         [Required]
         public int  Floor { get; set; }
         //public List<Clinic> Clinics { get; set; }
+        public int SpecializationId { get; set; }
  
         public Specialization Specialization { get; set; }
 
+     
         public ICollection<Clinic>? Clinics { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace Clinical_Management_System.Models.DB_Entities
     {
 
         [Key]
-        public int Id { get; set; }
+        public int PatientId { get; set; }
         [Required]
         public string NationalId { get; set; }
         [Required]
