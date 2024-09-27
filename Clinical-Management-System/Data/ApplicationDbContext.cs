@@ -14,7 +14,6 @@ namespace Clinical_Management_System.Data
 
         }
 
-        public DbSet<ApplicationUser> applicationUsers { get; set; }
 
         #region DB Entities
         public DbSet<Specialization> Specializations { get; set; }

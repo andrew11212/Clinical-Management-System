@@ -16,7 +16,6 @@ namespace Clinical_Management_System.Models.DB_Entities
         public int ClinicId { get; set; }
 
         public int PatientId { get; set; }
-        public int? PrescriptionId { get; set; }
       
         public Clinic Clinic { get; set; }
         public Patient Patient { get; set; }
