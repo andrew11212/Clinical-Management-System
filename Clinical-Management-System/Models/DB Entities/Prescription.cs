@@ -7,7 +7,8 @@ namespace Clinical_Management_System.Models.DB_Entities
     {
         [Key]
         public int PrescriptionId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Please Provide the Diagnosis Name")]
+        [MaxLength(100, ErrorMessage = "Diagnosis name can't be longer than 100 characters")]
         public string DiagnosisName { get; set; }
         [Required]
         public DateTime DateTime { get; set; }
