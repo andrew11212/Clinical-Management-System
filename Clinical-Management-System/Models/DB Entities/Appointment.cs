@@ -14,11 +14,13 @@ namespace Clinical_Management_System.Models.DB_Entities
         public string Notes { get; set; } [Required]
         public TimeSpan Hour { get; set; } [Required]
         public int ClinicId { get; set; }
-        [ForeignKey("ClinicId")]
+
         public int PatientId { get; set; }
-        [ForeignKey("PatientId")]
-        public Clinic clinic { get; set; }
-        public Patient patient { get; set; }
+      
+        public Clinic Clinic { get; set; }
+        public Patient Patient { get; set; }
+
+        public Prescription? Prescription { get; set; }
     }
 
 }

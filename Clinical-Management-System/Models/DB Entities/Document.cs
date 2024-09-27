@@ -9,14 +9,11 @@ namespace Clinical_Management_System.Models.DB_Entities
         public int Id { get; set; }
 
         public DateTime CreatedDate { get; set; }
-        public byte[] Dimage { get; set; }
+        public byte[] Image { get; set; }
 
-        public int PatientId { get; set; }
-        [ForeignKey("PatientId")]
-        public Patient patient { get; set; }
-        public int PrescriptionId { get; set; }
-        [ForeignKey("PrescriptionId")]
-        public Prescription prescription { get; set; }
+       
+        public Patient Patient { get; set; }
+        public Prescription? Prescription { get; set; }
     }
 
 }
