@@ -13,9 +13,9 @@ namespace Clinical_Management_System.Models.DB_Entities
         [Required]
         public string NationalId { get; set; }
         [Required]
-        public string DoctorUserName { get; set; }
+        public string UserName { get; set; }
         [Required]
-        public string Dpassword { get; set; }
+        public string Password { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]
@@ -31,8 +31,9 @@ namespace Clinical_Management_System.Models.DB_Entities
         [Required]
         public int  Floor { get; set; }
         //public List<Clinic> Clinics { get; set; }
-        public int SpecializationId { get; set; }
-        [ForeignKey("SpecializationId")]
-        public Specialization specialization { get; set; }
+ 
+        public Specialization Specialization { get; set; }
+
+        public ICollection<Clinic>? Clinics { get; set; }
     }
 }

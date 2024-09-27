@@ -8,33 +8,33 @@ namespace Clinical_Management_System.Models.DB_Entities
         [Key]
         public int Id { get; set; }
         [Required]
-        public string national_id { get; set; }
+        public string NationalId { get; set; }
         [Required]
-        public string user_name { get; set; }
+        public string UserName { get; set; }
         [Required]
-        public string ppassword { get; set; }
+        public string Password { get; set; }
         [Required]
-        public string first_name { get; set; }
+        public string FirstName { get; set; }
         [Required]
-        public string last_name { get; set; }
+        public string LastName { get; set; }
         [Required]
-        public string city { get; set; }
+        public string City { get; set; }
         [Required]
-        public string government { get; set; }
+        public string Government { get; set; }
         [Required]
-        public string street_name { get; set; }
+        public string StreetName { get; set; }
 
         [Required]
-        public int floor { get; set; }
+        public int Floor { get; set; }
 
         [Required]
-        public int building_num { get; set; }
+        public int BuildingNum { get; set; }
 
         public byte[]? Photo { get; set; }
-        public List<Document> Documents { get; set; }
-        public List<Allergy> Allergy { get; set; }
-        public List<ChronicDisease> chronicDiseases { get; set; }
-        public List<Appointment> Appointments { get; set; }
+        public ICollection<Document> Documents { get; set; }
+        public ICollection<Allergy> Allergies { get; set; }
+        public ICollection<ChronicDisease> ChronicDiseases { get; set; }
+        public ICollection<Appointment> Appointments { get; set; }
     }
 
 }

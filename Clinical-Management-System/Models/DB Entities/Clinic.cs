@@ -10,11 +10,11 @@ namespace Clinical_Management_System.Models.DB_Entities
 
 
         [Required]
-        public TimeSpan open_time { get; set; }
+        public TimeSpan OpenTime { get; set; }
         [Required]
 
         
-        public TimeSpan close_time { get; set; }
+        public TimeSpan CloseTime { get; set; }
         [Required]
         public string City { get; set; }
         [Required]
@@ -26,9 +26,8 @@ namespace Clinical_Management_System.Models.DB_Entities
         [Required]
         public int Floor { get; set; }
       
+        public Doctor Doctor { get; set; }
 
-        public int DoctorId { get; set; }
-        [ForeignKey("DoctorId")]
-        public Doctor doctor { get; set; }
+        public ICollection<Appointment>? Appointments { get; set; }
     }
 }

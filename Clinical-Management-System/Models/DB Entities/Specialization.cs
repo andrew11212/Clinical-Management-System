@@ -8,6 +8,9 @@ namespace Clinical_Management_System.Models.DB_Entities
         public int Id { get; set; }
         [Required]
 
-        public string Specialization_Name { get; set; }
+        public string SpecializationName { get; set; }
+
+
+        public ICollection<Doctor>? Doctors { get; set; }
     }
 }

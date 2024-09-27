@@ -8,16 +8,15 @@ namespace Clinical_Management_System.Models.DB_Entities
         [Key]
         public int Id { get; set; }
         [Required]
-        public string medicine_name { get; set; }
+        public string MedicineName { get; set; }
         [Required]
-        public string dose { get; set; }
+        public string Dose { get; set; }
         [Required]
-        public string duration { get; set; }
+        public string Duration { get; set; }
         [Required]
-        public int repate { get; set; }
-        public int PrescriptionId { get; set; }
-        [ForeignKey("PrescriptionId")]
-        public Prescription prescription { get; set; }
+        public int Repeat { get; set; }
+  
+        public Prescription Prescription { get; set; }
     }
 
 }
