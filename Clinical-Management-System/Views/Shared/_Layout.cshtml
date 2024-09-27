@@ -4,47 +4,64 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Clinical_Management_System</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+
+  
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Clinical_Management_System.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg bg-primary border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index">Clinical_Management_System</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
+
+    <div id="i6po" class="gjs-grid-row">
+        <div id="itjq" class="gjs-grid-column">
+            <div id="nav" class="gjs-grid-row">
+                <div id="iqjl" class="gjs-grid-column">
+                    <a id="iucmr" href="/"
+                       class="gjs-link-box"><img alt="Untitled-2(1).png" src="/assets/logo1.png" id="ilupal" /></a>
+
                 </div>
+                <div id="iffs" class="gjs-grid-column">
+                    <div id="it00l" class="gjs-grid-row">
+                        <div id="irtfd" class="gjs-grid-column">
+                            <a id="icfyb" href="#about-us" class="gjs-link">About</a><a href="#feature-section" id="infmy1" class="gjs-link">Features</a>
+                        </div>
+                        <div id="icyzp" class="gjs-grid-column">
+                            <a id="i88iz" href="#contact-us" class="gjs-link">
+                                Contact
+                                Us<br />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div id="id7x" class="gjs-grid-column"><a id="i1mew" href="~/Identity/Account/Login" class="gjs-button">Sign in<br /></a></div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Clinical_Management_System - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    @RenderBody()
+
+    <div id="iv3be5" class="gjs-grid-row">
+        <div id="ilriti" class="gjs-grid-column">
+            <div id="im0rle" class="gjs-grid-row">
+                <div id="iotp6j" class="gjs-grid-column">
+                    <a href="/" id="iih6cv"
+                       class="gjs-link-box"><img alt="Untitled(2).png" src="~/assets/logo2.png" id="ioiqug" /></a>
+                </div>
+                <div id="i1hx7l" class="gjs-grid-column">
+                    <a id="ij7g8t" title="" href="##" class="gjs-link">Pricing<br /></a><a id="ipjdtn" href="##" class="gjs-link">Terms &amp; Conditions<br /></a><a id="ikj01e" href="##"
+                                                                                                                                                                     class="gjs-link">Refund Policy<br /></a><a id="i2sl68" href="##" class="gjs-link">Contact Us<br /></a>
+                </div>
+            </div>
+            <div id="it6g1v" class="gjs-text-blue">Copyright © YEAR Company name</div>
         </div>
-    </footer>
+    </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
