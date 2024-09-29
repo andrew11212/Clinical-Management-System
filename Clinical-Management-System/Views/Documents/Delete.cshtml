@@ -1,45 +1,63 @@
 ﻿@model Clinical_Management_System.Models.DB_Entities.Document
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete Document";
 }
 
-<h1>Delete</h1>
+<h2>Delete Document</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to delete this document?</h3>
+
 <div>
-    <h4>Document</h4>
+    <h4>Document Details</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedDate)
+        <dt class="col-sm-2">
+            Document ID
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedDate)
+        <dd class="col-sm-10">
+            @Model.DocumentId
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
+
+        <dt class="col-sm-2">
+            Created Date
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
+        <dd class="col-sm-10">
+            @Model.CreatedDate
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Patient)
+
+        <dt class="col-sm-2">
+            Patient
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Patient.City)
+        <dd class="col-sm-10">
+            @Model.Patient?.FirstName
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Prescription)
+
+        <dt class="col-sm-2">
+            Prescription
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Prescription.DiagnosisName)
+        <dd class="col-sm-10">
+            @Model.Prescription?.DiagnosisName
+        </dd>
+
+        <dt class="col-sm-2">
+            Image
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Image != null)
+            {
+                <img src="@Model.Image" alt="Document Image" style="max-width: 200px;" />
+            }
+            else
+            {
+                <span>No Image Available</span>
+            }
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
+
+    <form asp-action="DeleteConfirmed" method="post">
         <input type="hidden" asp-for="DocumentId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
     </form>
 </div>

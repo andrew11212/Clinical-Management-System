@@ -49,8 +49,10 @@ namespace Clinical_Management_System.Controllers
         // GET: Documents/Create
         public IActionResult Create()
         {
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City");
+            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "FirstName").ToList();
             ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName");
+
+
             return View();
         }
 
@@ -59,7 +61,7 @@ namespace Clinical_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DocumentId,CreatedDate,Image,PatientId,PrescriptionId")] Document document)
+        public async Task<IActionResult> Create([Bind("DocumentId,CreatedDate,PatientId,PrescriptionId")] Document document)
         {
             if (ModelState.IsValid)
             {
