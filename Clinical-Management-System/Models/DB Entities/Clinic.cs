@@ -6,7 +6,8 @@ namespace Clinical_Management_System.Models.DB_Entities
     public class Clinic
     {
         [Key]
-        public int ClinicId { get; set; }
+		[Column("Id")]
+		public int ClinicId { get; set; }
 
 
         [Required]
@@ -15,21 +16,21 @@ namespace Clinical_Management_System.Models.DB_Entities
         public TimeSpan CloseTime { get; set; }
         [Required]
         [MaxLength(100, ErrorMessage = "City name can't be longer than 100 characters")]
-        public string City { get; set; }
-        [Required]
+        public string City { get; set; } = string.Empty;
+		[Required]
         public int BuildingNum { get; set; }
         [Required]
         [MaxLength(100, ErrorMessage = "Street name can't be longer than 100 characters")]
-        public string StreetName { get; set; }
-        [Required]
+        public string StreetName { get; set; } = string.Empty;
+		[Required]
         [MaxLength(100, ErrorMessage = "Government name can't be longer than 100 characters")]
-        public string Government { get; set; }
-        [Required]
+        public string Government { get; set; } = string.Empty;
+		[Required]
         public int Floor { get; set; }
 
         public int DoctorId { get; set; }
       
-        public Doctor Doctor { get; set; }
+        public Doctor Doctor { get; set; } = default!;
 
         public ICollection<Appointment>? Appointments { get; set; }
     }

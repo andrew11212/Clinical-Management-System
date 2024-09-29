@@ -7,11 +7,11 @@ namespace Clinical_Management_System.Models.DB_Entities
     {
         [Required(ErrorMessage = "Please Provide the name of the Allergy")]
         [MaxLength(100, ErrorMessage = "Allergy name can't be longer than 100 characters")]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Please Provide the Patient Id")]
+		[Required(ErrorMessage = "Please Provide the Patient Id")]
         public int PatientId { get; set; }
 
-        public Patient Patient { get; set; }
+        public Patient Patient { get; set; } = default!;
     }
 }

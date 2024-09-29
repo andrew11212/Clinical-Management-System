@@ -6,6 +6,7 @@ namespace Clinical_Management_System.Models.DB_Entities
     public class Appointment
     {
         [Key]
+        [Column("Id")]
         public int AppointementId { get; set; }
 
         public DateTime Date { get; set; } [Required]
