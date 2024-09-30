@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Clinical_Management_System.Models.DB_Entities
 {
@@ -19,8 +20,9 @@ namespace Clinical_Management_System.Models.DB_Entities
         public string Duration { get; set; } = string.Empty;
 		[Required]
         public int Repeat { get; set; }
-        public int PrescriptionId { get; set; }
-        public Prescription Prescription { get; set; } = default!;
+        public int? PrescriptionId { get; set; }
+		[ValidateNever]
+		public Prescription Prescription { get; set; } = default!;
     }
 
 }

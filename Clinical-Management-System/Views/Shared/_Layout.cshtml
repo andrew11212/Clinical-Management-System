@@ -5,42 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Clinical_Management_System</title>
 
-  
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
 
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Clinical_Management_System.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
-
-    <div id="i6po" class="gjs-grid-row">
-        <div id="itjq" class="gjs-grid-column">
-            <div id="nav" class="gjs-grid-row">
-                <div id="iqjl" class="gjs-grid-column">
-                    <a id="iucmr" href="/"
-                       class="gjs-link-box"><img alt="Untitled-2(1).png" src="/assets/logo1.png" id="ilupal" /></a>
-
+    <nav class="navbar navbar-expand-lg navbar-light  border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="/assets/logo1.png" alt="Company Logo" id="ilupal" >
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto ">
+                    <li class="nav-item">
+                        <a class="nav-link " href="#about-us">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#feature-section">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact-us">Contact Us</a>
+                    </li>
+                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Login
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+                        <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+                    </ul>
                 </div>
-                <div id="iffs" class="gjs-grid-column">
-                    <div id="it00l" class="gjs-grid-row">
-                        <div id="irtfd" class="gjs-grid-column">
-                            <a id="icfyb" href="#about-us" class="gjs-link">About</a><a href="#feature-section" id="infmy1" class="gjs-link">Features</a>
-                        </div>
-                        <div id="icyzp" class="gjs-grid-column">
-                            <a id="i88iz" href="#contact-us" class="gjs-link">
-                                Contact
-                                Us<br />
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div id="id7x" class="gjs-grid-column"><a id="i1mew" href="~/Identity/Account/Login" class="gjs-button">Sign in<br /></a></div>
             </div>
         </div>
+    </nav>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
     </div>
-
-    @RenderBody()
 
     <div id="iv3be5" class="gjs-grid-row">
         <div id="ilriti" class="gjs-grid-column">
