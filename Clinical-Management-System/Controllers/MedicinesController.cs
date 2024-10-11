@@ -57,7 +57,7 @@ namespace Clinical_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MedicineId,MedicineName,Dose,Duration,Repeat,PrescriptionId")] Medicine medicine)
+        public async Task<IActionResult> Create( Medicine medicine)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace Clinical_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MedicineId,MedicineName,Dose,Duration,Repeat,PrescriptionId")] Medicine medicine)
+        public async Task<IActionResult> Edit(int id,Medicine medicine)
         {
             if (id != medicine.MedicineId)
             {
@@ -100,22 +100,16 @@ namespace Clinical_Management_System.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+
+
+                _context.Update(medicine);
+                await _context.SaveChangesAsync();
+
+                if (!MedicineExists(medicine.MedicineId))
                 {
-                    _context.Update(medicine);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MedicineExists(medicine.MedicineId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName", medicine.PrescriptionId);
