@@ -5,12 +5,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 using Clinical_Management_System.Models;
+using Clinical_Management_System.Models.DB_Entities;
 using Clinical_Management_System.Utitlity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -25,21 +27,21 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
 
 namespace Clinical_Management_System.Areas.Identity.Pages.Account
 {
-	public class RegisterModel : PageModel
+	public class RegisterPatientModel : PageModel
 	{
 		private readonly SignInManager<IdentityUser> _signInManager;
 		private readonly UserManager<IdentityUser> _userManager;
 		private readonly RoleManager<IdentityRole> _roleManager;
 		private readonly IUserStore<IdentityUser> _userStore;
 		private readonly IUserEmailStore<IdentityUser> _emailStore;
-		private readonly ILogger<RegisterModel> _logger;
+		private readonly ILogger<RegisterPatientModel> _logger;
 		private readonly IEmailSender _emailSender;
 
-		public RegisterModel(
+		public RegisterPatientModel(
 			UserManager<IdentityUser> userManager,
 			IUserStore<IdentityUser> userStore,
 			SignInManager<IdentityUser> signInManager,
-			ILogger<RegisterModel> logger,
+			ILogger<RegisterPatientModel> logger,
 			IEmailSender emailSender,
 			RoleManager<IdentityRole> roleManager)
 		{
@@ -101,51 +103,42 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
 			[Display(Name = "Confirm password")]
 			[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
 			public string ConfirmPassword { get; set; }
+            [Required]
+            [StringLength(14, ErrorMessage = "National Id must be 14 characters", MinimumLength = 14)]
+            public string NationalId { get; set; } = string.Empty;
+            [Required]
+            [MaxLength(100, ErrorMessage = "Username cannot be greater than 100 charcters")]
+            public string UserName { get; set; } = string.Empty;
+            [Required]
+            [MaxLength(100, ErrorMessage = "First name cannot be greater than 100 charcters")]
+            public string FirstName { get; set; } = string.Empty;
+            [Required]
+            [MaxLength(100, ErrorMessage = "Last name cannot be greater than 100 charcters")]
+            public string LastName { get; set; } = string.Empty;
+            [Required]
+            [MaxLength(100, ErrorMessage = "City cannot be greater than 100 charcters")]
+            public string City { get; set; } = string.Empty;
+            [Required]
+            [MaxLength(100, ErrorMessage = "Government cannot be greater than 100 charcters")]
+            public string Government { get; set; } = string.Empty;
+            [Required]
+            [MaxLength(100, ErrorMessage = "Street name cannot be greater than 100 charcters")]
+            public string StreetName { get; set; } = string.Empty;
 
-			public string FullName { get; set; }
+            [Required]
+            public int Floor { get; set; }
 
-			/// <summary>
-			/// Phone number of the user.
-			/// </summary>
-			[Phone(ErrorMessage = "Invalid phone number format.")]
-			[Display(Name = "Phone Number")]
-			public string PhoneNumber { get; set; }
+            [Required]
+            public int BuildingNum { get; set; }
 
-			
-			public string  Role { get; set; }
-			public IEnumerable<SelectListItem> RolesList { get; set; }
+            public byte[]? Photo { get; set; }
+            public ICollection<Document>? Documents { get; set; }
+            public ICollection<Allergy>? Allergies { get; set; }
+            public ICollection<ChronicDisease>? ChronicDiseases { get; set; }
+            public ICollection<Appointment>? Appointments { get; set; }
 
-			
-			[StringLength(200, ErrorMessage = "Address can't be longer than 200 characters.")]
-			[Display(Name = "Address")]
-			public string Address { get; set; }
 
-			[StringLength(100, ErrorMessage = "Location can't be longer than 100 characters.")]
-			[Display(Name = "Location")]
-			public string Location { get; set; }
-
-			
-			[StringLength(200, ErrorMessage = "Chronic disease description can't be longer than 200 characters.")]
-			[Display(Name = "Chronic Disease")]
-			public string ChronicDisease { get; set; }
-
-		
-			[StringLength(200, ErrorMessage = "Allergy description can't be longer than 200 characters.")]
-			[Display(Name = "Allergy")]
-			public string Allergy { get; set; }
-
-			
-			[StringLength(500, ErrorMessage = "Photo URL can't be longer than 500 characters.")]
-			[Display(Name = "Photo")]
-			public string Photo { get; set; }
-
-			
-			[StringLength(100, ErrorMessage = "Specialization can't be longer than 100 characters.")]
-			[Display(Name = "Specialization")]
-			public string Specialization { get; set; }
-
-			
-		}
+        }
 
 
 		public async Task OnGetAsync(string returnUrl = null)
@@ -155,22 +148,8 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
 
 			if (!await _roleManager.RoleExistsAsync(Sd.Role_Patient))
 			{
-				await _roleManager.CreateAsync(new IdentityRole(Sd.Role_Admin));
 				await _roleManager.CreateAsync(new IdentityRole(Sd.Role_Patient));
-				await _roleManager.CreateAsync(new IdentityRole(Sd.Role_Doctor));
 			}
-			Input = new()
-			{
-				RolesList = _roleManager.Roles
-			.Where(r => !r.Name.Equals(Sd.Role_Admin)) // Compare r.Name to the admin role
-			.Select(r => new SelectListItem
-			{
-				Text = r.Name,
-				Value = r.Name
-			})
-			.ToList() // Ensure you convert the result to a List
-			};
-
 			}
 
 		public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -180,14 +159,21 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
 			if (ModelState.IsValid)
 			{
 				var user = CreateUser();
-				user.FullName = Input.FullName;
-				user.PhoneNumber = Input.PhoneNumber;
-				user.Address = Input.Address;
-				user.Location = Input.Location;
-				user.ChronicDisease = Input.ChronicDisease;
-				user.Allergy = Input.Allergy;
+				user.Allergies = Input.Allergies;
+				user.Appointments = Input.Appointments;
+				user.City = Input.City;
+				user.StreetName = Input.StreetName;
 				user.Photo = Input.Photo;
-				user.Specialization = Input.Specialization;
+				user.UserName = Input.UserName;
+				user.Email = Input.Email;
+				user.FirstName = Input.FirstName;
+				user.LastName = Input.LastName;
+				user.ChronicDiseases = Input.ChronicDiseases;	
+				user.Documents = Input.Documents;
+				user.BuildingNum=Input.BuildingNum;
+				user.Floor=Input.Floor;
+				
+
 
 				await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
 				await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -197,18 +183,7 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
 				{
 					_logger.LogInformation("User created a new account with password.");
 
-					if (!string.IsNullOrEmpty(Input.Role))
-					{
-						var rolesToAdd = Input.Role.Split(',')
-							.Select(r => r.Trim()) 
-							.Where(r => !string.IsNullOrEmpty(r)) 
-							.ToList();
-
-						if (rolesToAdd.Any()) 
-						{
-							await _userManager.AddToRolesAsync(user, rolesToAdd);
-						}
-					}
+					await _userManager.AddToRoleAsync(user, Sd.Role_Patient);
 
 					var userId = await _userManager.GetUserIdAsync(user);
 					var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -242,11 +217,11 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
 			return Page();
 		}
 
-		private ApplicationUser CreateUser()
+		private Patient CreateUser()
 		{
 			try
 			{
-				return Activator.CreateInstance<ApplicationUser>();
+				return Activator.CreateInstance<Patient>();
 			}
 			catch
 			{

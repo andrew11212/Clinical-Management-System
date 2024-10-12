@@ -27,7 +27,7 @@ namespace Clinical_Management_System.Controllers
         }
 
         // GET: Allergies/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -48,7 +48,7 @@ namespace Clinical_Management_System.Controllers
         // GET: Allergies/Create
         public IActionResult Create()
         {
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City");
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id");
             return View();
         }
 
@@ -65,12 +65,12 @@ namespace Clinical_Management_System.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City", allergy.PatientId);
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", allergy.PatientId);
             return View(allergy);
         }
 
         // GET: Allergies/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -82,7 +82,7 @@ namespace Clinical_Management_System.Controllers
             {
                 return NotFound();
             }
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City", allergy.PatientId);
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", allergy.PatientId);
             return View(allergy);
         }
 
@@ -91,7 +91,7 @@ namespace Clinical_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,PatientId")] Allergy allergy)
+        public async Task<IActionResult> Edit(string id, [Bind("Name,PatientId")] Allergy allergy)
         {
             if (id != allergy.PatientId)
             {
@@ -118,12 +118,12 @@ namespace Clinical_Management_System.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City", allergy.PatientId);
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", allergy.PatientId);
             return View(allergy);
         }
 
         // GET: Allergies/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -144,7 +144,7 @@ namespace Clinical_Management_System.Controllers
         // POST: Allergies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var allergy = await _context.Allergies.FindAsync(id);
             if (allergy != null)
@@ -156,7 +156,7 @@ namespace Clinical_Management_System.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AllergyExists(int id)
+        private bool AllergyExists(string id)
         {
             return _context.Allergies.Any(e => e.PatientId == id);
         }

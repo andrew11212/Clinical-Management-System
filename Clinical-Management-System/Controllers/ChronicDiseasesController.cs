@@ -27,7 +27,7 @@ namespace Clinical_Management_System.Controllers
         }
 
         // GET: ChronicDiseases/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -48,7 +48,7 @@ namespace Clinical_Management_System.Controllers
         // GET: ChronicDiseases/Create
         public IActionResult Create()
         {
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City");
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id");
             return View();
         }
 
@@ -65,12 +65,12 @@ namespace Clinical_Management_System.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City", chronicDisease.PatientId);
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", chronicDisease.PatientId);
             return View(chronicDisease);
         }
 
         // GET: ChronicDiseases/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -82,7 +82,7 @@ namespace Clinical_Management_System.Controllers
             {
                 return NotFound();
             }
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City", chronicDisease.PatientId);
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", chronicDisease.PatientId);
             return View(chronicDisease);
         }
 
@@ -91,7 +91,7 @@ namespace Clinical_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,PatientId")] ChronicDisease chronicDisease)
+        public async Task<IActionResult> Edit(string id, [Bind("Name,PatientId")] ChronicDisease chronicDisease)
         {
             if (id != chronicDisease.PatientId)
             {
@@ -118,12 +118,12 @@ namespace Clinical_Management_System.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City", chronicDisease.PatientId);
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", chronicDisease.PatientId);
             return View(chronicDisease);
         }
 
         // GET: ChronicDiseases/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -144,7 +144,7 @@ namespace Clinical_Management_System.Controllers
         // POST: ChronicDiseases/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var chronicDisease = await _context.ChronicDiseases.FindAsync(id);
             if (chronicDisease != null)
@@ -156,7 +156,7 @@ namespace Clinical_Management_System.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ChronicDiseaseExists(int id)
+        private bool ChronicDiseaseExists(string id)
         {
             return _context.ChronicDiseases.Any(e => e.PatientId == id);
         }

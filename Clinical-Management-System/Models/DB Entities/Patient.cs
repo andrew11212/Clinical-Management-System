@@ -1,14 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Clinical_Management_System.Models.DB_Entities
 {
-    public class Patient
+    public class Patient : IdentityUser
     {
 
-        [Key]
-		[Column("Id")]
-		public int PatientId { get; set; }
+    
         [Required]
         [StringLength(14, ErrorMessage = "National Id must be 14 characters", MinimumLength = 14)]
         public string NationalId { get; set; }= string.Empty;

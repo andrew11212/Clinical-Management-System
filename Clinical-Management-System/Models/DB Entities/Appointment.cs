@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Clinical_Management_System.Models.DB_Entities
@@ -20,11 +21,12 @@ namespace Clinical_Management_System.Models.DB_Entities
         public TimeSpan Hour { get; set; } [Required]
         public int ClinicId { get; set; }
 
-        public int PatientId { get; set; }
-      
+        public string PatientId { get; set; }
+        [ValidateNever]
         public Clinic Clinic { get; set; }
+        [ValidateNever]
         public Patient Patient { get; set; }
-
+        [ValidateNever]
         public Prescription? Prescription { get; set; }
     }
 

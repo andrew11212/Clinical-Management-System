@@ -1,8 +1,11 @@
 using Clinical_Management_System.Data;
+using Clinical_Management_System.Models.DB_Entities;
 using Clinical_Management_System.Utitlity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using NuGet.DependencyResolver;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<IdentityUser,IdentityRole>()/*(options => options.SignIn.RequireConfirmedAccount = true)*/
     .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+builder.Services.AddIdentityCore<Doctor>().AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentityCore<Patient>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 builder.Services.AddControllersWithViews();

@@ -49,7 +49,7 @@ namespace Clinical_Management_System.Controllers
         // GET: Documents/Create
         public IActionResult Create()
         {
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City");
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id");
             ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName");
             return View();
         }
@@ -67,7 +67,7 @@ namespace Clinical_Management_System.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City", document.PatientId);
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", document.PatientId);
             ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName", document.PrescriptionId);
             return View(document);
         }
@@ -85,7 +85,7 @@ namespace Clinical_Management_System.Controllers
             {
                 return NotFound();
             }
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City", document.PatientId);
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", document.PatientId);
             ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName", document.PrescriptionId);
             return View(document);
         }
@@ -122,7 +122,7 @@ namespace Clinical_Management_System.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City", document.PatientId);
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", document.PatientId);
             ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName", document.PrescriptionId);
             return View(document);
         }

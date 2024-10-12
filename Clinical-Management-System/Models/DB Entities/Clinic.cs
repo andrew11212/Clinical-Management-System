@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Clinical_Management_System.Models.DB_Entities
@@ -28,8 +29,9 @@ namespace Clinical_Management_System.Models.DB_Entities
 		[Required]
         public int Floor { get; set; }
 
-        public int DoctorId { get; set; }
-      
+        public string DoctorId { get; set; }
+        [ValidateNever]
+        [ForeignKey(nameof(DoctorId))]
         public Doctor Doctor { get; set; } = default!;
 
         public ICollection<Appointment>? Appointments { get; set; }

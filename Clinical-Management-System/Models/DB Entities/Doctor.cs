@@ -1,14 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Identity;
 
 namespace Clinical_Management_System.Models.DB_Entities
 {
-    public class Doctor
-    {
-        [Key]
-		[Column("Id")]
-		public int DoctorId { get; set; }
-        
+    public class Doctor: IdentityUser
+    { 
     
         public byte[]? Photo { get; set; }
         [Required]
@@ -41,7 +39,8 @@ namespace Clinical_Management_System.Models.DB_Entities
         public int  Floor { get; set; }
         //public List<Clinic> Clinics { get; set; }
         public int SpecializationId { get; set; }
- 
+
+        [ValidateNever]
         public Specialization Specialization { get; set; } = default!;
 
      

@@ -13,7 +13,7 @@ namespace Clinical_Management_System.Models.DB_Entities
         [Required(ErrorMessage = "Please Provide a Photo of the Document")]
         public byte[] Image { get; set; } = default!;
 
-        public int PatientId { get; set; }
+        public string PatientId { get; set; }
         public int? PrescriptionId { get; set; }
         public Patient Patient { get; set; } = default!;
         public Prescription? Prescription { get; set; }

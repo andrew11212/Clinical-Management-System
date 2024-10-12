@@ -50,7 +50,7 @@ namespace Clinical_Management_System.Controllers
         public IActionResult Create()
         {
             ViewData["ClinicId"] = new SelectList(_context.Clinics, "ClinicId", "City");
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City");
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id");
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace Clinical_Management_System.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ClinicId"] = new SelectList(_context.Clinics, "ClinicId", "City", appointment.ClinicId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City", appointment.PatientId);
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", appointment.PatientId);
             return View(appointment);
         }
 
@@ -86,7 +86,7 @@ namespace Clinical_Management_System.Controllers
                 return NotFound();
             }
             ViewData["ClinicId"] = new SelectList(_context.Clinics, "ClinicId", "City", appointment.ClinicId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City", appointment.PatientId);
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", appointment.PatientId);
             return View(appointment);
         }
 
@@ -123,7 +123,7 @@ namespace Clinical_Management_System.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ClinicId"] = new SelectList(_context.Clinics, "ClinicId", "City", appointment.ClinicId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "City", appointment.PatientId);
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", appointment.PatientId);
             return View(appointment);
         }
 

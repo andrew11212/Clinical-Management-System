@@ -29,40 +29,66 @@ namespace Clinical_Management_System.Data
         #endregion
 
         protected override void OnModelCreating(ModelBuilder builder)
-		{
-			builder.Entity<Prescription>()
-	  .HasMany(p => p.Documents)
-	  .WithOne(d => d.Prescription)
-	  .HasForeignKey(d => d.PrescriptionId)
-	  .OnDelete(DeleteBehavior.Restrict); 
+        {
+            // Mapping Prescriptions to Documents with Restrict delete behavior
+            builder.Entity<Prescription>()
+                .HasMany(p => p.Documents)
+                .WithOne(d => d.Prescription)
+                .HasForeignKey(d => d.PrescriptionId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-			builder.Entity<Allergy>().HasKey(a => new { a.PatientId, a.Name });
-			builder.Entity<ChronicDisease>().HasKey(cd => new { cd.PatientId, cd.Name });
+            // Composite keys for Allergy and ChronicDisease
+            builder.Entity<Allergy>().HasKey(a => new { a.PatientId, a.Name });
+            builder.Entity<ChronicDisease>().HasKey(cd => new { cd.PatientId, cd.Name });
 
-			builder.Entity<Prescription>()
-				.HasMany(p => p.Medicines)
-				.WithOne(m => m.Prescription)
-				.HasForeignKey(m => m.PrescriptionId) 
-				.OnDelete(DeleteBehavior.Cascade);
+            // Mapping Prescriptions to Medicines with Cascade delete behavior
+            builder.Entity<Prescription>()
+                .HasMany(p => p.Medicines)
+                .WithOne(m => m.Prescription)
+                .HasForeignKey(m => m.PrescriptionId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-			builder.Entity<Patient>()
-				.HasMany(p => p.Documents)
-				.WithOne(d => d.Patient)
-				.OnDelete(DeleteBehavior.Restrict); 
+            // Mapping Patients to Documents with Restrict delete behavior
+            builder.Entity<Patient>()
+                .HasMany(p => p.Documents)
+                .WithOne(d => d.Patient)
+                .OnDelete(DeleteBehavior.Restrict);
 
-			builder.Entity<Patient>().HasMany(p => p.Allergies).WithOne(a => a.Patient).OnDelete(DeleteBehavior.Cascade);
-			builder.Entity<Patient>().HasMany(p => p.ChronicDiseases).WithOne(c => c.Patient).OnDelete(DeleteBehavior.Cascade);
-			builder.Entity<Patient>().HasMany(p => p.Appointments).WithOne(a => a.Patient).OnDelete(DeleteBehavior.Cascade);
+            // Mapping Patients to other entities with Cascade delete behavior
+            builder.Entity<Patient>()
+                .HasMany(p => p.Allergies)
+                .WithOne(a => a.Patient)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Patient>()
+                .HasMany(p => p.ChronicDiseases)
+                .WithOne(c => c.Patient)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Patient>()
+                .HasMany(p => p.Appointments)
+                .WithOne(a => a.Patient)
+                .OnDelete(DeleteBehavior.Cascade);
 
-			builder.Entity<Doctor>().HasMany(d => d.Clinics).WithOne(c => c.Doctor).OnDelete(DeleteBehavior.Cascade);
-			builder.Entity<Clinic>().HasMany(c => c.Appointments).WithOne(a => a.Clinic).OnDelete(DeleteBehavior.Cascade);
-			builder.Entity<Specialization>().HasMany(s => s.Doctors).WithOne(d => d.Specialization).OnDelete(DeleteBehavior.Cascade);
+            // Doctor to Clinic relationship with Restrict to avoid cascade conflict
+            builder.Entity<Doctor>()
+                .HasMany(d => d.Clinics)
+                .WithOne(c => c.Doctor)
+                .OnDelete(DeleteBehavior.Restrict); // Prevent multiple cascade paths
+
+            // Clinic to Appointment relationship with Cascade
+            builder.Entity<Clinic>()
+                .HasMany(c => c.Appointments)
+                .WithOne(a => a.Clinic)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Specialization to Doctor relationship with Cascade
+            builder.Entity<Specialization>()
+                .HasMany(s => s.Doctors)
+                .WithOne(d => d.Specialization)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            base.OnModelCreating(builder);
+        }
 
 
-
-
-
-			base.OnModelCreating(builder);
-		}
 	}
 }

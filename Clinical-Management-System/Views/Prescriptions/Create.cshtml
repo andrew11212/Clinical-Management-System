@@ -1,49 +1,42 @@
-﻿@model Clinical_Management_System.ViewModel.PrescriptionVM
+﻿@model Clinical_Management_System.Models.DB_Entities.Prescription
 
 @{
-    ViewBag.Title = "Create Prescription";
+    ViewData["Title"] = "Create";
 }
 
-<div class="col-12 d-flex justify-content-end mb-2">
-    <a asp-controller="Prescriptions" asp-action="Index" class="btn btn-secondary shadow-sm">
-        <i class="bi bi-arrow-left"></i> Back to Prescriptions List
-    </a>
-</div>
+<h1>Create</h1>
 
-<div class="card shadow border-0">
-    <div class="card-header bg-secondary text-light text-center">
-        <h2 class="m-0">Create New Prescription</h2>
-    </div>
-
-    <div class="card-body">
-        <form asp-action="Create" method="post" enctype="multipart/form-data">
-            <div class="mb-3 form-floating">
-                <input asp-for="DiagnosisName" class="form-control" id="DiagnosisName" placeholder="Diagnosis" required />
-                <label for="DiagnosisName">Diagnosis</label>
+<h4>Prescription</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DiagnosisName" class="control-label"></label>
+                <input asp-for="DiagnosisName" class="form-control" />
                 <span asp-validation-for="DiagnosisName" class="text-danger"></span>
             </div>
-
-            <div class="mb-3 form-floating">
-                <input asp-for="DateTime" type="datetime-local" class="form-control" id="DateTime" required />
-                <label for="DateTime">Date and Time</label>
+            <div class="form-group">
+                <label asp-for="DateTime" class="control-label"></label>
+                <input asp-for="DateTime" class="form-control" />
                 <span asp-validation-for="DateTime" class="text-danger"></span>
             </div>
-
-            <div class="mb-3 form-floating">
-                <select asp-for="AppointmentId" class="form-select" asp-items="@Model.Appointments" required>
-                    <option value="">Select an Appointment</option>
-                </select>
-                <label for="AppointmentId">Appointment</label>
-                <span asp-validation-for="AppointmentId" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="AppointmentId" class="control-label"></label>
+                <select asp-for="AppointmentId" class ="form-control" asp-items="ViewBag.AppointmentId"></select>
             </div>
-
-            <div class="mb-3">
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-check-circle"></i> Create Prescription
-                </button>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
