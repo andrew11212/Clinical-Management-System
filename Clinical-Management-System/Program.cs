@@ -14,7 +14,12 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
+builder.Services.ConfigureApplicationCookie(options =>
+{
+	options.LoginPath = "/Identity/Account/Login"; // Path to the login page
+	options.AccessDeniedPath = "/Identity/Account/AccessDenied"; // Path for access denied
+	options.LogoutPath = "/Identity/Account/Logout"; // Path for logout
+});
 builder.Services.AddIdentity<IdentityUser,IdentityRole>()/*(options => options.SignIn.RequireConfirmedAccount = true)*/
     .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
@@ -23,8 +28,8 @@ builder.Services.AddIdentityCore<Patient>().AddEntityFrameworkStores<Application
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddRazorPages();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -44,11 +49,15 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
+app.MapRazorPages();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
+	name: "areaRoute",
+	pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+	name: "default",
+	pattern: "{controller=Home}/{action=Index}/{id?}");
 app.Run();

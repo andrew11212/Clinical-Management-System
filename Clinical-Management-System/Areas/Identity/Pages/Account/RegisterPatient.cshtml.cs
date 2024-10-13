@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
@@ -106,9 +107,9 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
             [Required]
             [StringLength(14, ErrorMessage = "National Id must be 14 characters", MinimumLength = 14)]
             public string NationalId { get; set; } = string.Empty;
-            [Required]
-            [MaxLength(100, ErrorMessage = "Username cannot be greater than 100 charcters")]
-            public string UserName { get; set; } = string.Empty;
+
+			[ValidateNever]
+            public string? UserName { get; set; } = string.Empty;
             [Required]
             [MaxLength(100, ErrorMessage = "First name cannot be greater than 100 charcters")]
             public string FirstName { get; set; } = string.Empty;
@@ -132,11 +133,6 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
             public int BuildingNum { get; set; }
 
             public byte[]? Photo { get; set; }
-            public ICollection<Document>? Documents { get; set; }
-            public ICollection<Allergy>? Allergies { get; set; }
-            public ICollection<ChronicDisease>? ChronicDiseases { get; set; }
-            public ICollection<Appointment>? Appointments { get; set; }
-
 
         }
 
@@ -159,8 +155,6 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
 			if (ModelState.IsValid)
 			{
 				var user = CreateUser();
-				user.Allergies = Input.Allergies;
-				user.Appointments = Input.Appointments;
 				user.City = Input.City;
 				user.StreetName = Input.StreetName;
 				user.Photo = Input.Photo;
@@ -168,8 +162,6 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
 				user.Email = Input.Email;
 				user.FirstName = Input.FirstName;
 				user.LastName = Input.LastName;
-				user.ChronicDiseases = Input.ChronicDiseases;	
-				user.Documents = Input.Documents;
 				user.BuildingNum=Input.BuildingNum;
 				user.Floor=Input.Floor;
 				
@@ -184,7 +176,6 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
 					_logger.LogInformation("User created a new account with password.");
 
 					await _userManager.AddToRoleAsync(user, Sd.Role_Patient);
-
 					var userId = await _userManager.GetUserIdAsync(user);
 					var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 					code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

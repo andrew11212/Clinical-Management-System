@@ -34,15 +34,7 @@
                         <a class="nav-link" href="#contact-us">Contact Us</a>
                     </li>
                 </ul>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        Login
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">Login</a></li>
-                        <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Register</a></li>
-                    </ul>
-                </div>
+                <partial name="_LoginPartial">
             </div>
         </div>
     </nav>
