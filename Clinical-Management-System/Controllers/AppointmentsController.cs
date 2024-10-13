@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Clinical_Management_System.Data;
 using Clinical_Management_System.Models.DB_Entities;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Clinical_Management_System.Controllers
 {
+    [Authorize]
     public class AppointmentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -21,7 +24,7 @@ namespace Clinical_Management_System.Controllers
 
         // GET: Appointments
         public async Task<IActionResult> Index()
-        {
+        { 
             var applicationDbContext = _context.Appointments.Include(a => a.Clinic).Include(a => a.Patient);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -49,6 +52,9 @@ namespace Clinical_Management_System.Controllers
         // GET: Appointments/Create
         public IActionResult Create()
         {
+
+            var claims = User.Identity as ClaimsIdentity;
+            var UserId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             ViewData["ClinicId"] = new SelectList(_context.Clinics, "ClinicId", "City");
             ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id");
             return View();
