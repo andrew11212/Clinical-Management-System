@@ -1,52 +1,46 @@
-﻿@model Clinical_Management_System.Models.DB_Entities.Medicine
+﻿@model Medicine
 
 @{
-    ViewData["Title"] = "Create";
+    ViewBag.Title = "Create Medicine";
 }
 
-<h1>Create</h1>
+<div class="card shadow border-0 mt-2">
+    <div class="card-header bg-secondary bg-gradient text-light text-center">
+        <h2 class="m-0">Create Medicine</h2>
+    </div>
 
-<h4>Medicine</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="MedicineName" class="control-label"></label>
-                <input asp-for="MedicineName" class="form-control" />
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div class="form-floating mb-3">
+                <input asp-for="MedicineName" class="form-control" placeholder="Medicine Name" />
+                <label class="ms-2"  asp-for="MedicineName">Medicine Name</label>
                 <span asp-validation-for="MedicineName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Dose" class="control-label"></label>
-                <input asp-for="Dose" class="form-control" />
+            <div class="form-floating mb-3">
+                <input asp-for="Dose" class="form-control" placeholder="Dose" />
+                <label asp-for="Dose">Dose</label>
                 <span asp-validation-for="Dose" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Duration" class="control-label"></label>
-                <input asp-for="Duration" class="form-control" />
+            <div class="form-floating mb-3">
+                <input asp-for="Duration" class="form-control" placeholder="Duration" />
+                <label asp-for="Duration">Duration</label>
                 <span asp-validation-for="Duration" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Repeat" class="control-label"></label>
-                <input asp-for="Repeat" class="form-control" />
+            <div class="form-floating mb-3">
+                <input asp-for="Repeat" class="form-control" placeholder="Repeat" type="number" />
+                <label asp-for="Repeat">Repeat</label>
                 <span asp-validation-for="Repeat" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PrescriptionId" class="control-label"></label>
-                <select asp-for="PrescriptionId" class ="form-control" asp-items="ViewBag.PrescriptionId"></select>
+            <div class="form-floating mb-3">
+                <select asp-for="PrescriptionId" class="form-select" asp-items="ViewBag.PrescriptionId">
+                    <option value="">-- Select Prescription --</option>
+
+                </select>
+                <label asp-for="PrescriptionId">Prescription</label>
+                <span asp-validation-for="PrescriptionId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+            <button type="submit" class="btn btn-primary">Create Medicine</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
