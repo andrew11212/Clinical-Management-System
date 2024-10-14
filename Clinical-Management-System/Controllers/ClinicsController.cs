@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Clinical_Management_System.Data;
 using Clinical_Management_System.Models.DB_Entities;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Clinical_Management_System.Controllers
 {
@@ -57,9 +59,18 @@ namespace Clinical_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("ClinicId,OpenTime,CloseTime,City,BuildingNum,StreetName,Government,Floor,DoctorId")] Clinic clinic)
         {
-            if (ModelState.IsValid)
+			var claims = User.Identity as ClaimsIdentity;
+            var Userid = claims.FindFirst(ClaimTypes.NameIdentifier).Value;
+			
+            if(Userid == null)
+            {
+                return NotFound();
+            }
+            clinic.DoctorId=Userid;
+			if (ModelState.IsValid)
             {
                 _context.Add(clinic);
                 await _context.SaveChangesAsync();
