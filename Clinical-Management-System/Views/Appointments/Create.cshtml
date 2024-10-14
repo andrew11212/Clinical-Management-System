@@ -1,4 +1,4 @@
-﻿@model Clinical_Management_System.Models.DB_Entities.Appointment
+﻿@model Appointment
 
 @{
     ViewData["Title"] = "Create";
@@ -39,11 +39,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="ClinicId" class="control-label"></label>
-                <select asp-for="ClinicId" class ="form-control" asp-items="ViewBag.ClinicId"></select>
+                <select asp-for="ClinicId" class="form-control" asp-items="ViewBag.ClinicId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="PatientId" class="control-label"></label>
-                <select asp-for="PatientId" class ="form-control" asp-items="ViewBag.PatientId"></select>
+                <select asp-for="PatientId" class="form-control" asp-items="ViewBag.PatientId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

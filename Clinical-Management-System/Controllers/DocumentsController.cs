@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Clinical_Management_System.Data;
 using Clinical_Management_System.Models.DB_Entities;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Clinical_Management_System.Utitlity;
 
 namespace Clinical_Management_System.Controllers
 {
@@ -47,9 +50,10 @@ namespace Clinical_Management_System.Controllers
         }
 
         // GET: Documents/Create
+        [Authorize]
         public IActionResult Create()
         {
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id");
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FirstName");
             ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName");
             return View();
         }
@@ -59,15 +63,23 @@ namespace Clinical_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DocumentId,CreatedDate,Image,PatientId,PrescriptionId")] Document document)
+        [Authorize]
+        public async Task<IActionResult> Create([Bind("DocumentId,CreatedDate,PrescriptionId")] Document document)
         {
-            if (ModelState.IsValid)
+			var claims = User.Identity as ClaimsIdentity;
+			var userId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                return NotFound();
+            }
+            document.PatientId = userId;
+			if (ModelState.IsValid)
             {
                 _context.Add(document);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", document.PatientId);
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FirsName", document.PatientId);
             ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName", document.PrescriptionId);
             return View(document);
         }

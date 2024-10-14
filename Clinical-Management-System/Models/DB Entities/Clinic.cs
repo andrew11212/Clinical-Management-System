@@ -29,7 +29,7 @@ namespace Clinical_Management_System.Models.DB_Entities
 		[Required]
         public int Floor { get; set; }
 
-        public string DoctorId { get; set; }
+        public string DoctorId { get; set; }=string.Empty;
         [ValidateNever]
         [ForeignKey(nameof(DoctorId))]
         public Doctor Doctor { get; set; } = default!;

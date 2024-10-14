@@ -1,47 +1,74 @@
-﻿@model IEnumerable<Clinical_Management_System.Models.DB_Entities.Prescription>
+﻿@model IEnumerable<Prescription>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewBag.Title = "Prescriptions List";
 }
 
-<h1>Index</h1>
+<div class="col-12 d-flex justify-content-end">
+    <a asp-controller="Prescriptions" asp-action="Create" class="btn btn-primary shadow-sm">
+        <i class="bi bi-patch-plus"></i> Create New Prescription
+    </a>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DiagnosisName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Appointment)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DiagnosisName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Appointment.Type)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PrescriptionId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PrescriptionId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PrescriptionId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="card shadow border-0 mt-2">
+    <div class="card-header bg-secondary text-light text-center">
+        <h2 class="m-0">Prescriptions</h2>
+    </div>
+
+    <div class="card-body">
+        @if (Model.Any())
+        {
+            <table class="table table-hover table-striped table-lg table-borderless text-center align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Diagnosis Name</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Appointment Date</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.DiagnosisName</td>
+                            <td>@item.DateTime.ToString("yyyy-MM-dd")</td>
+                            <td>@item.Appointment?.Date.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                <div class="d-flex justify-content-center">
+                                    <a class="btn btn-sm btn-primary me-2"
+                                       asp-controller="Prescriptions"
+                                       asp-action="Edit"
+                                       asp-route-id="@item.PrescriptionId"
+                                       aria-label="Edit @item.DiagnosisName">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+                                    <a class="btn btn-sm btn-danger"
+                                       asp-controller="Prescriptions"
+                                       asp-action="Delete"
+                                       asp-route-id="@item.PrescriptionId"
+                                       aria-label="Delete @item.DiagnosisName">
+                                        <i class="bi bi-trash-fill"></i> Delete
+                                    </a>
+                                    <a class="btn btn-sm btn-info ms-2"
+                                       asp-controller="Prescriptions"
+                                       asp-action="Details"
+                                       asp-route-id="@item.PrescriptionId"
+                                       aria-label="Details of @item.DiagnosisName">
+                                        <i class="bi bi-info-circle"></i> Details
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-warning text-center">
+                No prescriptions found. Please create one!
+            </div>
+        }
+    </div>
+</div>

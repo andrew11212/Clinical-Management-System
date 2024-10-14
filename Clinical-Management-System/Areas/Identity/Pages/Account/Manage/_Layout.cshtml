@@ -1,11 +1,11 @@
 ﻿@{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
     {
         Layout = parentLayout.ToString();
     }
     else
     {
-        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+        Layout = "~/Views/Shared/_Layout.cshtml";  // Use the correct layout path
     }
 }
 
@@ -19,7 +19,7 @@
             <partial name="_ManageNav" />
         </div>
         <div class="col-md-9">
-            @RenderBody()
+            @RenderBody()  <!-- Ensure this is only here if this view is used as a layout -->
         </div>
     </div>
 </div>

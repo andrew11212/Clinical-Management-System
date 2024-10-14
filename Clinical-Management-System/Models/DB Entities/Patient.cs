@@ -12,9 +12,6 @@ namespace Clinical_Management_System.Models.DB_Entities
         [StringLength(14, ErrorMessage = "National Id must be 14 characters", MinimumLength = 14)]
         public string NationalId { get; set; }= string.Empty;
         [Required]
-        [MaxLength(100, ErrorMessage = "Username cannot be greater than 100 charcters")]
-        public string UserName { get; set; }=string.Empty;
-        [Required]
         [MaxLength(100, ErrorMessage = "Password cannot be greater than 100 charcters")]
         public string Password { get; set; } = string.Empty;
 		[Required]

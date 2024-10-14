@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Clinical_Management_System.Data;
 using Clinical_Management_System.Models.DB_Entities;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Clinical_Management_System.Controllers
 {
+    [Authorize]
     public class AppointmentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -21,7 +24,7 @@ namespace Clinical_Management_System.Controllers
 
         // GET: Appointments
         public async Task<IActionResult> Index()
-        {
+        { 
             var applicationDbContext = _context.Appointments.Include(a => a.Clinic).Include(a => a.Patient);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -49,31 +52,54 @@ namespace Clinical_Management_System.Controllers
         // GET: Appointments/Create
         public IActionResult Create()
         {
+
+           
             ViewData["ClinicId"] = new SelectList(_context.Clinics, "ClinicId", "City");
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id");
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FirstName");
             return View();
         }
 
-        // POST: Appointments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AppointementId,Date,Type,Reason,Notes,Hour,ClinicId,PatientId")] Appointment appointment)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(appointment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ClinicId"] = new SelectList(_context.Clinics, "ClinicId", "City", appointment.ClinicId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", appointment.PatientId);
-            return View(appointment);
-        }
+		// POST: Appointments/Create
+		// To protect from overposting attacks, enable the specific properties you want to bind to.
+		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[Authorize]
+		public async Task<IActionResult> Create([Bind("AppointementId,Date,Type,Reason,Notes,Hour,ClinicId,PatientId")] Appointment appointment)
+		{
+			// Get the user's claims identity
+			var claims = User.Identity as ClaimsIdentity;
+			var userId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        // GET: Appointments/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+			// If the user ID is null, return unauthorized
+			if (userId == null)
+			{
+				return Unauthorized();
+			}
+
+			// Set the PatientId from the logged-in user's ID
+			appointment.PatientId = userId;
+
+			// Check if the model state is valid
+			if (ModelState.IsValid)
+			{
+				// Add the appointment to the context and save changes
+				_context.Add(appointment);
+				await _context.SaveChangesAsync();
+				return RedirectToAction(nameof(Index));  // Redirect to the Index action on success
+			}
+
+			// Populate the clinic and patient selections for the view
+			ViewData["ClinicId"] = new SelectList(_context.Clinics, "ClinicId", "City", appointment.ClinicId);
+			ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FirstName", appointment.PatientId);
+
+			// Return the view with the appointment model
+			return View(appointment);
+		}
+
+
+		// GET: Appointments/Edit/5
+		public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -127,7 +153,6 @@ namespace Clinical_Management_System.Controllers
             return View(appointment);
         }
 
-        // GET: Appointments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -147,7 +172,6 @@ namespace Clinical_Management_System.Controllers
             return View(appointment);
         }
 
-        // POST: Appointments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

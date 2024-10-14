@@ -20,8 +20,8 @@ namespace Clinical_Management_System.Models.DB_Entities
         public string? Notes { get; set; }
         public TimeSpan Hour { get; set; } [Required]
         public int ClinicId { get; set; }
-
-        public string PatientId { get; set; }
+		[ValidateNever]
+		public string PatientId { get; set; }
         [ValidateNever]
         public Clinic Clinic { get; set; }
         [ValidateNever]
