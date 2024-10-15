@@ -11,10 +11,9 @@ namespace Clinical_Management_System.Models.DB_Entities
 		public int DocumentId { get; set; }
 
         public DateTime CreatedDate { get; set; }
-        [Required(ErrorMessage = "Please Provide a Photo of the Document")]
 
         [ValidateNever] 
-        public string? Image { get; set; } = default!;
+        public string? Image { get; set; } = string.Empty;
 
         public string PatientId { get; set; }=string.Empty;
         public int? PrescriptionId { get; set; }

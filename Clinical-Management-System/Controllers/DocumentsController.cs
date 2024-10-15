@@ -25,8 +25,8 @@ namespace Clinical_Management_System.Controllers
         // GET: Documents
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Documents.Include(d => d.Patient).Include(d => d.Prescription);
-            return View(await applicationDbContext.ToListAsync());
+            var documentList = _context.Documents.Include(d => d.Patient).Include(d => d.Prescription).ToListAsync();
+            return View(await documentList);
         }
 
         // GET: Documents/Details/5
@@ -64,7 +64,7 @@ namespace Clinical_Management_System.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("DocumentId,CreatedDate,PrescriptionId")] Document document)
+        public async Task<IActionResult> Create(Document document)
         {
 			var claims = User.Identity as ClaimsIdentity;
 			var userId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -107,7 +107,7 @@ namespace Clinical_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DocumentId,CreatedDate,Image,PatientId,PrescriptionId")] Document document)
+        public async Task<IActionResult> Edit(int id, Document document)
         {
             if (id != document.DocumentId)
             {

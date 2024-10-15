@@ -55,7 +55,7 @@ namespace Clinical_Management_System.Controllers
 
            
             ViewData["ClinicId"] = new SelectList(_context.Clinics, "ClinicId", "City");
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FirstName");
+            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Email");
             return View();
         }
 
@@ -91,7 +91,7 @@ namespace Clinical_Management_System.Controllers
 
 			// Populate the clinic and patient selections for the view
 			ViewData["ClinicId"] = new SelectList(_context.Clinics, "ClinicId", "City", appointment.ClinicId);
-			ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FirstName", appointment.PatientId);
+			ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Email", appointment.PatientId);
 
 			// Return the view with the appointment model
 			return View(appointment);

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace Clinical_Management_System.Models.DB_Entities
 {
@@ -9,7 +10,7 @@ namespace Clinical_Management_System.Models.DB_Entities
         public string Name { get; set; } = string.Empty;
 
 		public string PatientId { get; set; }
-
+        [ValidateNever]
         public Patient Patient { get; set; } = default!;
     }
 

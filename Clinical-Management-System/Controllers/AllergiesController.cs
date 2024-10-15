@@ -69,27 +69,33 @@ namespace Clinical_Management_System.Controllers
             return View(allergy);
         }
 
-        // GET: Allergies/Edit/5
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+		// GET: Allergies/Edit/5
+		public async Task<IActionResult> Edit(string id, string name)
+		{
+			if (id == null || name == null)
+			{
+				return NotFound();
+			}
 
-            var allergy = await _context.Allergies.FindAsync(id);
-            if (allergy == null)
-            {
-                return NotFound();
-            }
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", allergy.PatientId);
-            return View(allergy);
-        }
+			var allergy = await _context.Allergies
+				.Where(a => a.PatientId == id && a.Name == name)
+				.FirstOrDefaultAsync();
 
-        // POST: Allergies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+			if (allergy == null)
+			{
+				return NotFound();
+			}
+
+			// Prepare the dropdown for patients
+			ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", allergy.PatientId);
+			return View(allergy);
+		}
+
+
+		// POST: Allergies/Edit/5
+		// To protect from overposting attacks, enable the specific properties you want to bind to.
+		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Name,PatientId")] Allergy allergy)
         {
