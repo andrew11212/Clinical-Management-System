@@ -50,7 +50,7 @@ namespace Clinical_Management_System.Controllers
         // GET: Clinics/Create
         public IActionResult Create()
         {
-            ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Id");
+            ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "FirstName");
             return View();
         }
 

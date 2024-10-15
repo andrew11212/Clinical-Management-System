@@ -19,15 +19,19 @@
     }
     else
     {
-        <div class="dropdown">
-            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                Login
-            </button>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Login or Register
+            </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                 <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">Login</a></li>
-                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/RegisterDoctor">Register as doctor</a></li>
+                <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/RegisterDoctor">Register as doctor</a></li>
+                <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/RegisterPatient">Register as patient</a></li>
+                <li><hr class="dropdown-divider"></li>
+
             </ul>
-        </div>
-    }
+            </li>
+        }
 </ul>
