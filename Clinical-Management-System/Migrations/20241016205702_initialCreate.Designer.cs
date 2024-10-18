@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Clinical_Management_System.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241011172052_init")]
-    partial class init
+    [Migration("20241016205702_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,11 @@ namespace Clinical_Management_System.Migrations
                     b.Property<int>("ClinicId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
@@ -69,8 +74,10 @@ namespace Clinical_Management_System.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int>("ScheduleId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Type")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -79,6 +86,8 @@ namespace Clinical_Management_System.Migrations
                     b.HasIndex("ClinicId");
 
                     b.HasIndex("PatientId");
+
+                    b.HasIndex("ScheduleId");
 
                     b.ToTable("Appointments");
                 });
@@ -156,9 +165,8 @@ namespace Clinical_Management_System.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte[]>("Image")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PatientId")
                         .IsRequired()
@@ -468,6 +476,33 @@ namespace Clinical_Management_System.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Schedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AvailableDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DoctorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.ToTable("Schedule");
+                });
+
             modelBuilder.Entity("Clinical_Management_System.Models.DB_Entities.Doctor", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -633,9 +668,17 @@ namespace Clinical_Management_System.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Schedule", "Schedule")
+                        .WithMany("Appointments")
+                        .HasForeignKey("ScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Clinic");
 
                     b.Navigation("Patient");
+
+                    b.Navigation("Schedule");
                 });
 
             modelBuilder.Entity("Clinical_Management_System.Models.DB_Entities.ChronicDisease", b =>
@@ -748,6 +791,17 @@ namespace Clinical_Management_System.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Schedule", b =>
+                {
+                    b.HasOne("Clinical_Management_System.Models.DB_Entities.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+                });
+
             modelBuilder.Entity("Clinical_Management_System.Models.DB_Entities.Doctor", b =>
                 {
                     b.HasOne("Clinical_Management_System.Models.DB_Entities.Specialization", "Specialization")
@@ -779,6 +833,11 @@ namespace Clinical_Management_System.Migrations
             modelBuilder.Entity("Clinical_Management_System.Models.DB_Entities.Specialization", b =>
                 {
                     b.Navigation("Doctors");
+                });
+
+            modelBuilder.Entity("Schedule", b =>
+                {
+                    b.Navigation("Appointments");
                 });
 
             modelBuilder.Entity("Clinical_Management_System.Models.DB_Entities.Doctor", b =>

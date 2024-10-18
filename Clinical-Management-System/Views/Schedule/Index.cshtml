@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Schedule>
+
+<h2>Schedules</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Schedule ID</th>
+            <th>Doctor</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var schedule in Model)
+        {
+            <tr>
+                <td>@schedule.Id</td>
+                <td>@schedule.Doctor?.FirstName @schedule.Doctor?.LastName</td>
+                <td>@schedule.AvailableDateTime.ToShortDateString()</td>
+                <td>@schedule.Status</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@schedule.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@schedule.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-primary">Create New Schedule</a>

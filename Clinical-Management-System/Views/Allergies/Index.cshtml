@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Clinical_Management_System.Models.DB_Entities.Allergy>
+﻿@model IEnumerable<Allergy>
 
 @{
     ViewData["Title"] = "Allergy Index";
@@ -30,7 +30,6 @@
                 </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.PatientId" class="btn btn-secondary">Details</a>
-                    <a asp-action="Edit" asp-route-id="@item.PatientId" class="btn btn-primary">Edit</a>
                     <a asp-action="Delete" asp-route-id="@item.PatientId" class="btn btn-danger">Delete</a>
                 </td>
             </tr>

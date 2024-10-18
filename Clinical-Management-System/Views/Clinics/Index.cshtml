@@ -13,65 +13,66 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.OpenTime)
+                OpenTime
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CloseTime)
+                CloseTime
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.City)
+                City
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BuildingNum)
+                BuildingNum
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StreetName)
+                StreetName
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Government)
+                Government
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Floor)
+                Floor
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Doctor)
+                Doctor
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.OpenTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CloseTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BuildingNum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StreetName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Government)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Floor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Doctor.FirstName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ClinicId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ClinicId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ClinicId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.OpenTime
+                </td>
+                <td>
+                    @item.CloseTime
+                </td>
+                <td>
+                    @item.City
+                </td>
+                <td>
+                    @item.BuildingNum
+                </td>
+                <td>
+                    @item.StreetName
+                </td>
+                <td>
+                    @item.Government
+                </td>
+                <td>
+                    @item.Floor
+                </td>
+                <td>
+                    @item.Doctor.FirstName @item.Doctor.LastName
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ClinicId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ClinicId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ClinicId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

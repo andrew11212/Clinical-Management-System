@@ -12,10 +12,10 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Patient)
+            @Model.Patient.FirstName @Model.Patient.LastName
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Patient.Id)
+            @Html.DisplayFor(model => model.Name)
         </dd>
     </dl>
     

@@ -11,7 +11,6 @@ using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 using Clinical_Management_System.Data;
-using Clinical_Management_System.Migrations;
 using Clinical_Management_System.Models;
 using Clinical_Management_System.Models.DB_Entities;
 using Clinical_Management_System.Utitlity;

@@ -56,7 +56,7 @@
             @Html.DisplayNameFor(model => model.Doctor)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Doctor.Id)
+            @Model.Doctor.FirstName @Model.Doctor.LastName
         </dd>
     </dl>
 </div>

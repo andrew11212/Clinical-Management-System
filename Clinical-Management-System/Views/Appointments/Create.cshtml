@@ -1,59 +1,65 @@
 ﻿@model Appointment
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Appointment";
 }
 
-<h1>Create</h1>
+<h2>Create Appointment</h2>
 
-<h4>Appointment</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+<div class="col-12 d-flex justify-content-end mb-2">
+    <a asp-controller="Appointments" asp-action="Index" class="btn btn-secondary shadow-sm">
+        <i class="bi bi-arrow-left"></i> Back to Appointments
+    </a>
+</div>
+
+<div class="card shadow border-0">
+    <div class="card-header bg-primary bg-gradient text-light text-center">
+        <h2 class="m-0">Create New Appointment</h2>
+    </div>
+
+    <div class="card-body">
+        <form asp-controller="Appointments" asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <input asp-for="Type" class="form-control" />
+
+            <div class="mb-3 form-floating">
+                <input asp-for="Type" class="form-control" placeholder="Appointment Type" />
+                <label asp-for="Type" class="control-label">Type</label>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Reason" class="control-label"></label>
-                <input asp-for="Reason" class="form-control" />
+
+            <div class="mb-3 form-floating">
+                <input asp-for="Reason" class="form-control" placeholder="Reason for Appointment" />
+                <label asp-for="Reason" class="control-label">Reason</label>
                 <span asp-validation-for="Reason" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <input asp-for="Notes" class="form-control" />
+            <div class="mb-3 form-floating">
+                <input asp-for="Notes" class="form-control" placeholder="Additional Notes" />
+                <label asp-for="Notes" class="control-label">Notes</label>
                 <span asp-validation-for="Notes" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Hour" class="control-label"></label>
-                <input asp-for="Hour" class="form-control" />
-                <span asp-validation-for="Hour" class="text-danger"></span>
+            <div class="mb-3 form-floating">
+                <select asp-for="DoctorId" class="form-control" asp-items="ViewBag.DoctorId" required>
+                    <option value="">Select Doctor</option>
+                </select>
+                <label asp-for="ScheduleId" class="control-label">Doctors</label>
+                <span asp-validation-for="ScheduleId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ClinicId" class="control-label"></label>
-                <select asp-for="ClinicId" class="form-control" asp-items="ViewBag.ClinicId"></select>
+            <div class="mb-3 form-floating">
+                <select asp-for="ScheduleId" class="form-control" asp-items="ViewBag.ScheduleId" required>
+                    <option value="">Select Schedule</option>
+                </select>
+                <label asp-for="ScheduleId" class="control-label">Available Date and Time</label>
+                <span asp-validation-for="ScheduleId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PatientId" class="control-label"></label>
-                <select asp-for="PatientId" class="form-control" asp-items="ViewBag.PatientId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <input type="hidden" asp-for="PatientId" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" />
+            <!-- Submit button -->
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i> Create Appointment
+                </button>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

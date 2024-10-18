@@ -13,6 +13,7 @@ using Clinical_Management_System.Utitlity;
 
 namespace Clinical_Management_System.Controllers
 {
+    [Authorize]
     public class DocumentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -50,10 +51,9 @@ namespace Clinical_Management_System.Controllers
         }
 
         // GET: Documents/Create
-        [Authorize]
+        [Authorize(Policy =Sd.Role_Patient)]
         public IActionResult Create()
         {
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FirstName");
             ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName");
             return View();
         }
@@ -84,20 +84,23 @@ namespace Clinical_Management_System.Controllers
             return View(document);
         }
 
-        // GET: Documents/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+		// GET: Documents/Edit/5
+		[Authorize(Policy = Sd.Role_Patient)]
+
+		public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+			var claims = User.Identity as ClaimsIdentity;
+			var userId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			if (id == null)
             {
                 return NotFound();
             }
 
-            var document = await _context.Documents.FindAsync(id);
+            var document = await _context.Documents.Where(c=>c.PatientId==userId).FirstOrDefaultAsync(c=>c.DocumentId==id);
             if (document == null)
             {
                 return NotFound();
             }
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", document.PatientId);
             ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName", document.PrescriptionId);
             return View(document);
         }
@@ -109,11 +112,13 @@ namespace Clinical_Management_System.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Document document)
         {
-            if (id != document.DocumentId)
+			var claims = User.Identity as ClaimsIdentity;
+			var userId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			if (id != document.DocumentId)
             {
                 return NotFound();
             }
-
+            document.PatientId = userId;
             if (ModelState.IsValid)
             {
                 try
@@ -134,15 +139,17 @@ namespace Clinical_Management_System.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", document.PatientId);
             ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName", document.PrescriptionId);
             return View(document);
         }
 
-        // GET: Documents/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+		// GET: Documents/Delete/5
+		[Authorize(Policy = Sd.Role_Patient)]
+		public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+			var claims = User.Identity as ClaimsIdentity;
+			var userId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			if (id == null)
             {
                 return NotFound();
             }
@@ -150,7 +157,7 @@ namespace Clinical_Management_System.Controllers
             var document = await _context.Documents
                 .Include(d => d.Patient)
                 .Include(d => d.Prescription)
-                .FirstOrDefaultAsync(m => m.DocumentId == id);
+				.Where(c => c.PatientId == userId).FirstOrDefaultAsync(m => m.DocumentId == id);
             if (document == null)
             {
                 return NotFound();
@@ -164,8 +171,10 @@ namespace Clinical_Management_System.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var document = await _context.Documents.FindAsync(id);
-            if (document != null)
+			var claims = User.Identity as ClaimsIdentity;
+			var userId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			var document = await _context.Documents.Where(c => c.PatientId == userId).FirstOrDefaultAsync(m => m.DocumentId == id);
+			if (document != null)
             {
                 _context.Documents.Remove(document);
             }

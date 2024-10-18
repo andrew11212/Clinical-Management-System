@@ -21,7 +21,7 @@
     
     <form asp-controller="Allergies" asp-action="Delete">
         <input type="hidden" asp-for="Name" />
-        <input type="hidden" asp-for="PatientId" />
+        <input type="hidden" asp-for="PatientId" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>

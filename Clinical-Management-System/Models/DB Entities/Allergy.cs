@@ -13,7 +13,7 @@ namespace Clinical_Management_System.Models.DB_Entities
 
         
 		[Required(ErrorMessage = "Please Provide the Patient Id")]
-        public string PatientId { get; set; }
+        public string PatientId { get; set; } =string.Empty;
 
         [ValidateNever]
         [ForeignKey("PatientId")]

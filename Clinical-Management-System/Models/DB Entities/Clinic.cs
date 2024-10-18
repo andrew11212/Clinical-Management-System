@@ -9,8 +9,6 @@ namespace Clinical_Management_System.Models.DB_Entities
         [Key]
 		[Column("Id")]
 		public int ClinicId { get; set; }
-
-
         [Required]
         public TimeSpan OpenTime { get; set; }
         [Required]

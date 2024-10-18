@@ -4,30 +4,44 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Clinical_Management_System.Models.DB_Entities
 {
-    public class Appointment
-    {
-        [Key]
-        [Column("Id")]
-        public int AppointementId { get; set; }
+	public class Appointment
+	{
+		[Key]
+		[Column("Id")]
+		public int AppointementId { get; set; } // Primary Key
 
-        public DateTime Date { get; set; } [Required]
+		[MaxLength(100, ErrorMessage = "Appointment Type cannot be greater than 100 characters")]
+		public string? Type { get; set; } 
 
-        [MaxLength(100, ErrorMessage ="Appointement Type cannot be greater than 100 charcters")]
-        public string? Type { get; set; }
-        [MaxLength(200, ErrorMessage = "Reason cannot be greater than 200 charcters")]
-        public string? Reason { get; set; }
-        [MaxLength(200, ErrorMessage = "Notes cannot be greater than 200 charcters")]
-        public string? Notes { get; set; }
-        public TimeSpan Hour { get; set; } [Required]
-        public int ClinicId { get; set; }
+		[MaxLength(200, ErrorMessage = "Reason cannot be greater than 200 characters")]
+		public string? Reason { get; set; } 
+
+		[MaxLength(200, ErrorMessage = "Notes cannot be greater than 200 characters")]
+		public string? Notes { get; set; }
+
+		[MaxLength(200, ErrorMessage = "Notes cannot be greater than 200 characters")]
+		public string? CreatedBy {  get; set; } =string.Empty;
+		public string Status { get; set; } = "Pending";
+		[Required]
+		public string DoctorId {  get; set; } =string.Empty;
+
+		[Required]
+		public string PatientId { get; set; } = string.Empty; 
+
+		[Required]
+		public int ScheduleId { get; set; } 
+
 		[ValidateNever]
-		public string PatientId { get; set; }
-        [ValidateNever]
-        public Clinic Clinic { get; set; }
-        [ValidateNever]
-        public Patient Patient { get; set; }
-        [ValidateNever]
-        public Prescription? Prescription { get; set; }
-    }
+		public Doctor Doctor  { get; set; } = default!; 
 
+		[ValidateNever]
+		public Patient Patient { get; set; } = default!; 
+
+		[ValidateNever]
+		[ForeignKey(nameof(ScheduleId))]
+		public Schedule Schedule { get; set; } = default!; 
+
+		[ValidateNever]
+		public Prescription? Prescription { get; set; } 
+	}
 }

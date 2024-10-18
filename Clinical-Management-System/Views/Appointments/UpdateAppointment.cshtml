@@ -1,0 +1,45 @@
+﻿@model Appointment
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Appointment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Appointments" asp-action="UpdateAppointment">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="AppointementId" />
+            <input type="hidden" asp-for="PatientId" />
+            <input type="hidden" asp-for="DoctorId" />
+            <div class="mb-3 form-floating mb-2">
+                <select asp-for="Status" class="form-control">
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+                <label class="ms-1 p-2" asp-for="Status">Status</label>
+                <span asp-validation-for="Status" class="text-danger"></span>
+                <div class="mb-3 form-floating">
+                    <input asp-for="Notes" class="form-control" placeholder="Additional Notes" />
+                    <label asp-for="Notes" class="control-label">Notes</label>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

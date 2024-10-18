@@ -9,167 +9,183 @@ using Clinical_Management_System.Data;
 using Clinical_Management_System.Models.DB_Entities;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Clinical_Management_System.Utitlity;
 
 namespace Clinical_Management_System.Controllers
 {
-    public class ClinicsController : Controller
-    {
-        private readonly ApplicationDbContext _context;
+	[Authorize(Policy = Sd.Role_Doctor)]
+	public class ClinicsController : Controller
+	{
+		private readonly ApplicationDbContext _context;
 
-        public ClinicsController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+		public ClinicsController(ApplicationDbContext context)
+		{
+			_context = context;
+		}
 
-        // GET: Clinics
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.Clinics.Include(c => c.Doctor);
-            return View(await applicationDbContext.ToListAsync());
-        }
+		public async Task<IActionResult> Index()
+		{
+			var claimIdentity = User.Identity as ClaimsIdentity;
+			if (!User.Identity.IsAuthenticated)
+			{
+				return RedirectToAction("Login", "Account");
+			}
+			var userId = claimIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			if (userId == null)
+			{
+				return RedirectToAction("Login", "Account");
 
-        // GET: Clinics/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+			}
+			var applicationDbContext = _context.Clinics.Where(c => c.DoctorId == userId).Include(c => c.Doctor);
+			return View(await applicationDbContext.ToListAsync());
+		}
 
-            var clinic = await _context.Clinics
-                .Include(c => c.Doctor)
-                .FirstOrDefaultAsync(m => m.ClinicId == id);
-            if (clinic == null)
-            {
-                return NotFound();
-            }
+		public async Task<IActionResult> Details(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
 
-            return View(clinic);
-        }
+			var clinic = await _context.Clinics
+				.Include(c => c.Doctor)
+				.FirstOrDefaultAsync(m => m.ClinicId == id);
+			if (clinic == null)
+			{
+				return NotFound();
+			}
 
-        // GET: Clinics/Create
-        public IActionResult Create()
-        {
-            ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "FirstName");
-            return View();
-        }
+			return View(clinic);
+		}
 
-        // POST: Clinics/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> Create([Bind("ClinicId,OpenTime,CloseTime,City,BuildingNum,StreetName,Government,Floor,DoctorId")] Clinic clinic)
-        {
+		public IActionResult Create()
+		{
+			return View();
+		}
+
+		
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Create(Clinic clinic)
+		{
 			var claims = User.Identity as ClaimsIdentity;
-            var Userid = claims.FindFirst(ClaimTypes.NameIdentifier).Value;
-			
-            if(Userid == null)
-            {
-                return NotFound();
-            }
-            clinic.DoctorId=Userid;
+			var Userid = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+			if (Userid == null)
+			{
+				return RedirectToAction("Login", "Account");
+
+			}
+			clinic.DoctorId = Userid;
 			if (ModelState.IsValid)
-            {
-                _context.Add(clinic);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Id", clinic.DoctorId);
-            return View(clinic);
-        }
+			{
+				_context.Add(clinic);
+				await _context.SaveChangesAsync();
+				return RedirectToAction(nameof(Index));
+			}
+			return View(clinic);
+		}
 
-        // GET: Clinics/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+		// GET: Clinics/Edit/5
+		public async Task<IActionResult> Edit(int? id)
+		{
+			var claims = User.Identity as ClaimsIdentity;
+			var userId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			if (id == null)
+			{
+				return NotFound();
+			}
+			var clinic = await _context.Clinics.FirstOrDefaultAsync(c=>c.ClinicId==id && c.DoctorId==userId);
+			if (clinic == null)
+			{
+				return NotFound();
+			}
+			ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Id", clinic.DoctorId);
+			return View(clinic);
+		}
 
-            var clinic = await _context.Clinics.FindAsync(id);
-            if (clinic == null)
-            {
-                return NotFound();
-            }
-            ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Id", clinic.DoctorId);
-            return View(clinic);
-        }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Edit(int id,Clinic clinic)
+		{
 
-        // POST: Clinics/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClinicId,OpenTime,CloseTime,City,BuildingNum,StreetName,Government,Floor,DoctorId")] Clinic clinic)
-        {
-            if (id != clinic.ClinicId)
-            {
-                return NotFound();
-            }
+			if (id != clinic.ClinicId)
+			{
+				return NotFound();
+			}
+			var claims = User.Identity as ClaimsIdentity;
+			var Userid = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(clinic);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ClinicExists(clinic.ClinicId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "Id", clinic.DoctorId);
-            return View(clinic);
-        }
+			if (Userid != null) 
+			{
+			clinic.DoctorId = Userid;
+			}
+			if (ModelState.IsValid)
+			{
 
-        // GET: Clinics/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+				_context.Update(clinic);
+				await _context.SaveChangesAsync();
 
-            var clinic = await _context.Clinics
-                .Include(c => c.Doctor)
-                .FirstOrDefaultAsync(m => m.ClinicId == id);
-            if (clinic == null)
-            {
-                return NotFound();
-            }
+				if (!ClinicExists(clinic.ClinicId))
+				{
+					return NotFound();
+				}
+				return RedirectToAction(nameof(Index));
+			}
+			ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "UserName", clinic.DoctorId);
+			return View(clinic);
+		}
+		
+		public async Task<IActionResult> Delete(int? id)
+		{
+			var claimsIdentity = User.Identity as ClaimsIdentity;
+			var userId = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            return View(clinic);
-        }
+			if (id == null || userId == null)
+			{
+				return NotFound();
+			}
 
-        // POST: Clinics/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var clinic = await _context.Clinics.FindAsync(id);
-            if (clinic != null)
-            {
-                _context.Clinics.Remove(clinic);
-            }
+			var clinic = await _context.Clinics
+				.Include(c => c.Doctor)
+				.FirstOrDefaultAsync(c => c.ClinicId == id && c.DoctorId == userId);
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+			if (clinic == null)
+			{
+				return NotFound();
+			}
 
-        private bool ClinicExists(int id)
-        {
-            return _context.Clinics.Any(e => e.ClinicId == id);
-        }
-    }
+			return View(clinic);
+		}
+
+		[HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteConfirmed(int id)
+		{
+			var claimsIdentity = User.Identity as ClaimsIdentity;
+			var userId = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+			if (userId == null)
+			{
+				return RedirectToAction("Login", "Account");
+			}
+
+			var clinic = await _context.Clinics
+				.FirstOrDefaultAsync(c => c.ClinicId == id && c.DoctorId == userId);
+
+			if (clinic != null)
+			{
+				_context.Clinics.Remove(clinic);
+				await _context.SaveChangesAsync();
+			}
+
+			return RedirectToAction(nameof(Index));
+		}
+
+
+		private bool ClinicExists(int id)
+		{
+			return _context.Clinics.Any(e => e.ClinicId == id);
+		}
+	}
 }
