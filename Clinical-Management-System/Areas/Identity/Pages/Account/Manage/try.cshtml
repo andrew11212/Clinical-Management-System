@@ -1,0 +1,60 @@
+﻿@page
+@section HideNavbar { } <!-- This indicates that the navbar should not appear -->
+
+<div class="container">
+    <div class="row pt-3">
+        <div class="col-md-12 text-center">
+            <h3 class="text-gradient">Create a new account.</h3>
+            <div class="image-container">
+                <img src="/assets/img5.webp" alt="Isometric login image">
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-gradient {
+        background: linear-gradient(to right, #eca9aa, #d7d9d4);
+        -webkit-background-clip: text; /* For Safari */
+        -webkit-text-fill-color: transparent; /* For Safari */
+        background-clip: text; /* For other browsers */
+        color: transparent;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    body {
+        background-color: #c9d6ff;
+        background: linear-gradient(to right, #cdd2d8, #ddeac4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        min-height: 100vh; /* Ensure full height */
+    }
+
+    .container {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+        position: relative;
+        overflow: hidden;
+        width: 800px;
+        max-width: 100%;
+        padding: 20px; /* Added padding for better layout */
+    }
+
+    .image-container {
+        margin-top: 20px; /* Adjust the margin as needed */
+        text-align: center; /* Center the image */
+    }
+
+    img {
+        width: 100%; /* Responsive image */
+        height: auto; /* Maintain aspect ratio */
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

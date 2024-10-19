@@ -5,79 +5,88 @@
     ViewData["Title"] = "Log in";
 }
 
-<div class="card shadow border-0 ">
-    <div class="card-header bg-primary bg-gradient ml-0 py-4">
-        <div class="col-12 text-center  ">
-            <h2 class="py-2 text-white">login</h2>
-        </div>
-
-
-    </div>
-    <div class="card-body">
+<div >
+    <div >
+ 
+    <div >
         <div class="row">
             <div class="col-md-12">
                 <section>
                     <form id="account" method="post">
-                        <h3 class="text-center text-primary">Use a local account to log in.</h3>
-                        <hr />
+                        <h3 class="text-center text-primary" style="margin-top:50px; margin-right:400px; margin-bottom:30px;">log in to your clinic manager</h3>
+                        
                         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                        <div class="form-floating mb-3">
-                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                            <label asp-for="Input.Email" class="form-label">Email</label>
+                            <div>
+                            <label asp-for="Input.Email" class="form-label" style="margin-bottom:-10px; margin-left:20px;">Email</label>
+                                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:10px; " />
                             <span asp-validation-for="Input.Email" class="text-danger"></span>
                         </div>
-                        <div class="form-floating mb-3">
-                            <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                            <label asp-for="Input.Password" class="form-label">Password</label>
+                        <div>
+                            <label asp-for="Input.Password" class="form-label" style="margin-bottom:-10px; margin-left:20px;">Password</label>
+                                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:10px; " />
+                            
                             <span asp-validation-for="Input.Password" class="text-danger"></span>
                         </div>
-                        <div class="checkbox mb-3">
-                            <label asp-for="Input.RememberMe" class="form-label">
-                                <input class="form-check-input" asp-for="Input.RememberMe" />
+                        <div class="checkbox   ">
+                                <label asp-for="Input.RememberMe" class="form-label" style="margin-left:10px;color: #4b6179; font-size: 12px;">
+                                    <input class="form-check-input" asp-for="Input.RememberMe" style="margin-left:10px; " />
                                 @Html.DisplayNameFor(m => m.Input.RememberMe)
                             </label>
-                        </div>
-                        <div>
-                            <button id="login-submit" type="submit" class="w-100 btn btn-lg bg-primary bg-gradient text-white">Log in</button>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <p>
-                                <a id="forgot-password" class="text-dark fw-bold text-decoration" asp-page="./ForgotPassword">
+                                <a id="forgot-password" style="color: #4b6179; font-size: 12px; margin-left:50px;" asp-page="./ForgotPassword">
                                     Forgot your password?
                                 </a>
+                        </div>
+                        <div>
+                                <button id="login-submit" type="submit" style="background-color: #e1b7b8; color: #fff; font-size: 12px;padding: 10px 45px;border: 1px solid transparent;border-radius: 20px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-left:40px; width:300px;">
+                                    Log in
+                                </button>
+                        </div>
+                        <div>
+                            <p>
+
                             </p>
                             <p>
-                                <a class="text-dark fw-bold text-decoration" asp-page="./RegisterPatient" asp-route-returnUrl="@Model.ReturnUrl">
+                                    <a style="color: #4b6179; font-size: 12px; margin-left:50px;" asp-page="./RegisterPatient" asp-route-returnUrl="@Model.ReturnUrl">
                                     Register as a Patient
                                 </a>
+                                    <a style="color: #4b6179; font-size: 12px; margin-left:50px;" asp-page="./RegisterDoctor" asp-route-returnUrl="@Model.ReturnUrl">
+                                        Register as a Doctor
+                                    </a>
                             </p>
                             <p>
-                                <a class="text-dark fw-bold text-decoration" asp-page="./RegisterDoctor" asp-route-returnUrl="@Model.ReturnUrl">
-                                    Register as a Doctor
-                                </a>
+
                             </p>
-                            <p>
-                                <a id="resend-confirmation" class="text-dark fw-bold text-decoration" asp-page="./ResendEmailConfirmation">
+                           <!-- <p>
+                                    <a id="resend-confirmation" style="color: #4b6179; font-size: 12px; margin-left:50px;" asp-page="./ResendEmailConfirmation">
                                     Resend email confirmation
                                 </a>
-                            </p>
+                                 </p>-->
                         </div>
                     </form>
                 </section>
             </div>
+            </div>
+            <div class="toggle-container">
+                <div class="toggle">
+
+                    <div class="toggle-panel toggle-right">
+                        <div class="image-container">
+                            <img src="/assets/img5.webp" alt="Isometric login image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="col-md-6 col-md-offset-2">
                 <section>
-                    <h3>Use another service to log in.</h3>
-                    <hr />
+
                     @{
                         if ((Model.ExternalLogins?.Count ?? 0) == 0)
                         {
                             <div>
                                 <p>
-                                    There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715" class="text-secondary fw-bold text-decoration">
-                                        article
-                                        about setting up this ASP.NET application to support logging in via external services
-                                    </a>.
+                                   
                                 </p>
                             </div>
                         }
@@ -99,7 +108,135 @@
             </div>
         </div>
     </div>
+    
 </div>
+<style>
+    body {
+        background-color: #c9d6ff;
+        background: linear-gradient(to right, #cdd2d8, #ddeac4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    .container {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+        position: relative;
+        overflow: hidden;
+        width: 768px;
+        max-width: 100%;
+        min-height: 480px;
+        margin-top: 200px;
+    }
+
+    .login-form {
+        width: 300px;
+        padding: 20px;
+        background-color:   #fff;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+
+    }
+
+    input {
+        width: 500px;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button
+      {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .image-container {
+        margin-left:   50px; /* Adjust the margin as needed */
+    }
+
+    img {
+        width: 800px;
+        height: auto;
+    }
+
+    .toggle-container {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 50%;
+        height: 100%;
+        overflow: hidden;
+        transition: all 0.6s ease-in-out;
+        border-radius: 150px 0 0 100px;
+        z-index: 1000;
+    }
+
+    .container.active .toggle-container {
+        transform: translateX(-100%);
+        border-radius: 0 150px 100px 0;
+    }
+
+    .toggle {
+        background-color: #0000;
+        height: 100%;
+      
+        color: #fff;
+        position: relative;
+        left: -100%;
+        height: 100%;
+        width: 200%;
+        transform: translateX(0);
+        transition: all 0.6s ease-in-out;
+    }
+
+    .container.active .toggle {
+        transform: translateX(50%);
+    }
+
+    .toggle-panel {
+        position: absolute;
+        width: 50%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0 30px;
+        text-align: center;
+        top: 0;
+        transform: translateX(0);
+        transition: all 0.6s ease-in-out;
+    }
+
+
+
+    .toggle-right {
+        right: 0;
+        transform: translateX(0);
+    }
+
+    .container.active .toggle-right {
+        transform: translateX(200%);
+    }
+
+
+
+</style>
 
 
 @section Scripts {
