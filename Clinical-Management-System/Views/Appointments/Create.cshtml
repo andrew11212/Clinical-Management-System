@@ -1,9 +1,5 @@
 ﻿@model Appointment
 
-@{
-    ViewData["Title"] = "Create Appointment";
-}
-
 <h2>Create Appointment</h2>
 
 <div class="col-12 d-flex justify-content-end mb-2">
@@ -37,22 +33,31 @@
                 <label asp-for="Notes" class="control-label">Notes</label>
                 <span asp-validation-for="Notes" class="text-danger"></span>
             </div>
-            <div class="mb-3 form-floating">
-                <select asp-for="DoctorId" class="form-control" asp-items="ViewBag.DoctorId" required>
-                    <option value="">Select Doctor</option>
+            <div class="form-group">
+                <label for="DoctorId">Select Doctor</label>
+                <select asp-for="DoctorId" class="form-control">
+                    <option value="">-- Select Doctor --</option>
+                    @foreach (var doctor in ViewData["DoctorList"] as SelectList)
+                    {
+                        <option value="@doctor.Value">@doctor.Text</option>
+                    }
                 </select>
-                <label asp-for="ScheduleId" class="control-label">Doctors</label>
-                <span asp-validation-for="ScheduleId" class="text-danger"></span>
             </div>
-            <div class="mb-3 form-floating">
-                <select asp-for="ScheduleId" class="form-control" asp-items="ViewBag.ScheduleId" required>
-                    <option value="">Select Schedule</option>
+
+            <div class="form-group">
+                <label asp-for="ClinicId">Select Clinic</label>
+                <select asp-for="ClinicId" class="form-control">
+                    <option value="">-- Select Clinic --</option>
                 </select>
-                <label asp-for="ScheduleId" class="control-label">Available Date and Time</label>
-                <span asp-validation-for="ScheduleId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ScheduleId">Select Schedule</label>
+                <select asp-for="ScheduleId" class="form-control">
+                    <option value="">-- Select Schedule --</option>
+                </select>
             </div>
             <input type="hidden" asp-for="PatientId" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" />
-            <!-- Submit button -->
             <div class="mb-3">
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-check-circle"></i> Create Appointment
@@ -64,4 +69,35 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('#DoctorId').change(function () {
+            var doctorId = $(this).val();
+            if (doctorId) {
+                $.ajax({
+                    url: '@Url.Action("GetClinicsAndSchedules")',
+                    type: 'GET',
+                    data: { doctorId: doctorId },
+                    success: function (data) {
+                        // Update Clinics dropdown
+                        $('#ClinicId').empty();
+                        $.each(data.clinics, function (index, clinic) {
+                            $('#ClinicId').append('<option value="' + clinic.clinicId + '">' + clinic.streetName + '</option>');
+                        });
+
+                        // Update Schedules dropdown
+                        $('#ScheduleId').empty();
+                        $.each(data.schedules, function (index, schedule) {
+                            $('#ScheduleId').append('<option value="' + schedule.id + '">' + schedule.availableDateTime + '</option>');
+                        });
+                    }
+                });
+            }
+        });
+    });
+    </script>
+
 }

@@ -36,8 +36,13 @@ namespace Clinical_Management_System.Controllers
 				return RedirectToAction("Login", "Account");
 
 			}
-			var applicationDbContext = _context.Clinics.Where(c => c.DoctorId == userId).Include(c => c.Doctor);
-			return View(await applicationDbContext.ToListAsync());
+			var applicationDbContext = _context.Clinics
+				.Where(c => c.DoctorId == userId)
+				.Include(c => c.Doctor)
+				.Include(c => c.Appointments)
+				.ToListAsync();
+
+			return View(await applicationDbContext);
 		}
 
 		public async Task<IActionResult> Details(int? id)
@@ -63,7 +68,7 @@ namespace Clinical_Management_System.Controllers
 			return View();
 		}
 
-		
+
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(Clinic clinic)
@@ -95,7 +100,7 @@ namespace Clinical_Management_System.Controllers
 			{
 				return NotFound();
 			}
-			var clinic = await _context.Clinics.FirstOrDefaultAsync(c=>c.ClinicId==id && c.DoctorId==userId);
+			var clinic = await _context.Clinics.FirstOrDefaultAsync(c => c.ClinicId == id && c.DoctorId == userId);
 			if (clinic == null)
 			{
 				return NotFound();
@@ -106,7 +111,7 @@ namespace Clinical_Management_System.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id,Clinic clinic)
+		public async Task<IActionResult> Edit(int id, Clinic clinic)
 		{
 
 			if (id != clinic.ClinicId)
@@ -116,9 +121,9 @@ namespace Clinical_Management_System.Controllers
 			var claims = User.Identity as ClaimsIdentity;
 			var Userid = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-			if (Userid != null) 
+			if (Userid != null)
 			{
-			clinic.DoctorId = Userid;
+				clinic.DoctorId = Userid;
 			}
 			if (ModelState.IsValid)
 			{
@@ -135,7 +140,7 @@ namespace Clinical_Management_System.Controllers
 			ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "UserName", clinic.DoctorId);
 			return View(clinic);
 		}
-		
+
 		public async Task<IActionResult> Delete(int? id)
 		{
 			var claimsIdentity = User.Identity as ClaimsIdentity;

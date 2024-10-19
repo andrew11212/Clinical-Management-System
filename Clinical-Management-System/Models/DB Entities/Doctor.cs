@@ -40,7 +40,7 @@ namespace Clinical_Management_System.Models.DB_Entities
         [ValidateNever]
         public Specialization Specialization { get; set; } = default!;
 
-     
-        public ICollection<Clinic>? Clinics { get; set; }
+        public ICollection<Appointment>? Appointments { get; set; }
+		public ICollection<Clinic>? Clinics { get; set; }
     }
 }

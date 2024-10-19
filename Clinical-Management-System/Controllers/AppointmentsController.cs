@@ -27,6 +27,7 @@ public class AppointmentsController : Controller
 				.Where(a => a.DoctorId == userId)
 				.Include(a => a.Patient)
 				.Include(a => a.Schedule)
+				.Include(a => a.Clinic)
 				.ToListAsync();
 
 			return View(doctorAppointments);
@@ -37,6 +38,7 @@ public class AppointmentsController : Controller
 				.Where(a => a.PatientId == userId)
 				.Include(a => a.Doctor).ThenInclude(a=>a.Specialization)
 				.Include(a => a.Schedule)
+				.Include(a => a.Clinic)
 				.ToListAsync();
 
 			return View(patientAppointments);
@@ -81,23 +83,16 @@ public class AppointmentsController : Controller
 	public IActionResult Create()
 	{
 		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
 		var takenSchedules = _context.Appointments.Select(a => a.ScheduleId).ToList();
-		if (User.IsInRole("Patient"))
-		{
-			var availableSchedules = _context.Schedule
-											  .Where(s => !takenSchedules.Contains(s.Id))
-											  .ToList();
 
-			ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "UserName");
-			ViewData["ScheduleId"] = new SelectList(availableSchedules, "Id", "AvailableDateTime");
-		}
+		ViewData["DoctorList"] = new SelectList(_context.Doctors, "Id", "UserName");
+
 		return View();
 	}
 
+
 	[HttpPost]
 	[ValidateAntiForgeryToken]
-	[Authorize(policy: Sd.Role_Patient)]
 	public async Task<IActionResult> Create(Appointment appointment)
 	{
 		var takenSchedules = _context.Appointments.Select(a => a.ScheduleId).ToList();
@@ -110,8 +105,7 @@ public class AppointmentsController : Controller
 			await _context.SaveChangesAsync();
 			return RedirectToAction(nameof(Index));
 		}
-		ViewData["DoctorId"] = new SelectList(_context.Doctors, "Id", "UserName");
-		ViewData["ScheduleId"] = new SelectList(availableSchedules, "Id", "AvailableDateTime");
+		ViewData["DoctorList"] = new SelectList(_context.Doctors, "Id", "UserName");
 		return View(appointment);
 	}
 
@@ -133,6 +127,7 @@ public class AppointmentsController : Controller
 		return RedirectToAction("Index");
 	}
 
+	[Authorize(policy: Sd.Role_Doctor)]
 	public async Task<IActionResult> Delete(int? id)
 	{
 		var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -151,7 +146,6 @@ public class AppointmentsController : Controller
 
 		return View(appointment);
 	}
-	[Authorize(policy: Sd.Role_Doctor)]
 	[HttpPost]
 	[ValidateAntiForgeryToken]
 	[HttpPost, ActionName("Delete")]
@@ -170,5 +164,22 @@ public class AppointmentsController : Controller
 		_context.Remove(appointment);
 		await _context.SaveChangesAsync();
 		return RedirectToAction("Index");
+	}
+
+	[HttpGet]
+	public IActionResult GetClinicsAndSchedules(string doctorId)
+	{
+		var clinics = _context.Clinics
+			.Where(c => c.DoctorId == doctorId)
+			.Select(c => new { c.ClinicId, c.StreetName })
+			.ToList();
+
+		var takenSchedules = _context.Appointments.Select(a => a.ScheduleId).ToList();
+		var schedules = _context.Schedule
+			.Where(s => s.DoctorId == doctorId && !takenSchedules.Contains(s.Id))
+			.Select(s => new { s.Id, s.AvailableDateTime })
+			.ToList();
+
+		return Json(new { clinics, schedules });
 	}
 }

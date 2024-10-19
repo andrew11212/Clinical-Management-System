@@ -4,73 +4,43 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Clinic List</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                OpenTime
-            </th>
-            <th>
-                CloseTime
-            </th>
-            <th>
-                City
-            </th>
-            <th>
-                BuildingNum
-            </th>
-            <th>
-                StreetName
-            </th>
-            <th>
-                Government
-            </th>
-            <th>
-                Floor
-            </th>
-            <th>
-                Doctor
-            </th>
-            <th></th>
+            <th>Open Time</th>
+            <th>Close Time</th>
+            <th>City</th>
+            <th>Building Number</th>
+            <th>Street Name</th>
+            <th>Government</th>
+            <th>Floor</th>
+            <th>Doctor</th>
+            <th>Appointments</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var clinic in Model)
         {
             <tr>
+                <td>@clinic.OpenTime</td>
+                <td>@clinic.CloseTime</td>
+                <td>@clinic.City</td>
+                <td>@clinic.BuildingNum</td>
+                <td>@clinic.StreetName</td>
+                <td>@clinic.Government</td>
+                <td>@clinic.Floor</td>
+                <td>@clinic.Doctor.FirstName @clinic.Doctor.LastName</td>
                 <td>
-                    @item.OpenTime
-                </td>
-                <td>
-                    @item.CloseTime
-                </td>
-                <td>
-                    @item.City
-                </td>
-                <td>
-                    @item.BuildingNum
-                </td>
-                <td>
-                    @item.StreetName
-                </td>
-                <td>
-                    @item.Government
-                </td>
-                <td>
-                    @item.Floor
-                </td>
-                <td>
-                    @item.Doctor.FirstName @item.Doctor.LastName
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ClinicId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ClinicId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ClinicId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@clinic.ClinicId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@clinic.ClinicId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@clinic.ClinicId">Delete</a>
                 </td>
             </tr>
         }

@@ -9,21 +9,21 @@
             <th>Reason</th>
             @if (User.IsInRole(Sd.Role_Patient))
             {
-
                 <th>Doctor</th>
+                <th>Specialization</th>
             }
-            <th>Specialization</th>
+
             @if (User.IsInRole(Sd.Role_Doctor))
-            { 
+            {
 
-                    <th>Patient</th>
+                <th>Patient</th>
             }
-                <th>Status</th>
-                <th>Notes</th>
-                <th>Appointment Date</th>
-                <th>Actions</th>
+            <th>Status</th>
+            <th>Notes</th>
+            <th>Appointment Date</th>
+            <th>Actions</th>
 
-            </tr>
+        </tr>
     </thead>
     <tbody>
         @foreach (var appointment in Model)

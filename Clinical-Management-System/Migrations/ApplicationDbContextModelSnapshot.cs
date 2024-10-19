@@ -45,7 +45,7 @@ namespace Clinical_Management_System.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppointementId"));
 
-                    b.Property<int?>("ClinicId")
+                    b.Property<int>("ClinicId")
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
@@ -656,12 +656,14 @@ namespace Clinical_Management_System.Migrations
 
             modelBuilder.Entity("Clinical_Management_System.Models.DB_Entities.Appointment", b =>
                 {
-                    b.HasOne("Clinical_Management_System.Models.DB_Entities.Clinic", null)
+                    b.HasOne("Clinical_Management_System.Models.DB_Entities.Clinic", "Clinic")
                         .WithMany("Appointments")
-                        .HasForeignKey("ClinicId");
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Clinical_Management_System.Models.DB_Entities.Doctor", "Doctor")
-                        .WithMany()
+                        .WithMany("Appointments")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -677,6 +679,8 @@ namespace Clinical_Management_System.Migrations
                         .HasForeignKey("ScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Clinic");
 
                     b.Navigation("Doctor");
 
@@ -846,6 +850,8 @@ namespace Clinical_Management_System.Migrations
 
             modelBuilder.Entity("Clinical_Management_System.Models.DB_Entities.Doctor", b =>
                 {
+                    b.Navigation("Appointments");
+
                     b.Navigation("Clinics");
                 });
 
