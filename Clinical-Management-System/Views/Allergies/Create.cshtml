@@ -1,4 +1,4 @@
-﻿@model Clinical_Management_System.Models.DB_Entities.Allergy
+﻿@model Allergy
 
 @{
     ViewData["Title"] = "Create";
@@ -17,10 +17,7 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PatientId" class="control-label"></label>
-                <select asp-for="PatientId" class ="form-control" asp-items="ViewBag.PatientId"></select>
-            </div>
+            <input type="hidden" asp-for="PatientId" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

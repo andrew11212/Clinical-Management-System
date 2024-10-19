@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Clinical_Management_System.Data;
 using Clinical_Management_System.Models.DB_Entities;
+using System.Security.Claims;
 
 namespace Clinical_Management_System.Controllers
 {
@@ -21,8 +22,12 @@ namespace Clinical_Management_System.Controllers
 
         // GET: Medicines
         public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.Medicines.Include(m => m.Prescription);
+            
+        {   
+            var claimsIdentity =User.Identity as ClaimsIdentity;
+            var userId = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var applicationDbContext = _context.Medicines.Where(m=>m.Prescription.Appointment.PatientId==userId).Include(m => m.Prescription);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -51,10 +56,6 @@ namespace Clinical_Management_System.Controllers
             ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName");
             return View();
         }
-
-        // POST: Medicines/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MedicineId,MedicineName,Dose,Duration,Repeat,PrescriptionId")] Medicine medicine)

@@ -54,7 +54,7 @@ namespace Clinical_Management_System.Controllers
 				.Select(a => new SelectListItem
 				{
 					Value = a.AppointementId.ToString(),
-					Text = a.Date.ToString(),
+					Text = a.Reason
 				}).ToList(),
 
 			};
@@ -91,7 +91,8 @@ namespace Clinical_Management_System.Controllers
 				.Select(a => new SelectListItem
 				{
 					Value = a.AppointementId.ToString(),
-					Text = $"{a.Date:MM/dd/yyyy}"
+					Text = a.Reason,
+
 				}).ToListAsync();
 
 			return View(prescriptionVM);
@@ -124,7 +125,6 @@ namespace Clinical_Management_System.Controllers
 				.Select(a => new SelectListItem
 				{
 					Value = a.AppointementId.ToString(),
-					Text = a.Date.ToString(),
 				}).ToList(),
 
 			};
@@ -181,7 +181,6 @@ namespace Clinical_Management_System.Controllers
 				.Select(a => new SelectListItem
 				{
 					Value = a.AppointementId.ToString(),
-					Text = a.Date.ToString(),
 				}).ToList();
 
 			return View(prescriptionVM);

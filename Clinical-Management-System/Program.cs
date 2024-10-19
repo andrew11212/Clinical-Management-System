@@ -30,7 +30,12 @@ builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+	options.AddPolicy(Sd.Role_Doctor,policy=>policy.RequireRole(Sd.Role_Doctor));
+	options.AddPolicy(Sd.Role_Patient, policy => policy.RequireRole(Sd.Role_Patient));
+
+});
 
 var app = builder.Build();
 

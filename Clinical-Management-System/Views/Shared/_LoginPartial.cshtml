@@ -19,17 +19,19 @@
     }
     else
     {
+        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login" style="font-size: 16px; color: #fff; margin-right:20px;">Log in</a>
+        
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Login or Register
+            <a class="nav-link dropdown-toggle " role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 16px; color: #fff; margin-top:5px;">
+                Register
             </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">Login</a></li>
-                <li><hr class="dropdown-divider"></li>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton" style=" border: 1px solid #ccc; border-radius: 20px;">
+                
+               
                     <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/RegisterDoctor">Register as doctor</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/RegisterPatient">Register as patient</a></li>
-                <li><hr class="dropdown-divider"></li>
+                
+                   <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/RegisterPatient">Register as patient</a></li>
+                
 
             </ul>
             </li>
