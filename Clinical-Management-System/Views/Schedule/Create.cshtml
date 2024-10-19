@@ -1,0 +1,47 @@
+﻿@model Schedule
+
+<h2>Create Schedule</h2>
+
+<div class="col-12 d-flex justify-content-end mb-2">
+    <a asp-action="Index" class="btn btn-secondary shadow-sm">
+        <i class="bi bi-arrow-left"></i> Back to Schedules
+    </a>
+</div>
+
+<div class="card shadow border-0">
+    <div class="card-header bg-primary bg-gradient text-light text-center">
+        <h2 class="m-0">Create New Schedule</h2>
+    </div>
+
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div class="mb-3 form-floating">
+                <input asp-for="AvailableDateTime" class="form-control" placeholder="Available Date and Time" required />
+                <label asp-for="AvailableDateTime">Available Date and Time</label>
+                <span asp-validation-for="AvailableDateTime" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-floating">
+                <select asp-for="Status" class="form-control">
+                    <option value="Available">Available</option>
+                    <option value="Booked">Booked</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+                <label class="ms-1 p-2" asp-for="Status">Status</label>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <input type="hidden" asp-for="DoctorId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" />
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i> Create Schedule
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

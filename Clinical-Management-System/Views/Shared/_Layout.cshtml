@@ -11,8 +11,7 @@
 
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Clinical_Management_System.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -38,16 +37,30 @@
                             <a class="nav-link " style=" color: #4f647b;" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " style=" color: #4f647b;" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link " style=" color: #4f647b;" asp-controller="Home" asp-action="ContactUs">ContactUs</a>
                         </li>
+                            <li>
+                                <a class="nav-link text-light" asp-controller="Appointments" asp-action="Index">Appointment</a>
+                            </li>
+                            @if (User.IsInRole(Sd.Role_Doctor))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Clinics And Schedules
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="dropdown-item" asp-controller="Schedule" asp-action="Index">My Schedule</a></li>
+                                        <li><hr class="dropdown-divider bg-white"></li>
+                                        <li><a class="dropdown-item" asp-controller="Clinics" asp-action="Index">My Clinics</a></li>
+                                        <li><hr class="dropdown-divider bg-white"></li>
+                                    </ul>
+                                </li>
+
                         <li>
                             <a class="nav-link " style=" color: #4f647b;" asp-controller="Appointments" asp-action="Create">Appointment</a>
                         </li>
 
-                    </ul>
+                        </ul>
                     <partial name="_LoginPartial" />
                 </div>
             </div>

@@ -1,0 +1,39 @@
+﻿@model Schedule
+
+<h2>Edit Schedule</h2>
+
+<form asp-action="Edit">
+    <div class="form-group">
+        <input asp-for="DoctorId" class="form-control" readonly hidden />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AvailableDateTime"></label>
+        <input asp-for="AvailableDateTime" class="form-control" type="datetime-local" />
+        <span asp-validation-for="AvailableDateTime" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <select asp-for="Status" class="form-control">
+            <option value="Available">Available</option>
+            <option value="Booked">Booked</option>
+            <option value="Cancelled">Cancelled</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <input type="submit" value="Save Changes" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

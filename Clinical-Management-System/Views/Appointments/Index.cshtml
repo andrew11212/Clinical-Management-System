@@ -1,71 +1,73 @@
-﻿@model IEnumerable<Clinical_Management_System.Models.DB_Entities.Appointment>
+﻿@model IEnumerable<Appointment>
 
-@{
-    ViewData["Title"] = "Index";
-}
+<h2>Appointments</h2>
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Reason)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hour)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Clinic)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Patient)
-            </th>
-            <th></th>
+            <th>Type</th>
+            <th>Reason</th>
+            @if (User.IsInRole(Sd.Role_Patient))
+            {
+                <th>Doctor</th>
+                <th>Specialization</th>
+            }
+
+            @if (User.IsInRole(Sd.Role_Doctor))
+            {
+
+                <th>Patient</th>
+            }
+            <th>Status</th>
+            <th>Notes</th>
+            <th>Appointment Date</th>
+            <th>Actions</th>
+
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Reason)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Hour)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Clinic.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Patient.FirstName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AppointementId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AppointementId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AppointementId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var appointment in Model)
+        {
+            <tr>
+                <td>@appointment.Type</td>
+                <td>@appointment.Reason</td>
+                @if (User.IsInRole(Sd.Role_Patient))
+                {
+
+                    <td>@appointment.Doctor?.FirstName @appointment.Doctor?.LastName</td>
+                    <td>@appointment.Doctor?.Specialization.SpecializationName</td>
+                }
+                @if (User.IsInRole(Sd.Role_Doctor))
+                {
+                    <td>@appointment.Patient?.FirstName @appointment.Patient?.LastName</td>
+                }
+                <td>@appointment.Status</td>
+                <td>@appointment.Notes</td>
+                <td>@appointment.Schedule?.AvailableDateTime.ToString()</td>
+                <td>
+                    @if (User.IsInRole(Sd.Role_Patient))
+                    {
+                        @if (appointment.Status == "Pending")
+                        {
+                            <form asp-action="CancelAppointment" method="post">
+                                <input type="hidden" name="id" value="@appointment.AppointementId" />
+                                <button type="submit" class="btn btn-danger">Cancel</button>
+                            </form>
+                        }
+                    }
+                    @if (User.IsInRole(Sd.Role_Doctor))
+                    {
+                        <a asp-action="UpdateAppointment" asp-route-id="@appointment.AppointementId" class="btn btn-primary">Update</a>
+                        <a asp-action="Delete" asp-route-id="@appointment.AppointementId" class="btn btn-primary">Delete</a>
+
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@if (User.IsInRole(Sd.Role_Patient))
+{
+    <a asp-controller="Appointments" asp-action="Create" class="btn btn-primary">Register Appointment</a>
+}

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace Clinical_Management_System.Models.DB_Entities
 {
@@ -8,8 +9,8 @@ namespace Clinical_Management_System.Models.DB_Entities
         [MaxLength(100, ErrorMessage = "Chronic Disease name can't be longer than 100 characters")]
         public string Name { get; set; } = string.Empty;
 
-		public string PatientId { get; set; }
-
+		public string PatientId { get; set; } =string.Empty;
+        [ValidateNever]
         public Patient Patient { get; set; } = default!;
     }
 

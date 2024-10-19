@@ -1,194 +1,185 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Clinical_Management_System.Data;
+using Clinical_Management_System.Models.DB_Entities;
+using Clinical_Management_System.Utitlity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Clinical_Management_System.Data;
-using Clinical_Management_System.Models.DB_Entities;
-using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
-namespace Clinical_Management_System.Controllers
+[Authorize]
+public class AppointmentsController : Controller
 {
-    [Authorize]
-    public class AppointmentsController : Controller
-    {
-        private readonly ApplicationDbContext _context;
+	private readonly ApplicationDbContext _context;
 
-        public AppointmentsController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+	public AppointmentsController(ApplicationDbContext context)
+	{
+		_context = context;
+	}
 
-        // GET: Appointments
-        public async Task<IActionResult> Index()
-        { 
-            var applicationDbContext = _context.Appointments.Include(a => a.Clinic).Include(a => a.Patient);
-            return View(await applicationDbContext.ToListAsync());
-        }
+	public async Task<IActionResult> Index()
+	{
+		var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        // GET: Appointments/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var appointment = await _context.Appointments
-                .Include(a => a.Clinic)
-                .Include(a => a.Patient)
-                .FirstOrDefaultAsync(m => m.AppointementId == id);
-            if (appointment == null)
-            {
-                return NotFound();
-            }
-
-            return View(appointment);
-        }
-
-        // GET: Appointments/Create
-        public IActionResult Create()
-        {
-
-           
-            ViewData["ClinicId"] = new SelectList(_context.Clinics, "ClinicId", "City");
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FirstName");
-            return View();
-        }
-
-		// POST: Appointments/Create
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		[Authorize]
-		public async Task<IActionResult> Create([Bind("AppointementId,Date,Type,Reason,Notes,Hour,ClinicId,PatientId")] Appointment appointment)
+		if (User.IsInRole(Sd.Role_Doctor))
 		{
-			// Get the user's claims identity
-			var claims = User.Identity as ClaimsIdentity;
-			var userId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			var doctorAppointments = await _context.Appointments
+				.Where(a => a.DoctorId == userId)
+				.Include(a => a.Patient)
+				.Include(a => a.Schedule)
+				.Include(a => a.Clinic)
+				.ToListAsync();
 
-			// If the user ID is null, return unauthorized
-			if (userId == null)
-			{
-				return Unauthorized();
-			}
+			return View(doctorAppointments);
+		}
+		else if (User.IsInRole(Sd.Role_Patient))
+		{
+			var patientAppointments = await _context.Appointments
+				.Where(a => a.PatientId == userId)
+				.Include(a => a.Doctor).ThenInclude(a=>a.Specialization)
+				.Include(a => a.Schedule)
+				.Include(a => a.Clinic)
+				.ToListAsync();
 
-			// Set the PatientId from the logged-in user's ID
-			appointment.PatientId = userId;
-
-			// Check if the model state is valid
-			if (ModelState.IsValid)
-			{
-				// Add the appointment to the context and save changes
-				_context.Add(appointment);
-				await _context.SaveChangesAsync();
-				return RedirectToAction(nameof(Index));  // Redirect to the Index action on success
-			}
-
-			// Populate the clinic and patient selections for the view
-			ViewData["ClinicId"] = new SelectList(_context.Clinics, "ClinicId", "City", appointment.ClinicId);
-			ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FirstName", appointment.PatientId);
-
-			// Return the view with the appointment model
-			return View(appointment);
+			return View(patientAppointments);
 		}
 
+		return Unauthorized();
+	}
 
-		// GET: Appointments/Edit/5
-		public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+	[Authorize(policy: Sd.Role_Doctor)]
+	public async Task<IActionResult> UpdateAppointment(int id)
+	{
+		var appointment = await _context.Appointments.FindAsync(id);
 
-            var appointment = await _context.Appointments.FindAsync(id);
-            if (appointment == null)
-            {
-                return NotFound();
-            }
-            ViewData["ClinicId"] = new SelectList(_context.Clinics, "ClinicId", "City", appointment.ClinicId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", appointment.PatientId);
-            return View(appointment);
-        }
+		if (appointment == null)
+		{
+			return NotFound();
+		}
 
-        // POST: Appointments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AppointementId,Date,Type,Reason,Notes,Hour,ClinicId,PatientId")] Appointment appointment)
-        {
-            if (id != appointment.AppointementId)
-            {
-                return NotFound();
-            }
+		return View(appointment);
+	}
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(appointment);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AppointmentExists(appointment.AppointementId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ClinicId"] = new SelectList(_context.Clinics, "ClinicId", "City", appointment.ClinicId);
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "Id", appointment.PatientId);
-            return View(appointment);
-        }
+	[HttpPost]
+	[Authorize(Policy = Sd.Role_Doctor)]
+	public async Task<IActionResult> UpdateAppointment(Appointment appointment)
+	{
+		var doctorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+		var existingAppointment = await _context.Appointments
+			.FirstOrDefaultAsync(a => a.AppointementId == appointment.AppointementId && a.DoctorId == doctorId);
 
-            var appointment = await _context.Appointments
-                .Include(a => a.Clinic)
-                .Include(a => a.Patient)
-                .FirstOrDefaultAsync(m => m.AppointementId == id);
-            if (appointment == null)
-            {
-                return NotFound();
-            }
+		if (existingAppointment != null)
+		{
+			existingAppointment.Status = appointment.Status;
+			existingAppointment.Notes = appointment.Notes;
+			await _context.SaveChangesAsync();
+			return RedirectToAction("Index");
+		}
+		return NotFound();
+	}
 
-            return View(appointment);
-        }
+	[Authorize(policy: Sd.Role_Patient)]
+	public IActionResult Create()
+	{
+		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+		var takenSchedules = _context.Appointments.Select(a => a.ScheduleId).ToList();
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var appointment = await _context.Appointments.FindAsync(id);
-            if (appointment != null)
-            {
-                _context.Appointments.Remove(appointment);
-            }
+		ViewData["DoctorList"] = new SelectList(_context.Doctors, "Id", "UserName");
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+		return View();
+	}
 
-        private bool AppointmentExists(int id)
-        {
-            return _context.Appointments.Any(e => e.AppointementId == id);
-        }
-    }
+
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public async Task<IActionResult> Create(Appointment appointment)
+	{
+		var takenSchedules = _context.Appointments.Select(a => a.ScheduleId).ToList();
+		var availableSchedules = _context.Schedule
+											  .Where(s => !takenSchedules.Contains(s.Id))
+											  .ToList();
+		if (ModelState.IsValid)
+		{
+			_context.Add(appointment);
+			await _context.SaveChangesAsync();
+			return RedirectToAction(nameof(Index));
+		}
+		ViewData["DoctorList"] = new SelectList(_context.Doctors, "Id", "UserName");
+		return View(appointment);
+	}
+
+	[Authorize(policy: Sd.Role_Patient)]
+	public async Task<IActionResult> CancelAppointment(int id)
+	{
+		var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+		var appointment = await _context.Appointments
+			.FirstOrDefaultAsync(a => a.AppointementId == id && a.PatientId == userId);
+
+		if (appointment == null)
+		{
+			return NotFound();
+		}
+
+		appointment.Status = "Cancelled";
+		await _context.SaveChangesAsync();
+		return RedirectToAction("Index");
+	}
+
+	[Authorize(policy: Sd.Role_Doctor)]
+	public async Task<IActionResult> Delete(int? id)
+	{
+		var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		if (id == null)
+		{
+			return NotFound();
+		}
+		var appointment = await _context.Appointments
+			.Include(a => a.Doctor)
+			.Include(a => a.Patient).Where(c=>c.DoctorId==userId)
+			.FirstOrDefaultAsync(m => m.AppointementId == id);
+		if (appointment == null)
+		{
+			return NotFound();
+		}
+
+		return View(appointment);
+	}
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	[HttpPost, ActionName("Delete")]
+	public async Task<IActionResult> DeleteConfirmed(int id)
+	{
+		var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+		var appointment = await _context.Appointments
+			.FirstOrDefaultAsync(a => a.AppointementId == id && a.DoctorId == userId);
+
+		if (appointment == null)
+		{
+			return NotFound();
+		}
+
+		_context.Remove(appointment);
+		await _context.SaveChangesAsync();
+		return RedirectToAction("Index");
+	}
+
+	[HttpGet]
+	public IActionResult GetClinicsAndSchedules(string doctorId)
+	{
+		var clinics = _context.Clinics
+			.Where(c => c.DoctorId == doctorId)
+			.Select(c => new { c.ClinicId, c.StreetName })
+			.ToList();
+
+		var takenSchedules = _context.Appointments.Select(a => a.ScheduleId).ToList();
+		var schedules = _context.Schedule
+			.Where(s => s.DoctorId == doctorId && !takenSchedules.Contains(s.Id))
+			.Select(s => new { s.Id, s.AvailableDateTime })
+			.ToList();
+
+		return Json(new { clinics, schedules });
+	}
 }

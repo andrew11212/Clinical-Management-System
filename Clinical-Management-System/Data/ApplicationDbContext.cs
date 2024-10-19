@@ -26,6 +26,8 @@ namespace Clinical_Management_System.Data
         public DbSet<Document> Documents { get; set; }
         public DbSet<Allergy> Allergies { get; set; }
         public DbSet<ChronicDisease> ChronicDiseases { get; set; }
+
+        public DbSet<Schedule> Schedule { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -73,12 +75,6 @@ namespace Clinical_Management_System.Data
                 .HasMany(d => d.Clinics)
                 .WithOne(c => c.Doctor)
                 .OnDelete(DeleteBehavior.Restrict); // Prevent multiple cascade paths
-
-            // Clinic to Appointment relationship with Cascade
-            builder.Entity<Clinic>()
-                .HasMany(c => c.Appointments)
-                .WithOne(a => a.Clinic)
-                .OnDelete(DeleteBehavior.Cascade);
 
             // Specialization to Doctor relationship with Cascade
             builder.Entity<Specialization>()
