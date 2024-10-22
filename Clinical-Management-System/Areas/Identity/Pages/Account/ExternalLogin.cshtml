@@ -23,6 +23,59 @@
                 <label asp-for="Input.Email" class="form-label"></label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
+             <div class="form-floating mb-3">
+                <input asp-for="Input.Photo" class="form-control" autocomplete="email" placeholder="Please enter your Photo." />
+                <label asp-for="Input.Photo" class="form-label"></label>
+                <span asp-validation-for="Input.Photo" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.NationalId" class="form-control" autocomplete="email" placeholder="Please enter your NationalId." />
+                <label asp-for="Input.NationalId" class="form-label"></label>
+                <span asp-validation-for="Input.NationalId" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.FirstName" class="form-control" autocomplete="email" placeholder="Please enter your FirstName." />
+                <label asp-for="Input.FirstName" class="form-label"></label>
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.LastName" class="form-control" autocomplete="email" placeholder="Please enter your LastName." />
+                <label asp-for="Input.LastName" class="form-label"></label>
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.City" class="form-control" autocomplete="email" placeholder="Please enter your City." />
+                <label asp-for="Input.City" class="form-label"></label>
+                <span asp-validation-for="Input.City" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.BuildingNum" class="form-control" autocomplete="email" placeholder="Please enter your BuildingNum." />
+                <label asp-for="Input.BuildingNum" class="form-label"></label>
+                <span asp-validation-for="Input.BuildingNum" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.StreetName" class="form-control" autocomplete="email" placeholder="Please enter your StreetName." />
+                <label asp-for="Input.StreetName" class="form-label"></label>
+                <span asp-validation-for="Input.StreetName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Government" class="form-control" autocomplete="email" placeholder="Please enter your Government." />
+                <label asp-for="Input.Government" class="form-label"></label>
+                <span asp-validation-for="Input.Government" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Floor" class="form-control" autocomplete="email" placeholder="Please enter your Floor." />
+                <label asp-for="Input.Floor" class="form-label"></label>
+                <span asp-validation-for="Input.Floor" class="text-danger"></span>
+            </div>
+            <div class=" mb-1 col-md-6">
+                <label class="text-muted " for="SpecializationId" style="margin-bottom:-10px; margin-left:250px;">Specialization</label>
+                <select asp-for="Input.SpecializationId" asp-items="@Model.Input.SpecializationList" class="form-control" id="SpecializationId" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:240px; ">
+                    <option value="">Select a specialization</option> <!-- Optional default option -->
+                </select>
+
+                <span asp-validation-for="Input.SpecializationId" class="text-danger"></span>
+            </div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>

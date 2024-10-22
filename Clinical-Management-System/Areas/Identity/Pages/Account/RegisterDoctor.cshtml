@@ -100,23 +100,16 @@
                         </div>
                         <div class="row">
 
-                        <div class=" mb-1 col-md-6">
-                            <label class="text-muted " for="SpecializationId" style="margin-bottom:-10px; margin-left:250px;">Specialization</label>
-                            <select asp-for="Input.SpecializationId" asp-items="@Model.Input.SpecializationList" class="form-control" id="SpecializationId" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:240px; ">
-                                <option value="">Select a specialization</option> <!-- Optional default option -->
-                            </select>
-                            
-                            <span asp-validation-for="Input.SpecializationId" class="text-danger"></span>
-                        </div>
+                      
 
                     </div>
-                    <div class="col-12  ">
+                    <div class="col-12   ">
                         <button id="registerSubmit" type="submit"  style="background-color: #e1b7b8; color: #fff; font-size: 17px;padding: 10px 45px;border: 1px solid transparent;border-radius: 20px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-left:100px; width:550px;margin-top:30px;">Register</button>
                     </div>
 
                 </form>
             </div>
-            <div class="col-md-12 col-md-offset-2 pb-3 ">
+            <div class="col-md-12  pb-3 mb-3">
                 <section>
                     <!--<p class="divider d-flex mt-2">or</p>
                     <h3>Use another service to register.</h3>-->

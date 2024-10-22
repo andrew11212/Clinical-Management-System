@@ -17,6 +17,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Clinical_Management_System.Models;
+using Clinical_Management_System.Utitlity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Clinical_Management_System.Data;
 
 namespace Clinical_Management_System.Areas.Identity.Pages.Account
 {
@@ -29,13 +34,15 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
+        private readonly ApplicationDbContext Context;
 
         public ExternalLoginModel(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext appDbContext)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -43,6 +50,7 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _logger = logger;
             _emailSender = emailSender;
+            this.Context = Context;
         }
 
         /// <summary>
@@ -84,6 +92,38 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+            [Phone(ErrorMessage = "Invalid phone number format.")]
+            [Display(Name = "Phone Number")]
+            public byte[]? Photo { get; set; }
+            [Required]
+            [StringLength(14, ErrorMessage = "National Id must be 14 characters", MinimumLength = 14)]
+            public string NationalId { get; set; } = string.Empty;
+            [Required]
+            [MaxLength(100, ErrorMessage = "Username cannot be greater than 100 charcters")]
+            public string UserName { get; set; } = string.Empty;
+            [Required]
+            [MaxLength(100, ErrorMessage = "First name cannot be greater than 100 charcters")]
+            public string FirstName { get; set; } = string.Empty;
+            [Required]
+            [MaxLength(100, ErrorMessage = "Last name cannot be greater than 100 charcters")]
+            public string LastName { get; set; } = string.Empty;
+            [Required]
+            [MaxLength(100, ErrorMessage = "Email cannot be greater than 100 charcters")]
+            public string City { get; set; } = string.Empty;
+            [Required]
+            public int BuildingNum { get; set; }
+            [Required]
+            [MaxLength(100, ErrorMessage = "Street name cannot be greater than 100 charcters")]
+            public string StreetName { get; set; } = string.Empty;
+            [Required]
+            [MaxLength(100, ErrorMessage = "Government cannot be greater than 100 charcters")]
+            public string Government { get; set; } = string.Empty;
+            [Required]
+            public int Floor { get; set; }
+            public int SpecializationId { get; set; }
+
+            [ValidateNever]
+            public IEnumerable<SelectListItem> SpecializationList { get; set; } = default!;
         }
         
         public IActionResult OnGet() => RedirectToPage("./Login");
@@ -113,6 +153,7 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
 
             // Sign in the user with this external login provider if the user already has a login.
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            
             if (result.Succeeded)
             {
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
@@ -127,12 +168,17 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
                 // If the user does not have an account, then ask the user to create an account.
                 ReturnUrl = returnUrl;
                 ProviderDisplayName = info.ProviderDisplayName;
+
                 if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
                 {
+
                     Input = new InputModel
                     {
-                        Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                        Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                        UserName= info.Principal.FindFirstValue(ClaimTypes.Name)
+
                     };
+                    
                 }
                 return Page();
             }
@@ -155,10 +201,24 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.City = Input.City;
+                user.BuildingNum = Input.BuildingNum;
+                user.Photo = Input.Photo;
+                user.NationalId = Input.NationalId;
+                user.UserName = Input.UserName;
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.StreetName = Input.StreetName;
+                user.Government= Input.Government;
+                user.Floor= Input.Floor;
+                user.SpecializationId = Input.SpecializationId;
+                
 
                 var result = await _userManager.CreateAsync(user);
+
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user,Sd.Role_Doctor);
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
@@ -197,11 +257,11 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private ApplicationUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {
