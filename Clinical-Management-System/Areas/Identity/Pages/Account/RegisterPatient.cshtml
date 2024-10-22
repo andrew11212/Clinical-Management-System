@@ -8,87 +8,87 @@
         <div class="row pt-3">
             <div class="col-md-12">
                 <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                <h3 class="text-center  pb-3 mb-2 text-gradient">Create a new account.</h3>
+                <h3 class="text-center  pb-3 mb-4 text-gradient">Create a new account.</h3>
                    
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                     <div class=" mb-3 ">
-                    <label class="text-muted" asp-for="Input.Email" style="margin-bottom:-10px; margin-left:210px;">Email</label>
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:200px; " />
+                    <label class="text-muted" asp-for="Input.Email" style="margin-bottom:-10px; margin-left:270px;">Email</label>
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:260px; " />
                         
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
                     <div class="row">
                         <div class=" mb-3 col-md-6">
-                        <label class="text-muted " asp-for="Input.Password" style="margin-bottom:-10px; margin-left:20px;">Password</label>
-                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:10px; " />
+                        <label class="text-muted " asp-for="Input.Password" style="margin-bottom:-10px; margin-left:65px;">Password</label>
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:50px; " />
                             
                             <span asp-validation-for="Input.Password" class="text-danger"></span>
                         </div>
                         <div class=" mb-3 col-md-6">
-                        <label class="text-muted" asp-for="Input.ConfirmPassword" style="margin-bottom:-10px; margin-left:20px;">Confirm Password</label>
-                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:10px; " />
+                        <label class="text-muted" asp-for="Input.ConfirmPassword" style="margin-bottom:-10px; margin-left:65px;">Confirm Password</label>
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:50px; " />
                             
                             <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="row">
                         <div class=" mb-3 col-md-6">
-                        <label class="text-muted " asp-for="Input.FirstName" style="margin-bottom:-10px; margin-left:20px;">FirstName</label>
-                        <input asp-for="Input.FirstName" class="form-control" placeholder="FirstName" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:10px; " />
+                        <label class="text-muted " asp-for="Input.FirstName" style="margin-bottom:-10px; margin-left:65px;">FirstName</label>
+                        <input asp-for="Input.FirstName" class="form-control" placeholder="FirstName" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:50px; " />
                             
                             <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                         </div>
                         <div class=" mb-3 col-md-6">
-                        <label class="text-muted " asp-for="Input.LastName" style="margin-bottom:-10px; margin-left:20px;">LastName</label>
-                        <input asp-for="Input.LastName" class="form-control" placeholder="LastName" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:10px; " />
+                        <label class="text-muted " asp-for="Input.LastName" style="margin-bottom:-10px; margin-left:65px;">LastName</label>
+                        <input asp-for="Input.LastName" class="form-control" placeholder="LastName" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:50px; " />
                             
                             <span asp-validation-for="Input.LastName" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="row">
                         <div class=" mb-3 col-md-6">
-                        <label class="text-muted " asp-for="Input.City" style="margin-bottom:-10px; margin-left:20px;">City</label>
-                        <input asp-for="Input.City" class="form-control" placeholder="City" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:10px; " />
+                        <label class="text-muted " asp-for="Input.City" style="margin-bottom:-10px; margin-left:65px;">City</label>
+                        <input asp-for="Input.City" class="form-control" placeholder="City" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:50px; " />
                             
                             <span asp-validation-for="Input.City" class="text-danger"></span>
                         </div>
                         <div class=" mb-3 col-md-6">
-                        <label class="text-muted " asp-for="Input.StreetName" style="margin-bottom:-10px; margin-left:20px;">StreetName</label>
-                        <input asp-for="Input.StreetName" class="form-control" placeholder="StreetName" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:10px; " />
+                        <label class="text-muted " asp-for="Input.StreetName" style="margin-bottom:-10px; margin-left:65px;">StreetName</label>
+                        <input asp-for="Input.StreetName" class="form-control" placeholder="StreetName" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:50px; " />
                             
                             <span asp-validation-for="Input.StreetName" class="text-danger"></span>
                         </div>
                         </div>
                         <div class="row">
                             <div class=" mb-3 col-md-6">
-                        <label class="text-muted " asp-for="Input.Government" style="margin-bottom:-10px; margin-left:20px;">Government</label>
-                        <input asp-for="Input.Government" class="form-control" placeholder="Government" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:10px; " />
+                        <label class="text-muted " asp-for="Input.Government" style="margin-bottom:-10px; margin-left:65px;">Government</label>
+                        <input asp-for="Input.Government" class="form-control" placeholder="Government" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:50px; " />
                                 
                                 <span asp-validation-for="Input.Government" class="text-danger"></span>
                             </div>
                             <div class=" mb-3 col-md-6">
-                        <label class="text-muted " asp-for="Input.NationalId" style="margin-bottom:-10px; margin-left:20px;">NationalId</label>
-                        <input asp-for="Input.NationalId" class="form-control" placeholder="NationalId" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:10px; " />
+                        <label class="text-muted " asp-for="Input.NationalId" style="margin-bottom:-10px; margin-left:65px;">NationalId</label>
+                        <input asp-for="Input.NationalId" class="form-control" placeholder="NationalId" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:50px; " />
                                 
                                 <span asp-validation-for="Input.NationalId" class="text-danger"></span>
                             </div>
                             </div>
                             <div class="row">
                                 <div class="mb-3 col-md-6">
-                        <label class="text-muted " asp-for="Input.BuildingNum" style="margin-bottom:-10px; margin-left:20px;">Building Number</label>
-                        <input asp-for="Input.BuildingNum" class="form-control" placeholder="BuildingNum" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:10px; " />
+                        <label class="text-muted " asp-for="Input.BuildingNum" style="margin-bottom:-10px; margin-left:65px;">Building Number</label>
+                        <input asp-for="Input.BuildingNum" class="form-control" placeholder="BuildingNum" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:50px; " />
                                     
                                     <span asp-validation-for="Input.BuildingNum" class="text-danger"></span>
                                 </div>
                                 <div class=" mb-3 col-md-6">
-                        <label class="text-muted " asp-for="Input.Floor" style="margin-bottom:-10px; margin-left:20px;">Floor</label>
-                        <input asp-for="Input.Floor" class="form-control" placeholder="Floor" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:10px; " />
+                        <label class="text-muted " asp-for="Input.Floor" style="margin-bottom:-10px; margin-left:65px;">Floor</label>
+                        <input asp-for="Input.Floor" class="form-control" placeholder="Floor" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:50px; " />
                                     
                                     <span asp-validation-for="Input.Floor" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-12  ">
-                    <button id="registerSubmit" type="submit" style="background-color: #e1b7b8; color: #fff; font-size: 17px;padding: 10px 45px;border: 1px solid transparent;border-radius: 20px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-left:100px; width:550px;margin-top:30px;">Register</button>
+                    <button id="registerSubmit" type="submit" style="background: linear-gradient(to right, #ebeff5, #886794); color: #fff; font-size: 17px;padding: 10px 45px;border-radius: 20px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-left:100px; width:640px;margin-top:30px;">Register</button>
                             </div>
                         
                 </form>
@@ -124,7 +124,7 @@
 </div>
 <style>
     .text-gradient {
-        background: linear-gradient(to right, #eca9aa, #d7d9d4);
+        background: linear-gradient(to right, #96afbe, #2d5763);
         -webkit-background-clip: text; /* For Safari */
         -webkit-text-fill-color: transparent; /* For Safari */
         background-clip: text; /* For other browsers */
@@ -139,7 +139,7 @@
 
     body {
         background-color: #c9d6ff;
-        background: linear-gradient(to right, #cdd2d8, #ddeac4);
+        background: linear-gradient(to right, #4f757e, #2d5763);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -152,8 +152,8 @@
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
         position: relative;
         overflow: hidden;
-        width: 800px;
-        height: 700px;
+        width: 900px;
+        height: 750px;
         max-width: 100%;
         min-height: 480px;
         margin-top: 50px;

@@ -1,50 +1,34 @@
 ﻿@model IEnumerable<Appointment>
 
 <h2>Appointments</h2>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Type</th>
-            <th>Reason</th>
-            @if (User.IsInRole(Sd.Role_Patient))
-            {
-                <th>Doctor</th>
-                <th>Specialization</th>
-            }
-
-            @if (User.IsInRole(Sd.Role_Doctor))
-            {
-
-                <th>Patient</th>
-            }
-            <th>Status</th>
-            <th>Notes</th>
-            <th>Appointment Date</th>
-            <th>Actions</th>
-
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var appointment in Model)
+         @foreach (var appointment in Model)
         {
-            <tr>
-                <td>@appointment.Type</td>
-                <td>@appointment.Reason</td>
-                @if (User.IsInRole(Sd.Role_Patient))
-                {
+<div class="card-container" >
+    <div class="card" >
 
-                    <td>@appointment.Doctor?.FirstName @appointment.Doctor?.LastName</td>
-                    <td>@appointment.Doctor?.Specialization.SpecializationName</td>
-                }
-                @if (User.IsInRole(Sd.Role_Doctor))
-                {
-                    <td>@appointment.Patient?.FirstName @appointment.Patient?.LastName</td>
-                }
-                <td>@appointment.Status</td>
-                <td>@appointment.Notes</td>
-                <td>@appointment.Schedule?.AvailableDateTime.ToString()</td>
-                <td>
+        <div class="card-header" >
+            <img src="assets/3953847.jpg" alt="Search">
+            
+        </div>
+
+            <div class="card-content">
+                <ul>
+                    @if (User.IsInRole(Sd.Role_Patient))
+                    {
+
+                        <li style="text-align: center;">@appointment.Doctor?.FirstName @appointment.Doctor?.LastName</li>
+                        <li style="text-align: center;">@appointment.Doctor?.Specialization.SpecializationName</li>
+                    }
+                    @if (User.IsInRole(Sd.Role_Doctor))
+                    {
+                        <li style="text-align: center;">@appointment.Patient?.FirstName @appointment.Patient?.LastName</li>
+                    }
+                    <li >@appointment.Type</li>
+                    <li>@appointment.Reason</li>
+
+                    <li>@appointment.Status</li>
+                    <li>@appointment.Notes</li>
+                    <li>@appointment.Schedule?.AvailableDateTime.ToString()</li>
                     @if (User.IsInRole(Sd.Role_Patient))
                     {
                         @if (appointment.Status == "Pending")
@@ -61,12 +45,55 @@
                         <a asp-action="Delete" asp-route-id="@appointment.AppointementId" class="btn btn-primary">Delete</a>
 
                     }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+            </ul>
+        </div>
+    </div>
+    </div>
+}
+<style>
 
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .card {
+        width: 500px;
+        height: 400px;
+        background-color: #fff;
+        border-radius: 30px;
+        box-shadow: 1px 2px 5px rgba(0.2, 0.2, 0.2, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-radius: 30px;
+        background-color: #f0f0f0;
+        border-bottom: 0px solid   #ccc;
+        background-image: url(assets/3953847.jpg); /* Replace with your image path */
+        background-size: cover;
+        background-position: center;
+          height: 250px; /* Adjust height to fit your image */
+    }
+
+        .card-header img {
+            display: none; /* Hide the actual image element */
+        }
+
+    .card-content {
+        padding: 10px;
+    }
+
+        .card-content ul {
+            list-style: none;
+            padding: 0;
+        }
+</style>
 @if (User.IsInRole(Sd.Role_Patient))
 {
     <a asp-controller="Appointments" asp-action="Create" class="btn btn-primary">Register Appointment</a>

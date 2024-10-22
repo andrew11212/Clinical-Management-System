@@ -27,8 +27,12 @@ namespace Clinical_Management_System.Controllers
             var claimsIdentity =User.Identity as ClaimsIdentity;
             var userId = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var applicationDbContext = _context.Medicines.Where(m=>m.Prescription.Appointment.PatientId==userId).Include(m => m.Prescription);
+            var applicationDbContext = _context.Medicines
+        .Include(m => m.Prescription)
+        .ThenInclude(p => p.Appointment) // Ensure Appointment is included
+        .Where(m => m.Prescription.Appointment.DoctorId == userId || m.Prescription.Appointment.PatientId == userId);
             return View(await applicationDbContext.ToListAsync());
+            
         }
 
         // GET: Medicines/Details/5

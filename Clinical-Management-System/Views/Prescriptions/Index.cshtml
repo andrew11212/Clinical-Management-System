@@ -11,14 +11,14 @@
 </div>
 
 <div class="card shadow border-0 mt-2">
-    <div class="card-header bg-secondary text-light text-center">
-        <h2 class="m-0">Prescriptions</h2>
+    <div class="card-header bg-secondary text-light text-center" >
+        <h2 class="m-0" style="color:#0000;">Prescriptions</h2>
     </div>
 
     <div class="card-body">
         @if (Model.Any())
         {
-            <table class="table table-hover table-striped table-lg table-borderless text-center align-middle">
+            <table class="table ">
                 <thead>
                     <tr>
                         <th scope="col">Diagnosis Name</th>
@@ -27,7 +27,7 @@
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="table-group-divider">
+                <tbody >
                     @foreach (var item in Model)
                     {
                         <tr>
@@ -42,13 +42,13 @@
                                        aria-label="Edit @item.DiagnosisName">
                                         <i class="bi bi-pencil-square"></i> Edit
                                     </a>
-                                    <a class="btn btn-sm btn-danger"
+                                  <!--  <a class="btn btn-sm btn-danger"
                                        asp-controller="Prescriptions"
                                        asp-action="Delete"
                                        asp-route-id="@item.PrescriptionId"
                                        aria-label="Delete @item.DiagnosisName">
                                         <i class="bi bi-trash-fill"></i> Delete
-                                    </a>
+                                      </a>-->
                                     <a class="btn btn-sm btn-info ms-2"
                                        asp-controller="Prescriptions"
                                        asp-action="Details"

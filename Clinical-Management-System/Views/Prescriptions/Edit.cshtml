@@ -5,13 +5,13 @@
 }
 
 <div class="col-12 d-flex justify-content-end mb-2">
-    <a asp-controller="Prescriptions" asp-action="Index" class="btn btn-secondary shadow-sm">
+    <a asp-controller="Prescriptions" asp-action="Index" class="btn btn-secondary shadow-sm" style="background:#f2f5fc;border-radius: 8px;">
         <i class="bi bi-arrow-left"></i> Back to Prescriptions List
     </a>
 </div>
 
 <div class="card shadow border-0">
-    <div class="card-header bg-secondary text-light text-center">
+    <div class="card-header bg-secondary text-light text-center" style="background:linear-gradient(to right, #ebeff5, #886794);">
         <h2 class="m-0">Edit Prescription</h2>
     </div>
 
@@ -43,7 +43,17 @@
             </div>
 
             <div class="mb-3">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" style="background:#aca1bf;  color: #fff;
+            font-size: 12px;
+            padding: 10px 45px;
+            border: 1px  transparent;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-top: 30px;
+            margin-left:30px;
+            cursor: pointer;">
                     <i class="bi bi-check-circle"></i> Edit Prescription
                 </button>
             </div>
