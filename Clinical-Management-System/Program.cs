@@ -1,4 +1,7 @@
 using Clinical_Management_System.Data;
+using Clinical_Management_System.DbInitializer;
+using Clinical_Management_System.DBInitializer;
+using Clinical_Management_System.Models;
 using Clinical_Management_System.Models.DB_Entities;
 using Clinical_Management_System.Utitlity;
 using Microsoft.AspNetCore.Identity;
@@ -14,12 +17,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()/*(options => options.SignIn.RequireConfirmedAccount = true)*/
 	.AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-
-builder.Services.AddIdentityCore<Doctor>().AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddIdentityCore<Patient>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.ConfigureApplicationCookie(options =>
 {
 	options.LoginPath = "/Identity/Account/Login"; // Path to the login page
@@ -32,6 +31,8 @@ builder.Services.AddAuthentication().AddFacebook(option => {
 
 });
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddScoped<IDBInitializer,DBInitializer>();
+
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -39,7 +40,7 @@ builder.Services.AddAuthorization(options =>
 {
 	options.AddPolicy(Sd.Role_Doctor,policy=>policy.RequireRole(Sd.Role_Doctor));
 	options.AddPolicy(Sd.Role_Patient, policy => policy.RequireRole(Sd.Role_Patient));
-
+	options.AddPolicy(Sd.Role_Admin,policy=>policy.RequireRole(Sd.Role_Admin));
 });
 
 var app = builder.Build();
@@ -62,8 +63,18 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+SeedDatabase();
 app.MapRazorPages();
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
 app.Run();
+
+void SeedDatabase()
+{
+	using (var scope = app.Services.CreateScope())
+	{
+		var dbInitializer = scope.ServiceProvider.GetRequiredService<IDBInitializer>();
+		dbInitializer.Initialize();
+	}
+}

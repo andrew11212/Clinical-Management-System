@@ -13,9 +13,7 @@ namespace Clinical_Management_System.Models
         [Required]
         [StringLength(14, ErrorMessage = "National Id must be 14 characters", MinimumLength = 14)]
         public string NationalId { get; set; } = string.Empty;
-        [Required]
-        [MaxLength(100, ErrorMessage = "Username cannot be greater than 100 charcters")]
-        public string UserName { get; set; } = string.Empty;
+        
         [Required]
         [MaxLength(100, ErrorMessage = "First name cannot be greater than 100 charcters")]
         public string FirstName { get; set; } = string.Empty;
@@ -35,9 +33,6 @@ namespace Clinical_Management_System.Models
         public string Government { get; set; } = string.Empty;
         [Required]
         public int Floor { get; set; }
-        public int SpecializationId { get; set; }
-
-        [ValidateNever]
-        public IEnumerable<SelectListItem> SpecializationList { get; set; } = default!;
+       
     }
 }
