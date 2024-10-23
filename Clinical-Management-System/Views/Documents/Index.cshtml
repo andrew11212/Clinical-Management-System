@@ -5,10 +5,12 @@
 }
 
 <h1>Index</h1>
+<div class="col-12 d-flex justify-content-end">
+    <a asp-controller="Documents" asp-action="Create" class="btn btn-primary shadow-sm">
+        <i class="bi bi-patch-plus"></i> Create New Documents
+    </a>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -18,9 +20,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Image)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Patient)
-            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Prescription)
             </th>
@@ -36,9 +36,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Image)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Patient.Id)
-            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.Prescription.DiagnosisName)
             </td>

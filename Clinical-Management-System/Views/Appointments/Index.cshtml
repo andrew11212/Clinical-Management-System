@@ -1,69 +1,7 @@
-﻿@model IEnumerable<Appointment>
 
-<h2>Appointments</h2>
-@foreach (var appointment in Model)
-{
-    <div class="card-container">
-        <div class="card">
 
-            <div class="card-header">
-                <img src="assets/3953847.jpg" alt="Search">
-
-            </div>
-
-            <div class="card-content">
-                <ul>
-                    @if (User.IsInRole(Sd.Role_Patient))
-                    {
-
-                        <li style="text-align: center;">@appointment.Doctor?.FirstName @appointment.Doctor?.LastName</li>
-                        <li style="text-align: center;">@appointment.Doctor?.Specialization.SpecializationName</li>
-                    }
-                    @if (User.IsInRole(Sd.Role_Doctor))
-                    {
-                        <li style="text-align: center;">@appointment.Patient?.FirstName @appointment.Patient?.LastName</li>
-                    }
-                    <li>@appointment.Type</li>
-                    <li>@appointment.Reason</li>
-
-                    <li>@appointment.Status</li>
-                    <li>@appointment.Notes</li>
-                    <li>@appointment.Schedule?.AvailableDateTime.ToString()</li>
-                    @if (User.IsInRole(Sd.Role_Patient))
-                    {
-                        @if (appointment.Status == "Pending")
-                        {
-                            <button class="btn btn-danger" onclick="confirmCancel(@appointment.AppointementId)">Cancel</button>
-                        }
-                    }
-                    @if (User.IsInRole(Sd.Role_Doctor))
-                    {
-                        <a asp-action="UpdateAppointment" asp-route-id="@appointment.AppointementId" class="btn btn-primary">Update</a>
-                        <a asp-action="Delete" asp-route-id="@appointment.AppointementId" class="btn btn-primary">Delete</a>
-
-                    }
-                </ul>
-            </div>
-        </div>
-    </div>
-}
-<style>
-
-    .card-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
-
-    .card {
-        width: 500px;
-        height: 400px;
-        background-color: #fff;
-        border-radius: 30px;
-        box-shadow: 1px 2px 5px rgba(0.2, 0.2, 0.2, 0.1);
-        margin-bottom: 20px;
-    }
-
+</div>
+=======
     .card-header {
         display: flex;
         justify-content: space-between;
@@ -115,3 +53,4 @@
         }
     </script>
 }
+
