@@ -1,59 +1,56 @@
-﻿@model IEnumerable<Clinical_Management_System.Models.DB_Entities.Appointment>
-
-<br />
-<div class="card shadow border-0">
-    <div class="card-header bg-primary bg-gradient text-light ml-0 py-4">
-        <div class="row px-4">
-            <div class="col-6">
-                <h5 class="pt-2 text-white">
-                    Appointments
-                </h5>
-            </div>
-        </div>
-    </div>
-    <div class="card-body my-4">
-        @foreach (var appointment in Model)
-        {
-            <div class="row mb-3 pb-3">
-
-
-                <div class="col-md-10 offset-md-1">
-                    <div class="row border-bottom pb-3">
-
-                        <div class="col-12 col-lg-6 pt-md-3">
-                            <h5 class="text-uppercase text-secondary">
-                                <strong>@(appointment?.Type ?? "N/A")</strong>
-                            </h5>
-                            <p><small>@(appointment?.Reason ?? "No reason provided")</small></p>
-                            <p><small><strong>Doctor:</strong> @(appointment?.Doctor?.FirstName ?? "Doctor not assigned")</small></p>
-                            <p><small><strong>Patient:</strong> @(appointment?.Patient?.FirstName ?? "Patient not assigned")</small></p>
-                        </div>
-                        <div class="col-12 col-lg-5 text-center row">
-                            <div class="col-6 text-md-right pt-2 pt-md-4">
-                                <h6 class="fw-semibold">
-                                    <strong>Status:</strong> @(appointment?.Status ?? "Pending")
-                                </h6>
-                                <p><small><strong>Clinic:</strong> @(appointment?.Clinic?.StreetName ?? "Clinic not assigned")</small></p>
-                            </div>
-                            <form asp-action="CancelAppointment" asp-route-id="@appointment.AppointementId">
-                                <div class="col-3 col-sm-4 col-lg-2 offset-lg-1 text-right pt-2">
-                                    <button type="submit" class="btn btn-danger bg-gradient py-2">
-                                        <i class="bi bi-trash-fill"></i> Cancel Appointment
-                                    </button>
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-    <div class="card-footer bg-white border-0">
-        <div class="row">
-        </div>
-    </div>
-
 
 
 </div>
+=======
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-radius: 30px;
+        background-color: #f0f0f0;
+        border-bottom: 0px solid   #ccc;
+        background-image: url(assets/3953847.jpg); /* Replace with your image path */
+        background-size: cover;
+        background-position: center;
+        height: 250px; /* Adjust height to fit your image */
+    }
+
+        .card-header img {
+            display: none; /* Hide the actual image element */
+        }
+
+    .card-content {
+        padding: 10px;
+    }
+
+        .card-content ul {
+            list-style: none;
+            padding: 0;
+        }
+</style>
+@if (User.IsInRole(Sd.Role_Patient))
+{
+    <a asp-controller="Appointments" asp-action="Create" class="btn btn-primary">Register Appointment</a>
+}
+@section Scripts {
+    <script>
+        function confirmCancel(appointmentId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to cancel this appointment?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, cancel it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If confirmed, redirect to the CancelAppointment action
+                    window.location.href = '/Appointments/CancelAppointment/' + appointmentId;
+                }
+            });
+        }
+    </script>
+}
+

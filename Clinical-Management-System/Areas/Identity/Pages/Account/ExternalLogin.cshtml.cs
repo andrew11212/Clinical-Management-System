@@ -211,7 +211,6 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
                 user.StreetName = Input.StreetName;
                 user.Government= Input.Government;
                 user.Floor= Input.Floor;
-                user.SpecializationId = Input.SpecializationId;
                 
 
                 var result = await _userManager.CreateAsync(user);

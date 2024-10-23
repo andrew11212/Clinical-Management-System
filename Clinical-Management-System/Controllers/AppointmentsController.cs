@@ -124,8 +124,13 @@ public class AppointmentsController : Controller
 
 		appointment.Status = "Cancelled";
 		await _context.SaveChangesAsync();
+
+		// Use TempData to trigger the SweetAlert
+		TempData["AppointmentCancelled"] = true;
+
 		return RedirectToAction("Index");
 	}
+
 
 	[Authorize(policy: Sd.Role_Doctor)]
 	public async Task<IActionResult> Delete(int? id)

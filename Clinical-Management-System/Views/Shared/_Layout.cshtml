@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Clinical_Management_System</title>
 
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -20,10 +20,10 @@
     @if (!IsSectionDefined("HideNavbar"))
     {
 
-
         <header>
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark  border-bottom box-shadow mb-3" style=" background: linear-gradient(to right, #f2f5fc,
 #1f4f5b);">
+
             <div class="container-fluid">
                 <a  href="/">
                     <img src="/assets/download-removebg-preview.png" style="height:100px;width:200px" alt="Company Logo" id="ilupal">
@@ -42,7 +42,9 @@
                         </li>
                             <li>
                                 <a class="nav-link" style=" color: #4f647b; font-size:15px; font-weight:bold" asp-controller="Appointments" asp-action="Index">Appointment</a>
+
                             </li>
+
                             @if (User.IsInRole(Sd.Role_Doctor))
                             {
                                 <li class="nav-item dropdown">
@@ -56,6 +58,7 @@
                                         <li><hr class="dropdown-divider bg-white"></li>
                                     </ul>
                                 </li>
+
                                                         <li>
                                     <a class="nav-link " style=" color: #4f647b; font-size:15px;font-weight:bold" asp-controller="Prescriptions" asp-action="Index">Prescription</a>
                                 </li>
@@ -78,12 +81,13 @@
                             <a class="nav-link " style=" color: #4f647b;" asp-controller="Appointments" asp-action="Create">Appointment</a>
                               </li>-->
 
+
                         </ul>
-                    <partial name="_LoginPartial" />
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </header>}
+            </nav>
+        </header>}
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -110,10 +114,11 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @await RenderSectionAsync("Scripts", required: false)
     <style>
         .custom-text-color {
-            color: #4f647b; 
+            color: #4f647b;
         }
     </style>
 
