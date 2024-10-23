@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<Appointment>
 
 <h2>Appointments</h2>
-         @foreach (var appointment in Model)
-        {
-<div class="card-container" >
-    <div class="card" >
+@foreach (var appointment in Model)
+{
+    <div class="card-container">
+        <div class="card">
 
-        <div class="card-header" >
-            <img src="assets/3953847.jpg" alt="Search">
-            
-        </div>
+            <div class="card-header">
+                <img src="assets/3953847.jpg" alt="Search">
+
+            </div>
 
             <div class="card-content">
                 <ul>
@@ -23,7 +23,7 @@
                     {
                         <li style="text-align: center;">@appointment.Patient?.FirstName @appointment.Patient?.LastName</li>
                     }
-                    <li >@appointment.Type</li>
+                    <li>@appointment.Type</li>
                     <li>@appointment.Reason</li>
 
                     <li>@appointment.Status</li>
@@ -33,10 +33,7 @@
                     {
                         @if (appointment.Status == "Pending")
                         {
-                            <form asp-action="CancelAppointment" method="post">
-                                <input type="hidden" name="id" value="@appointment.AppointementId" />
-                                <button type="submit" class="btn btn-danger">Cancel</button>
-                            </form>
+                            <button class="btn btn-danger" onclick="confirmCancel(@appointment.AppointementId)">Cancel</button>
                         }
                     }
                     @if (User.IsInRole(Sd.Role_Doctor))
@@ -45,9 +42,9 @@
                         <a asp-action="Delete" asp-route-id="@appointment.AppointementId" class="btn btn-primary">Delete</a>
 
                     }
-            </ul>
+                </ul>
+            </div>
         </div>
-    </div>
     </div>
 }
 <style>
@@ -78,7 +75,7 @@
         background-image: url(assets/3953847.jpg); /* Replace with your image path */
         background-size: cover;
         background-position: center;
-          height: 250px; /* Adjust height to fit your image */
+        height: 250px; /* Adjust height to fit your image */
     }
 
         .card-header img {
@@ -97,4 +94,24 @@
 @if (User.IsInRole(Sd.Role_Patient))
 {
     <a asp-controller="Appointments" asp-action="Create" class="btn btn-primary">Register Appointment</a>
+}
+@section Scripts {
+    <script>
+        function confirmCancel(appointmentId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to cancel this appointment?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, cancel it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If confirmed, redirect to the CancelAppointment action
+                    window.location.href = '/Appointments/CancelAppointment/' + appointmentId;
+                }
+            });
+        }
+    </script>
 }
