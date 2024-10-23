@@ -3,13 +3,14 @@
 @{
     ViewBag.Title = "Medicines List";
 }
-
+@if (User.IsInRole(Sd.Role_Doctor))
+                            {
 <div class="col-12 d-flex justify-content-end">
     <a asp-controller="Medicines" asp-action="Create" class="btn btn-primary shadow-sm">
         <i class="bi bi-patch-plus"></i> Create New Medicine
     </a>
 </div>
-
+                            }
 <div class="card shadow border-0 mt-2">
     <div class="card-header bg-secondary bg-gradient text-light text-center">
         <h2 class="m-0">Medicines</h2>
@@ -26,8 +27,10 @@
                         <th scope="col">Duration</th>
                         <th scope="col">Repeat</th>
                         <th scope="col">Prescription</th>
-                        <th scope="col">Actions</th>
-
+                        @if (User.IsInRole(Sd.Role_Doctor))
+                        {
+                            <th scope="col">Actions</th>
+                        }
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -39,8 +42,11 @@
                             <td>@item.Duration</td>
                             <td>@item.Repeat</td>
                             <td>@item.Prescription.DiagnosisName</td>
-                            <td>
-                                <div class="d-flex justify-content-center">
+                            @if (User.IsInRole(Sd.Role_Doctor))
+                            {
+
+                                <td>
+                                    <div class="d-flex justify-content-center">
                                     <a class="btn btn-sm btn-primary me-2"
                                        asp-controller="Medicines"
                                        asp-action="Edit"
@@ -48,13 +54,13 @@
                                        aria-label="Edit @item.MedicineName">
                                         <i class="bi bi-pencil-square"></i> Edit
                                     </a>
-                                    <a class="btn btn-sm btn-danger"
+                                   <!-- <a class="btn btn-sm btn-danger"
                                        asp-controller="Medicines"
                                        asp-action="Delete"
                                        asp-route-id="@item.MedicineId"
                                        aria-label="Delete @item.MedicineName">
                                         <i class="bi bi-trash-fill"></i> Delete
-                                    </a>
+                                     </a>-->
                                     <a class="btn btn-sm btn-info"
                                        asp-controller="Medicines"
                                        asp-action="Details"
@@ -63,7 +69,7 @@
                                         <i class="bi bi-info-circle"></i> Details
                                     </a>
                                 </div>
-                            </td>
+                            </td>}
                         </tr>
                     }
                 </tbody>

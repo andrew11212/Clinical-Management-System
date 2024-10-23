@@ -3,12 +3,14 @@
 @{
     ViewBag.Title = "Prescriptions List";
 }
-
-<div class="col-12 d-flex justify-content-end">
+ @if (User.IsInRole(Sd.Role_Doctor))
+{
+    <div class="col-12 d-flex justify-content-end">
     <a asp-controller="Prescriptions" asp-action="Create" class="btn btn-primary shadow-sm">
         <i class="bi bi-patch-plus"></i> Create New Prescription
     </a>
 </div>
+}
 
 <div class="card shadow border-0 mt-2">
     <div class="card-header bg-secondary text-light text-center" >
@@ -23,8 +25,11 @@
                     <tr>
                         <th scope="col">Diagnosis Name</th>
                         <th scope="col">Date</th>
-                        <th scope="col">Appointment Date</th>
-                        <th scope="col">Actions</th>
+                        @if (User.IsInRole(Sd.Role_Patient))
+                        {
+                            
+                        <th scope="col">Doctor</th>}
+
                     </tr>
                 </thead>
                 <tbody >
@@ -33,31 +38,43 @@
                         <tr>
                             <td>@item.DiagnosisName</td>
                             <td>@item.DateTime.ToString("yyyy-MM-dd")</td>
-                            <td>
-                                <div class="d-flex justify-content-center">
-                                    <a class="btn btn-sm btn-primary me-2"
-                                       asp-controller="Prescriptions"
-                                       asp-action="Edit"
-                                       asp-route-id="@item.PrescriptionId"
-                                       aria-label="Edit @item.DiagnosisName">
-                                        <i class="bi bi-pencil-square"></i> Edit
-                                    </a>
-                                  <!--  <a class="btn btn-sm btn-danger"
-                                       asp-controller="Prescriptions"
-                                       asp-action="Delete"
-                                       asp-route-id="@item.PrescriptionId"
-                                       aria-label="Delete @item.DiagnosisName">
-                                        <i class="bi bi-trash-fill"></i> Delete
-                                      </a>-->
-                                    <a class="btn btn-sm btn-info ms-2"
-                                       asp-controller="Prescriptions"
-                                       asp-action="Details"
-                                       asp-route-id="@item.PrescriptionId"
-                                       aria-label="Details of @item.DiagnosisName">
-                                        <i class="bi bi-info-circle"></i> Details
-                                    </a>
-                                </div>
-                            </td>
+                            @if (User.IsInRole(Sd.Role_Patient))
+                            {
+
+                                <td >@item.Appointment.Doctor.FirstName @item.Appointment.Doctor.LastName</td>
+                            }
+                            @if (User.IsInRole(Sd.Role_Doctor))
+                            {
+                                <td>
+                                    <div class="d-flex justify-content-center">
+                                        <a class="btn btn-sm btn-primary me-2"
+                                           asp-controller="Prescriptions"
+                                           asp-action="Edit"
+                                           asp-route-id="@item.PrescriptionId"
+                                           aria-label="Edit @item.DiagnosisName">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </a>
+                                        <!--  <a class="btn btn-sm btn-danger"
+                                             asp-controller="Prescriptions"
+                                             asp-action="Delete"
+                                             asp-route-id="@item.PrescriptionId"
+                                             aria-label="Delete @item.DiagnosisName">
+                                              <i class="bi bi-trash-fill"></i> Delete
+                                            </a>-->
+                                        <a class="btn btn-sm btn-info ms-2"
+                                           asp-controller="Prescriptions"
+                                           asp-action="Details"
+                                           asp-route-id="@item.PrescriptionId"
+                                           aria-label="Details of @item.DiagnosisName">
+                                            <i class="bi bi-info-circle"></i> Details
+                                        </a>
+                                    </div>
+                                </td>
+
+
+                            }
+                            
+
                         </tr>
                     }
                 </tbody>

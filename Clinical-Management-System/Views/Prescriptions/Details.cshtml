@@ -3,11 +3,12 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+<a asp-controller="Prescriptions" asp-action="Index" class="btn " style="font-size:20px">
+    <i class="bi bi-arrow-left"></i>
+</a>
 <h1>Details</h1>
 
 <div>
-    <h4>Prescription</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -31,8 +32,32 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.PrescriptionId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.PrescriptionId" style="background: #1f4f5b;
+            color: #fff;
+            font-size: 12px;
+            padding: 10px 45px;
+            border: 1px transparent;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            width:200px;
+            margin-top: 30px;
+            margin-left: 20px;
+            cursor: pointer;">Edit</a> |
+    
+</div>
+<div class="toggle-container">
+    <div class="toggle">
+
+        <div class="toggle-panel toggle-right">
+            <img src="/assets/logo3.png" alt="Company Logo" id="ilupal" style="width: 150px; height: auto;">
+
+
+
+
+        </div>
+    </div>
 </div>
 <style>
     * {
