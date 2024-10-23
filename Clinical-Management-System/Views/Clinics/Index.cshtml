@@ -6,10 +6,12 @@
 
 <h1>Clinic List</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 
+<div class="col-12 d-flex justify-content-end">
+    <a asp-action="Create" class="btn btn-primary shadow-sm">
+        <i class="bi bi-patch-plus"></i> Create New
+    </a>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -21,7 +23,7 @@
             <th>Government</th>
             <th>Floor</th>
             <th>Doctor</th>
-            <th>Appointments</th>
+            <!-- <th>Appointments</th>-->
             <th>Actions</th>
         </tr>
     </thead>
@@ -40,7 +42,7 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@clinic.ClinicId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@clinic.ClinicId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@clinic.ClinicId">Delete</a>
+                    
                 </td>
             </tr>
         }

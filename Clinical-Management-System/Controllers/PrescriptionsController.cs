@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Clinical_Management_System.Data;
 using Clinical_Management_System.Models.DB_Entities;
 using Clinical_Management_System.ViewModel;
+using System.Security.Claims;
 
 namespace Clinical_Management_System.Controllers
 {
@@ -22,9 +23,10 @@ namespace Clinical_Management_System.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			var applicationDbContext = _context.Prescriptions.Include(p => p.Appointment);
-			return View(await applicationDbContext.ToListAsync());
-		}
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var applicationDbContext = _context.Prescriptions.Where(P => P.Appointment.PatientId == userId || P.Appointment.DoctorId == userId).Include(p => p.Appointment).ThenInclude(d=>d.Doctor);
+            return View(await applicationDbContext.ToListAsync());
+        }
 
 		public async Task<IActionResult> Details(int? id)
 		{

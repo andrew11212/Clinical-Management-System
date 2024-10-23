@@ -35,18 +35,18 @@
                 <div class="navbar-collapse collapse  d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link " style=" color: #4f647b; font-size:20px;" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link " style=" color: #4f647b; font-size:15px;font-weight:bold" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                                <a class="nav-link " style=" color: #4f647b; font-size:20px;" asp-controller="Home" asp-action="ContactUs">ContactUs</a>
+                                <a class="nav-link " style=" color: #4f647b; font-size:15px;font-weight:bold" asp-controller="Home" asp-action="ContactUs">ContactUs</a>
                         </li>
                             <li>
-                                <a class="nav-link text-light" asp-controller="Appointments" asp-action="Index">Appointment</a>
+                                <a class="nav-link" style=" color: #4f647b; font-size:15px; font-weight:bold" asp-controller="Appointments" asp-action="Index">Appointment</a>
                             </li>
                             @if (User.IsInRole(Sd.Role_Doctor))
                             {
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle " style=" color: #4f647b; font-size:15px;font-weight:bold" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Clinics And Schedules
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
@@ -57,11 +57,26 @@
                                     </ul>
                                 </li>
                                                         <li>
-                                    <a class="nav-link text-light" asp-controller="Prescriptions" asp-action="Index">Prescription</a>
-                                </li>}
-                        <li>
+                                    <a class="nav-link " style=" color: #4f647b; font-size:15px;font-weight:bold" asp-controller="Prescriptions" asp-action="Index">Prescription</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link " style=" color: #4f647b; font-size:15px;font-weight:bold" asp-controller="Medicines" asp-action="Index">Medicines</a>
+                                </li>
+                            }
+                            @if (User.IsInRole(Sd.Role_Patient))
+                           { <li>
+                                <a class="nav-link " style=" color: #4f647b; font-size:15px;font-weight:bold" asp-controller="Prescriptions" asp-action="Index">Prescription</a>
+                            </li>
+                            <li>
+                                <a class="nav-link " style=" color: #4f647b; font-size:15px;font-weight:bold" asp-controller="Medicines" asp-action="Index">Medicines</a>
+                            </li>
+                                <li>
+                                    <a class="nav-link " style=" color: #4f647b; font-size:15px;font-weight:bold" asp-controller="Documents" asp-action="Index">Documents</a>
+                                </li>
+                           }
+                      <!--  <li>
                             <a class="nav-link " style=" color: #4f647b;" asp-controller="Appointments" asp-action="Create">Appointment</a>
-                        </li>
+                              </li>-->
 
                         </ul>
                     <partial name="_LoginPartial" />
