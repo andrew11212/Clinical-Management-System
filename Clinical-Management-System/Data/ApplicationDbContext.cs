@@ -26,11 +26,15 @@ namespace Clinical_Management_System.Data
         public DbSet<Document> Documents { get; set; }
         public DbSet<Allergy> Allergies { get; set; }
         public DbSet<ChronicDisease> ChronicDiseases { get; set; }
+		public DbSet<ApplicationUser> applicationUsers{ get; set; }
 
-        public DbSet<Schedule> Schedule { get; set; }
-        #endregion
 
-        protected override void OnModelCreating(ModelBuilder builder)
+
+		public DbSet<Schedule> Schedule { get; set; }
+		public bool GetBendingMigrations { get; internal set; }
+		#endregion
+
+		protected override void OnModelCreating(ModelBuilder builder)
         {
             // Mapping Prescriptions to Documents with Restrict delete behavior
             builder.Entity<Prescription>()

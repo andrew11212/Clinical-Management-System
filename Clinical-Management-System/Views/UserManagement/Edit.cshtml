@@ -1,0 +1,15 @@
+﻿@model EditUserRolesViewModel
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="UserId" />
+    <div>
+        <label asp-for="UserName"></label>
+        <input class="form-control" asp-for="UserName" readonly />
+    </div>
+    <div>
+        <label>Select Roles</label>
+        <select asp-for="SelectedRoles" multiple="multiple" class="form-control" asp-items="Model.Roles">
+        </select>
+    </div>
+    <button class=" btn btn-primary mt-2" type="submit">Save</button>
+</form>
