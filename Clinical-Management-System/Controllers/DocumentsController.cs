@@ -26,7 +26,12 @@ namespace Clinical_Management_System.Controllers
         // GET: Documents
         public async Task<IActionResult> Index()
         {
-            var documentList = _context.Documents.Include(d => d.Patient).Include(d => d.Prescription).ToListAsync();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+			var documentList = _context.Documents
+				.Where(d => d.Prescription.Appointment.PatientId == userId || d.Prescription.Appointment.DoctorId == userId)
+				.Include(d => d.Patient) 
+				.Include(d => d.Prescription) 
+				.ToListAsync();
             return View(await documentList);
         }
 
