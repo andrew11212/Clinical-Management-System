@@ -14,7 +14,7 @@ namespace Clinical_Management_System.Controllers
 	{
 		private readonly ApplicationDbContext _context;
 
-		public ScheduleController(ApplicationDbContext context, UserManager<Doctor> userManager, ILogger<ScheduleController> logger)
+		public ScheduleController(ApplicationDbContext context)
 		{
 			_context = context;
 		} 
@@ -23,21 +23,19 @@ namespace Clinical_Management_System.Controllers
 		// GET: Schedule/Index
 		public async Task<IActionResult> Index()
 		{
-			// Retrieve the user ID from the claims
 			var claimIdentity = User.Identity as ClaimsIdentity;
 			var userId = claimIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
 			if (userId == null)
 			{
-				return RedirectToAction("Login", "Account"); // Redirect to login if not authenticated
+				return RedirectToAction("Login", "Account"); 
 			}
 
-			// Get the schedules that belong to the authenticated user
 			var schedules = await _context.Schedule
-				.Where(s => s.DoctorId == userId).Include(d => d.Doctor) // Filter by DoctorId
+				.Where(s => s.DoctorId == userId).Include(d => d.Doctor) 
 				.ToListAsync();
 
-			return View(schedules); // Pass the filtered schedules to the view
+			return View(schedules); 
 		}
 
 
@@ -87,20 +85,18 @@ namespace Clinical_Management_System.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Edit(int id, Schedule schedule)
 		{
-			// Check if the schedule ID matches
 			if (id != schedule.Id)
 			{
 				return NotFound();
 			}
 
-			// Retrieve the user ID from the claims
 			var claimIdentity = User.Identity as ClaimsIdentity;
 			var userId = claimIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
 			// Check if the user is authenticated and set the DoctorId
 			if (userId != null)
 			{
-				schedule.DoctorId = userId; // Assuming DoctorId is a string
+				schedule.DoctorId = userId; 
 			}
 
 			if (ModelState.IsValid)

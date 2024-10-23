@@ -9,10 +9,10 @@ namespace Clinical_Management_System.Controllers
 {
 	public class DoctorsController : Controller
 	{
-		private readonly UserManager<Doctor> _userManager;
+		private readonly UserManager<IdentityUser> _userManager;
 		private readonly ApplicationDbContext _context;
 
-		public DoctorsController(UserManager<Doctor> userManager, ApplicationDbContext context)
+		public DoctorsController(UserManager<IdentityUser> userManager, ApplicationDbContext context)
 		{
 			_userManager = userManager;
 			this._context = context;
