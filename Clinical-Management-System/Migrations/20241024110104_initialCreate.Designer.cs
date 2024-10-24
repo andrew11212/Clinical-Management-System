@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Clinical_Management_System.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241016205702_initialCreate")]
+    [Migration("20241024110104_initialCreate")]
     partial class initialCreate
     {
         /// <inheritdoc />
@@ -52,15 +52,12 @@ namespace Clinical_Management_System.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<TimeSpan>("Hour")
-                        .HasColumnType("time");
+                    b.Property<string>("DoctorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Notes")
                         .HasMaxLength(200)
@@ -77,6 +74,10 @@ namespace Clinical_Management_System.Migrations
                     b.Property<int>("ScheduleId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Type")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -84,6 +85,8 @@ namespace Clinical_Management_System.Migrations
                     b.HasKey("AppointementId");
 
                     b.HasIndex("ClinicId");
+
+                    b.HasIndex("DoctorId");
 
                     b.HasIndex("PatientId");
 
@@ -335,8 +338,8 @@ namespace Clinical_Management_System.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -503,7 +506,7 @@ namespace Clinical_Management_System.Migrations
                     b.ToTable("Schedule");
                 });
 
-            modelBuilder.Entity("Clinical_Management_System.Models.DB_Entities.Doctor", b =>
+            modelBuilder.Entity("Clinical_Management_System.Models.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -538,107 +541,32 @@ namespace Clinical_Management_System.Migrations
                         .HasMaxLength(14)
                         .HasColumnType("nvarchar(14)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<byte[]>("Photo")
                         .HasColumnType("varbinary(max)");
-
-                    b.Property<int>("SpecializationId")
-                        .HasColumnType("int");
 
                     b.Property<string>("StreetName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Clinical_Management_System.Models.DB_Entities.Doctor", b =>
+                {
+                    b.HasBaseType("Clinical_Management_System.Models.ApplicationUser");
+
+                    b.Property<int>("SpecializationId")
+                        .HasColumnType("int");
+
                     b.HasIndex("SpecializationId");
-
-                    b.ToTable("AspNetUsers", t =>
-                        {
-                            t.Property("BuildingNum")
-                                .HasColumnName("Doctor_BuildingNum");
-
-                            t.Property("City")
-                                .HasColumnName("Doctor_City");
-
-                            t.Property("FirstName")
-                                .HasColumnName("Doctor_FirstName");
-
-                            t.Property("Floor")
-                                .HasColumnName("Doctor_Floor");
-
-                            t.Property("Government")
-                                .HasColumnName("Doctor_Government");
-
-                            t.Property("LastName")
-                                .HasColumnName("Doctor_LastName");
-
-                            t.Property("NationalId")
-                                .HasColumnName("Doctor_NationalId");
-
-                            t.Property("Password")
-                                .HasColumnName("Doctor_Password");
-
-                            t.Property("Photo")
-                                .HasColumnName("Doctor_Photo");
-
-                            t.Property("StreetName")
-                                .HasColumnName("Doctor_StreetName");
-                        });
 
                     b.HasDiscriminator().HasValue("Doctor");
                 });
 
             modelBuilder.Entity("Clinical_Management_System.Models.DB_Entities.Patient", b =>
                 {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<int>("BuildingNum")
-                        .HasColumnType("int");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("Floor")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Government")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("NationalId")
-                        .IsRequired()
-                        .HasMaxLength(14)
-                        .HasColumnType("nvarchar(14)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<byte[]>("Photo")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("StreetName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.HasBaseType("Clinical_Management_System.Models.ApplicationUser");
 
                     b.HasDiscriminator().HasValue("Patient");
                 });
@@ -662,6 +590,12 @@ namespace Clinical_Management_System.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Clinical_Management_System.Models.DB_Entities.Doctor", "Doctor")
+                        .WithMany("Appointments")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Clinical_Management_System.Models.DB_Entities.Patient", "Patient")
                         .WithMany("Appointments")
                         .HasForeignKey("PatientId")
@@ -675,6 +609,8 @@ namespace Clinical_Management_System.Migrations
                         .IsRequired();
 
                     b.Navigation("Clinic");
+
+                    b.Navigation("Doctor");
 
                     b.Navigation("Patient");
 
@@ -842,6 +778,8 @@ namespace Clinical_Management_System.Migrations
 
             modelBuilder.Entity("Clinical_Management_System.Models.DB_Entities.Doctor", b =>
                 {
+                    b.Navigation("Appointments");
+
                     b.Navigation("Clinics");
                 });
 

@@ -1,38 +1,65 @@
+@model IEnumerable<Appointment>
 
+<div class="container">
+    @if (User.IsInRole(Sd.Role_Patient))
+    {
+        <a asp-controller="Appointments" asp-action="Create" class="btn btn-primary mb-2" style="
+        background: #aca1bf linear-gradient(to right, #008080, #014d4e);
+        color: #fff;
+        font-size: 12px;
+        padding: 10px 45px;
+        border: 1px transparent;
+        border-radius: 8px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-top: 30px;
+        margin-left: 30px;
+        cursor: pointer;">
+            <i class="bi bi-plus-lg"></i> Register Appointment
+        </a>        }
+    <div class="row">
+        @foreach (var appointment in Model)
+        {
+            <div class="col-md-6 col-lg-4 mb-4">
+                <!-- Adjust the column size here -->
+                <div class="card shadow border-0" style="width: 100%;">
+                    <div class="card-header  text-light py-4" style="background: #008080;">
+                        <h5 class="pt-2 text-white">Appointment</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><small><strong>Type:</strong> @(appointment?.Type ?? "No Type provided")</small></p>
+                        <p><small><strong>Reason:</strong> @(appointment?.Reason ?? "No reason provided")</small></p>
+                        @if (User.IsInRole(Sd.Role_Patient))
+                        {
+                            <p><small><strong>Doctor:</strong> @(appointment?.Doctor?.FirstName ?? "Doctor not assigned")</small></p>
+                        }
+                        @if (User.IsInRole(Sd.Role_Doctor))
+                        {
+                            <p><small><strong>Patient:</strong> @($"{appointment?.Patient?.FirstName} {appointment?.Patient?.LastName}" ?? "Patient not assigned")</small></p>
+                        }
+                        <h6 class="fw-semibold">
+                            <strong>Status:</strong> @(appointment?.Status ?? "Pending")
+                        </h6>
+                        <p><small><strong>Clinic:</strong> @(appointment?.Clinic?.StreetName ?? "Clinic not assigned")</small></p>
+                        @if (User.IsInRole(Sd.Role_Patient))
+                        {
+                            <button class="btn btn-danger" onclick="confirmCancel(@appointment.AppointementId)">Cancel</button>
+                        }
+                        @if (User.IsInRole(Sd.Role_Doctor))
+                        {
+                            <a asp-action="UpdateAppointment" class="btn btn-primary" style="background: #008080;" asp-route-id="@appointment.AppointementId">Edit</a>
+                            <a asp-action="Delete" class="btn btn-danger" asp-route-id="@appointment.AppointementId">Delete</a>
+                        }
 
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
 </div>
-=======
-    .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        border-radius: 30px;
-        background-color: #f0f0f0;
-        border-bottom: 0px solid   #ccc;
-        background-image: url(assets/3953847.jpg); /* Replace with your image path */
-        background-size: cover;
-        background-position: center;
-        height: 250px; /* Adjust height to fit your image */
-    }
 
-        .card-header img {
-            display: none; /* Hide the actual image element */
-        }
-
-    .card-content {
-        padding: 10px;
-    }
-
-        .card-content ul {
-            list-style: none;
-            padding: 0;
-        }
-</style>
-@if (User.IsInRole(Sd.Role_Patient))
-{
-    <a asp-controller="Appointments" asp-action="Create" class="btn btn-primary">Register Appointment</a>
-}
 @section Scripts {
     <script>
         function confirmCancel(appointmentId) {
@@ -46,7 +73,6 @@
                 confirmButtonText: 'Yes, cancel it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // If confirmed, redirect to the CancelAppointment action
                     window.location.href = '/Appointments/CancelAppointment/' + appointmentId;
                 }
             });

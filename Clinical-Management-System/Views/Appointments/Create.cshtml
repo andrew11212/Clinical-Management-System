@@ -1,15 +1,15 @@
 ﻿@model Appointment
 
-<h2>Create Appointment</h2>
+
 
 <div class="col-12 d-flex justify-content-end mb-2">
-    <a asp-controller="Appointments" asp-action="Index" class="btn btn-secondary shadow-sm">
+    <a asp-controller="Appointments" asp-action="Index" class="btn btn-secondary shadow-sm" >
         <i class="bi bi-arrow-left"></i> Back to Appointments
     </a>
 </div>
 
 <div class="card shadow border-0">
-    <div class="card-header bg-primary bg-gradient text-light text-center">
+    <div class="card-header  text-light text-center"style="background: linear-gradient(to right, #008080, #014d4e);">
         <h2 class="m-0">Create New Appointment</h2>
     </div>
 
@@ -18,24 +18,23 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="mb-3 form-floating">
-                <input asp-for="Type" class="form-control" placeholder="Appointment Type" />
+                <input asp-for="Type" class="form-control border-0 shadow" placeholder="Appointment Type" />
                 <label asp-for="Type" class="control-label">Type</label>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
 
             <div class="mb-3 form-floating">
-                <input asp-for="Reason" class="form-control" placeholder="Reason for Appointment" />
+                <input asp-for="Reason" class="form-control border-0 shadow" placeholder="Reason for Appointment" />
                 <label asp-for="Reason" class="control-label">Reason</label>
                 <span asp-validation-for="Reason" class="text-danger"></span>
             </div>
             <div class="mb-3 form-floating">
-                <input asp-for="Notes" class="form-control" placeholder="Additional Notes" />
+                <input asp-for="Notes" class="form-control border-0 shadow" placeholder="Additional Notes" />
                 <label asp-for="Notes" class="control-label">Notes</label>
                 <span asp-validation-for="Notes" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label for="DoctorId">Select Doctor</label>
-                <select asp-for="DoctorId" class="form-control">
+            <div class="mb-3 form-floating">
+                <select asp-for="DoctorId" class="form-control border-0 shadow mb">
                     <option value="">-- Select Doctor --</option>
                     @foreach (var doctor in ViewData["DoctorList"] as SelectList)
                     {
@@ -44,22 +43,20 @@
                 </select>
             </div>
 
-            <div class="form-group">
-                <label asp-for="ClinicId">Select Clinic</label>
-                <select asp-for="ClinicId" class="form-control">
+            <div class="mb-3 form-floating">
+                <select asp-for="ClinicId" class="form-control border-0 shadow">
                     <option value="">-- Select Clinic --</option>
                 </select>
             </div>
 
-            <div class="form-group">
-                <label asp-for="ScheduleId">Select Schedule</label>
-                <select asp-for="ScheduleId" class="form-control">
+            <div class="mb-3 form-floating">
+                <select asp-for="ScheduleId" class="form-control border-0 shadow">
                     <option value="">-- Select Schedule --</option>
                 </select>
             </div>
             <input type="hidden" asp-for="PatientId" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" />
             <div class="mb-3">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary mt-2"style="background:linear-gradient(to right, #008080, #014d4e);">
                     <i class="bi bi-check-circle"></i> Create Appointment
                 </button>
             </div>

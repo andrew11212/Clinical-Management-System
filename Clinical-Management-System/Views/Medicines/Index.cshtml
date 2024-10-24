@@ -6,13 +6,13 @@
 @if (User.IsInRole(Sd.Role_Doctor))
                             {
 <div class="col-12 d-flex justify-content-end">
-    <a asp-controller="Medicines" asp-action="Create" class="btn btn-primary shadow-sm">
+    <a asp-controller="Medicines" asp-action="Create" class="btn btn-primary shadow-sm" style="background: #008080;">
         <i class="bi bi-patch-plus"></i> Create New Medicine
     </a>
 </div>
                             }
 <div class="card shadow border-0 mt-2">
-    <div class="card-header bg-secondary bg-gradient text-light text-center">
+    <div class="card-header text-light text-center"style="background: #008080;">
         <h2 class="m-0">Medicines</h2>
     </div>
 
@@ -47,12 +47,12 @@
 
                                 <td>
                                     <div class="d-flex justify-content-center">
-                                    <a class="btn btn-sm btn-primary me-2"
+                                    <a class="btn btn-sm btn-primary me-2 "style="background: #008080;"
                                        asp-controller="Medicines"
                                        asp-action="Edit"
                                        asp-route-id="@item.MedicineId"
                                        aria-label="Edit @item.MedicineName">
-                                        <i class="bi bi-pencil-square"></i> Edit
+                                        <i class="bi bi-pencil-square" ></i> Edit
                                     </a>
                                    <!-- <a class="btn btn-sm btn-danger"
                                        asp-controller="Medicines"

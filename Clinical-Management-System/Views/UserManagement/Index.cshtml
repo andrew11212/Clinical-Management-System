@@ -5,9 +5,9 @@
     ViewData["Title"] = "User Management";
 }
 
-<h1>User Management</h1>
+<h1 class="text-center">User Management</h1>
 
-<table class="table table-hover" >
+<table class="table table-hover table-striped table-lg  table-borderless text-center align-middle" >
     <thead>
         <tr>
             <th>User Name</th>
@@ -24,8 +24,7 @@
                 <td>@user.Email</td>
                 <td>@string.Join(", ", user.Roles)</td>
                 <td>
-                    <a asp-action="Edit" class="btn btn-primary text-white" asp-route-id="@user.UserId">Edit</a> |
-                    <a asp-action="Delete"class=" btn btn-danger text-white"  asp-route-id="@user.UserId">Delete</a>
+                    <a asp-action="Edit" class="btn btn-primary text-white" asp-route-id="@user.UserId">Edit</a> 
                 </td>
             </tr>
         }

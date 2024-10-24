@@ -7,48 +7,51 @@
     </a>
 </div>
 <div class="card shadow border-0">
-    <div class="card-header bg-secondary text-light text-center" style="background:linear-gradient(to right, #ebeff5, #886794);">
+    <div class="card-header bg-secondary text-light text-center" style="background: linear-gradient(to right, #008080, #014d4e); ">
         <h2 class="m-0">Edit Schedulec</h2>
     </div>
     <div class="card-body">
-<form asp-action="Edit">
-    <div class="form-group">
-        <input asp-for="DoctorId" class="form-control" readonly hidden />
-    </div>
+        <form asp-action="Edit">
+            <div class="form-group">
+                <input asp-for="DoctorId" class="form-control" readonly hidden />
+            </div>
 
-    <div class="form-group">
-        <label asp-for="AvailableDateTime"></label>
-        <input asp-for="AvailableDateTime" class="form-control" type="datetime-local" />
-        <span asp-validation-for="AvailableDateTime" class="text-danger"></span>
-    </div>
+            <div class="form-group">
+                <label asp-for="AvailableDateTime"></label>
+                <input asp-for="AvailableDateTime" class="form-control" type="datetime-local" />
+                <span asp-validation-for="AvailableDateTime" class="text-danger"></span>
+            </div>
 
-    <div class="form-group">
-        <label asp-for="Status"></label>
-        <select asp-for="Status" class="form-control">
-            <option value="Available">Available</option>
-            <option value="Booked">Booked</option>
-            <option value="Cancelled">Cancelled</option>
-        </select>
-        <span asp-validation-for="Status" class="text-danger"></span>
-    </div>
+            <div class="form-group">
+                <label asp-for="Status"></label>
+                <select asp-for="Status" class="form-control">
+                    <option value="Available">Available</option>
+                    <option value="Booked">Booked</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
 
-    <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Id" />
 
-    <div class="form-group">
-                <input type="submit" value="Save Changes" class="btn btn-primary" style="background:#aca1bf;  color: #fff;
-            font-size: 12px;
-            padding: 10px 45px;
-            border: 1px  transparent;
-            border-radius: 8px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            margin-top: 30px;
-            margin-left:30px;
-            cursor: pointer;" />
+            <div class="form-group">
+                <input type="submit" value="Save Changes" class="btn btn-primary" style="
+        background: #aca1bf linear-gradient(to right, #008080, #014d4e);
+        color: #fff;
+        font-size: 12px;
+        padding: 10px 45px;
+        border: 1px transparent;
+        border-radius: 8px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-top: 30px;
+        margin-left: 30px;
+        cursor: pointer;">
+            </div>
+
+        </form>
     </div>
-</form>
-</div>
 </div>
 
 

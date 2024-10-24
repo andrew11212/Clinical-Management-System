@@ -64,28 +64,17 @@ namespace Clinical_Management_System.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
-                    Doctor_Photo = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    Doctor_NationalId = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: true),
-                    Doctor_Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Doctor_FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Doctor_LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Doctor_City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Doctor_BuildingNum = table.Column<int>(type: "int", nullable: true),
-                    Doctor_StreetName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Doctor_Government = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Doctor_Floor = table.Column<int>(type: "int", nullable: true),
-                    SpecializationId = table.Column<int>(type: "int", nullable: true),
+                    Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
+                    Photo = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     NationalId = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Government = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    StreetName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Floor = table.Column<int>(type: "int", nullable: true),
                     BuildingNum = table.Column<int>(type: "int", nullable: true),
-                    Photo = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    StreetName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Government = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Floor = table.Column<int>(type: "int", nullable: true),
+                    SpecializationId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -256,7 +245,7 @@ namespace Clinical_Management_System.Migrations
                         column: x => x.DoctorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -286,31 +275,37 @@ namespace Clinical_Management_System.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Hour = table.Column<TimeSpan>(type: "time", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Reason = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Notes = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    ClinicId = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PatientId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ScheduleId = table.Column<int>(type: "int", nullable: false)
+                    ScheduleId = table.Column<int>(type: "int", nullable: false),
+                    ClinicId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Appointments", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Appointments_AspNetUsers_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
                         name: "FK_Appointments_AspNetUsers_PatientId",
                         column: x => x.PatientId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Appointments_Clinics_ClinicId",
                         column: x => x.ClinicId,
                         principalTable: "Clinics",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Appointments_Schedule_ScheduleId",
                         column: x => x.ScheduleId,
@@ -394,6 +389,11 @@ namespace Clinical_Management_System.Migrations
                 name: "IX_Appointments_ClinicId",
                 table: "Appointments",
                 column: "ClinicId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_DoctorId",
+                table: "Appointments",
+                column: "DoctorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_PatientId",

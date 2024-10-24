@@ -6,33 +6,34 @@
  @if (User.IsInRole(Sd.Role_Doctor))
 {
     <div class="col-12 d-flex justify-content-end">
-    <a asp-controller="Prescriptions" asp-action="Create" class="btn btn-primary shadow-sm">
+    <a asp-controller="Prescriptions" asp-action="Create" class="btn btn-primary shadow-sm" style="background: #008080;">
         <i class="bi bi-patch-plus"></i> Create New Prescription
     </a>
 </div>
 }
 
 <div class="card shadow border-0 mt-2">
-    <div class="card-header bg-secondary text-light text-center" >
-        <h2 class="m-0" style="color:#0000;">Prescriptions</h2>
+    <div class="card-header text-light text-center" style="background: #008080;">
+        <h2 class="m-0">Prescriptions</h2>
     </div>
 
     <div class="card-body">
         @if (Model.Any())
         {
-            <table class="table ">
+            <table class="table table-hover table-striped table-lg  table-borderless text-center align-middle">
                 <thead>
                     <tr>
                         <th scope="col">Diagnosis Name</th>
                         <th scope="col">Date</th>
                         @if (User.IsInRole(Sd.Role_Patient))
                         {
-                            
-                        <th scope="col">Doctor</th>}
+
+                            <th scope="col">Doctor</th>
+}
 
                     </tr>
                 </thead>
-                <tbody >
+                <tbody class="table-group-divider">
                     @foreach (var item in Model)
                     {
                         <tr>
@@ -41,13 +42,13 @@
                             @if (User.IsInRole(Sd.Role_Patient))
                             {
 
-                                <td >@item.Appointment.Doctor.FirstName @item.Appointment.Doctor.LastName</td>
+                                <td>@item.Appointment.Doctor.FirstName @item.Appointment.Doctor.LastName</td>
                             }
                             @if (User.IsInRole(Sd.Role_Doctor))
                             {
                                 <td>
                                     <div class="d-flex justify-content-center">
-                                        <a class="btn btn-sm btn-primary me-2"
+                                        <a class="btn btn-sm btn-primary me-2"style="background: #008080;"
                                            asp-controller="Prescriptions"
                                            asp-action="Edit"
                                            asp-route-id="@item.PrescriptionId"
@@ -73,11 +74,8 @@
 
 
                             }
-                            
-
                         </tr>
                     }
-                </tbody>
             </table>
         }
         else

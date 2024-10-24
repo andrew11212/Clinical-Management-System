@@ -9,14 +9,14 @@
 </div>
 
 <div class="card shadow border-0">
-    <div class="card-header bg-primary bg-gradient text-light text-center">
+    <div class="card-header  text-light text-center" style="background: linear-gradient(to right, #008080, #014d4e);">
         <h2 class="m-0">Create New Schedule</h2>
     </div>
 
-    <div class="card-body">
+    <div class="card-body" >
         <form asp-action="Create" method="post">
             <div class="mb-3 form-floating">
-                <input asp-for="AvailableDateTime" class="form-control" placeholder="Available Date and Time" required />
+                <input asp-for="AvailableDateTime" class="form-control border-0 shadow" placeholder="Available Date and Time" required />
                 <label asp-for="AvailableDateTime">Available Date and Time</label>
                 <span asp-validation-for="AvailableDateTime" class="text-danger"></span>
             </div>
@@ -34,7 +34,7 @@
             <input type="hidden" asp-for="DoctorId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" />
 
             <div class="mb-3">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary" style="background: linear-gradient(to right, #008080, #014d4e);">
                     <i class="bi bi-check-circle"></i> Create Schedule
                 </button>
             </div>

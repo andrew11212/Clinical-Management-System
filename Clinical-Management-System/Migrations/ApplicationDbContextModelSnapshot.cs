@@ -335,8 +335,8 @@ namespace Clinical_Management_System.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -503,7 +503,7 @@ namespace Clinical_Management_System.Migrations
                     b.ToTable("Schedule");
                 });
 
-            modelBuilder.Entity("Clinical_Management_System.Models.DB_Entities.Doctor", b =>
+            modelBuilder.Entity("Clinical_Management_System.Models.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -538,107 +538,32 @@ namespace Clinical_Management_System.Migrations
                         .HasMaxLength(14)
                         .HasColumnType("nvarchar(14)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<byte[]>("Photo")
                         .HasColumnType("varbinary(max)");
-
-                    b.Property<int>("SpecializationId")
-                        .HasColumnType("int");
 
                     b.Property<string>("StreetName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Clinical_Management_System.Models.DB_Entities.Doctor", b =>
+                {
+                    b.HasBaseType("Clinical_Management_System.Models.ApplicationUser");
+
+                    b.Property<int>("SpecializationId")
+                        .HasColumnType("int");
+
                     b.HasIndex("SpecializationId");
-
-                    b.ToTable("AspNetUsers", t =>
-                        {
-                            t.Property("BuildingNum")
-                                .HasColumnName("Doctor_BuildingNum");
-
-                            t.Property("City")
-                                .HasColumnName("Doctor_City");
-
-                            t.Property("FirstName")
-                                .HasColumnName("Doctor_FirstName");
-
-                            t.Property("Floor")
-                                .HasColumnName("Doctor_Floor");
-
-                            t.Property("Government")
-                                .HasColumnName("Doctor_Government");
-
-                            t.Property("LastName")
-                                .HasColumnName("Doctor_LastName");
-
-                            t.Property("NationalId")
-                                .HasColumnName("Doctor_NationalId");
-
-                            t.Property("Password")
-                                .HasColumnName("Doctor_Password");
-
-                            t.Property("Photo")
-                                .HasColumnName("Doctor_Photo");
-
-                            t.Property("StreetName")
-                                .HasColumnName("Doctor_StreetName");
-                        });
 
                     b.HasDiscriminator().HasValue("Doctor");
                 });
 
             modelBuilder.Entity("Clinical_Management_System.Models.DB_Entities.Patient", b =>
                 {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<int>("BuildingNum")
-                        .HasColumnType("int");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("Floor")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Government")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("NationalId")
-                        .IsRequired()
-                        .HasMaxLength(14)
-                        .HasColumnType("nvarchar(14)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<byte[]>("Photo")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("StreetName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.HasBaseType("Clinical_Management_System.Models.ApplicationUser");
 
                     b.HasDiscriminator().HasValue("Patient");
                 });
