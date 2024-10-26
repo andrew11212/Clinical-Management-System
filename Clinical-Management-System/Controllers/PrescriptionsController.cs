@@ -70,7 +70,6 @@ namespace Clinical_Management_System.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				// Create a new Prescription object
 				var prescription = new Prescription
 				{
 					PrescriptionId = prescriptionVM.PrescriptionId,

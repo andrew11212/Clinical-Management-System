@@ -17,7 +17,7 @@
         margin-left: 30px;
         cursor: pointer;">
             <i class="bi bi-plus-lg"></i> Register Appointment
-        </a>        }
+        </a>}
     <div class="row">
         @foreach (var appointment in Model)
         {
@@ -30,9 +30,17 @@
                     <div class="card-body">
                         <p><small><strong>Type:</strong> @(appointment?.Type ?? "No Type provided")</small></p>
                         <p><small><strong>Reason:</strong> @(appointment?.Reason ?? "No reason provided")</small></p>
+                        <p>
+                            <small>
+                                <strong>
+                                    <i class="bi bi-calendar-fill"></i>
+                                    AppointmentDate:
+                                </strong> @(appointment?.Schedule.AvailableDateTime.ToShortDateString())
+                            </small>
+                        </p>
                         @if (User.IsInRole(Sd.Role_Patient))
                         {
-                            <p><small><strong>Doctor:</strong> @(appointment?.Doctor?.FirstName ?? "Doctor not assigned")</small></p>
+                            <p><small><strong><i class="bi bi-person-fill"></i>Doctor:</strong> @(appointment?.Doctor?.FirstName ?? "Doctor not assigned")</small></p>
                         }
                         @if (User.IsInRole(Sd.Role_Doctor))
                         {

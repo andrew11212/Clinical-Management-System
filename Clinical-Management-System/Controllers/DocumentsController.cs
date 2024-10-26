@@ -59,7 +59,9 @@ namespace Clinical_Management_System.Controllers
         [Authorize(Policy =Sd.Role_Patient)]
         public IActionResult Create()
         {
-            ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName");
+			var claims = User.Identity as ClaimsIdentity;
+			var userId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions.Where(c=>c.Appointment.PatientId==userId), "PrescriptionId", "DiagnosisName");
             return View();
         }
 
