@@ -85,9 +85,18 @@ namespace Clinical_Management_System.Data
                 .HasMany(s => s.Doctors)
                 .WithOne(d => d.Specialization)
                 .OnDelete(DeleteBehavior.Cascade);
+			builder.Entity<Prescription>()
+				.HasOne(p => p.Appointment)
+				.WithMany(a => a.Prescriptions)
+				.HasForeignKey(p => p.AppointmentId)
+				.OnDelete(DeleteBehavior.Cascade);
 
-            base.OnModelCreating(builder);
-        }
+			base.OnModelCreating(builder);
+
+			
+			
+
+		}
 
 
 	}

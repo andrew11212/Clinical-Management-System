@@ -5,11 +5,15 @@
 }
 
 <h1>Index</h1>
-<div class="col-12 d-flex justify-content-end" >
-    <a asp-controller="Documents" asp-action="Create" class="btn btn-primary shadow-sm" style="background: linear-gradient(to right, #008080, #014d4e);">
-        <i class="bi bi-patch-plus"></i> Create New Documents
-    </a>
-</div>
+@if (User.IsInRole(Sd.Role_Patient))
+{
+
+    <div class="col-12 d-flex justify-content-end">
+        <a asp-controller="Documents" asp-action="Create" class="btn btn-primary shadow-sm" style="background: linear-gradient(to right, #008080, #014d4e);">
+            <i class="bi bi-patch-plus"></i> Create New Documents
+        </a>
+    </div>
+}
 
 <table class="table">
     <thead>
@@ -28,24 +32,28 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Image)
+                </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Prescription.DiagnosisName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.DocumentId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DocumentId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DocumentId">Delete</a>
-            </td>
-        </tr>
-}
+                <td>
+                    @Html.DisplayFor(modelItem => item.Prescription.DiagnosisName)
+                </td>
+                @if (User.IsInRole(Sd.Role_Patient))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.DocumentId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.DocumentId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.DocumentId">Delete</a>
+                    </td>
+                }
+                </tr>
+        }
     </tbody>
 </table>

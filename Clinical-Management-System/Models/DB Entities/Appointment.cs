@@ -54,6 +54,6 @@ namespace Clinical_Management_System.Models.DB_Entities
 		public Clinic Clinic { get; set; } = default!;
 
 		[ValidateNever]
-		public Prescription? Prescription { get; set; }
+		public ICollection< Prescription>? Prescriptions { get; set; }
 	}
 }
