@@ -3,6 +3,8 @@ using Clinical_Management_System.DbInitializer;
 using Clinical_Management_System.DBInitializer;
 using Clinical_Management_System.Models;
 using Clinical_Management_System.Models.DB_Entities;
+using Clinical_Management_System.Repository;
+using Clinical_Management_System.Repository.IRepositery;
 using Clinical_Management_System.Utitlity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -16,6 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseSqlServer(connectionString));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()/*(options => options.SignIn.RequireConfirmedAccount = true)*/
 	.AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();

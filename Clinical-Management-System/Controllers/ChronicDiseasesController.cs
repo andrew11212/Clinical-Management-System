@@ -16,7 +16,6 @@ namespace Clinical_Management_System.Controllers
 	public class ChronicDiseasesController : Controller
 	{
 		private readonly ApplicationDbContext _context;
-
 		public ChronicDiseasesController(ApplicationDbContext context)
 		{
 			_context = context;

@@ -1,5 +1,6 @@
 ﻿using Clinical_Management_System.Data;
 using Clinical_Management_System.Models.DB_Entities;
+using Clinical_Management_System.Repository.IRepositery;
 using Clinical_Management_System.Utitlity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,37 +11,29 @@ using System.Security.Claims;
 [Authorize]
 public class AppointmentsController : Controller
 {
+	private readonly IUnitOfWork _unitOfWork;
 	private readonly ApplicationDbContext _context;
 
-	public AppointmentsController(ApplicationDbContext context)
+	public AppointmentsController(IUnitOfWork unitOfWork, ApplicationDbContext context)
 	{
+		_unitOfWork = unitOfWork;
 		_context = context;
 	}
 
-	public async Task<IActionResult> Index()
+	public IActionResult Index()
 	{
 		var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
 		if (User.IsInRole(Sd.Role_Doctor))
 		{
-			var doctorAppointments = await _context.Appointments
-				.Where(a => a.DoctorId == userId)
-				.Include(a => a.Patient)
-				.Include(a => a.Schedule)
-				.Include(a => a.Clinic)
-				.ToListAsync();
-
+			var doctorAppointments = _unitOfWork.appointmentRepository
+				.GetAll(a => a.DoctorId == userId, "Patient", "Schedule", "Clinic");
 			return View(doctorAppointments);
 		}
 		else if (User.IsInRole(Sd.Role_Patient))
 		{
-			var patientAppointments = await _context.Appointments
-				.Where(a => a.PatientId == userId)
-				.Include(a => a.Doctor).ThenInclude(a=>a.Specialization)
-				.Include(a => a.Schedule)
-				.Include(a => a.Clinic)
-				.ToListAsync();
-
+			var patientAppointments = _unitOfWork.appointmentRepository
+					.GetAll(a => a.DoctorId == userId, "Doctor", "Schedule", "Clinic");
 			return View(patientAppointments);
 		}
 
@@ -48,9 +41,9 @@ public class AppointmentsController : Controller
 	}
 
 	[Authorize(policy: Sd.Role_Doctor)]
-	public async Task<IActionResult> UpdateAppointment(int id)
+	public IActionResult UpdateAppointment(int id)
 	{
-		var appointment = await _context.Appointments.FindAsync(id);
+		var appointment =  _unitOfWork.appointmentRepository.Get(c=>c.AppointementId==id);
 
 		if (appointment == null)
 		{
@@ -62,18 +55,18 @@ public class AppointmentsController : Controller
 
 	[HttpPost]
 	[Authorize(Policy = Sd.Role_Doctor)]
-	public async Task<IActionResult> UpdateAppointment(Appointment appointment)
+	public IActionResult UpdateAppointment(Appointment appointment)
 	{
 		var doctorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-		var existingAppointment = await _context.Appointments
-			.FirstOrDefaultAsync(a => a.AppointementId == appointment.AppointementId && a.DoctorId == doctorId);
+		var existingAppointment = _unitOfWork.appointmentRepository.
+			Get(c => c.AppointementId == appointment.AppointementId && c.DoctorId == doctorId);
 
 		if (existingAppointment != null)
 		{
 			existingAppointment.Status = appointment.Status;
 			existingAppointment.Notes = appointment.Notes;
-			await _context.SaveChangesAsync();
+			 _unitOfWork.Save();
 			return RedirectToAction("Index");
 		}
 		return NotFound();

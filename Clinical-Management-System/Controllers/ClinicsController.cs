@@ -10,6 +10,7 @@ using Clinical_Management_System.Models.DB_Entities;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Clinical_Management_System.Utitlity;
+using Clinical_Management_System.Repository.IRepositery;
 
 namespace Clinical_Management_System.Controllers
 {
@@ -17,6 +18,7 @@ namespace Clinical_Management_System.Controllers
 	public class ClinicsController : Controller
 	{
 		private readonly ApplicationDbContext _context;
+		private readonly IUnitOfWork _unitOfWork;
 
 		public ClinicsController(ApplicationDbContext context)
 		{
