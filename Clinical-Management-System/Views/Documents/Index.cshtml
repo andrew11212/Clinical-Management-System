@@ -1,13 +1,13 @@
-﻿@model IEnumerable<Document>
+﻿@model IEnumerable<Clinical_Management_System.Models.DB_Entities.Document>
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
+
 @if (User.IsInRole(Sd.Role_Patient))
 {
-
     <div class="col-12 d-flex justify-content-end">
         <a asp-controller="Documents" asp-action="Create" class="btn btn-primary shadow-sm" style="background: linear-gradient(to right, #008080, #014d4e);">
             <i class="bi bi-patch-plus"></i> Create New Documents
@@ -24,7 +24,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Image)
             </th>
-
             <th>
                 @Html.DisplayNameFor(model => model.Prescription)
             </th>
@@ -39,9 +38,12 @@
                     @Html.DisplayFor(modelItem => item.CreatedDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Image)
+                    <div class="image-card">
+                        <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImageModal('@item.Image')">
+                            <img src="@item.Image" alt="Document Image" class="img-fluid" />
+                        </a>
+                    </div>
                 </td>
-
                 <td>
                     @Html.DisplayFor(modelItem => item.Prescription.DiagnosisName)
                 </td>
@@ -53,7 +55,45 @@
                         <a asp-action="Delete" asp-route-id="@item.DocumentId">Delete</a>
                     </td>
                 }
-                </tr>
+            </tr>
         }
     </tbody>
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Document Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" alt="Enlarged Document Image" class="img-fluid" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .image-card {
+        width: 100px; /* Set desired width for card */
+        height: 100px; /* Set desired height for card */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+        .image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+</style>
+
+<script>
+    function showImageModal(imageSrc) {
+        document.getElementById("modalImage").src = imageSrc;
+    }
+</script>
