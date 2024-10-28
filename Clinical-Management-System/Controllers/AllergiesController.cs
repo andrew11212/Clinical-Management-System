@@ -25,14 +25,12 @@ namespace Clinical_Management_System.Controllers
 			_context = context;
 		}
 
-		// GET: Allergies
 		public async Task<IActionResult> Index()
 		{
 			var applicationDbContext = _context.Allergies.Include(a => a.Patient);
 			return View(await applicationDbContext.ToListAsync());
 		}
 
-		// GET: Allergies/Details/5
 		public async Task<IActionResult> Details(string id)
 		{
 			if (id == null)
@@ -51,7 +49,6 @@ namespace Clinical_Management_System.Controllers
 			return View(allergy);
 		}
 
-		// GET: Allergies/Create
 		[Authorize(Policy = Sd.Role_Patient)]
 		public IActionResult Create()
 		{
@@ -79,7 +76,6 @@ namespace Clinical_Management_System.Controllers
 			return View(allergy);
 		}
 
-		// GET: Allergies/Delete/5
 		[Authorize(Policy = Sd.Role_Patient)]
 		public async Task<IActionResult> Delete(string id)
 		{

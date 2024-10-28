@@ -50,7 +50,7 @@
                             <strong>Status:</strong> @(appointment?.Status ?? "Pending")
                         </h6>
                         <p><small><strong>Clinic:</strong> @(appointment?.Clinic?.StreetName ?? "Clinic not assigned")</small></p>
-                        @if (User.IsInRole(Sd.Role_Patient))
+                        @if (User.IsInRole(Sd.Role_Patient)&& appointment.Status!="Cancelled")
                         {
                             <button class="btn btn-danger" onclick="confirmCancel(@appointment.AppointementId)">Cancel</button>
                         }

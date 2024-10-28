@@ -126,18 +126,13 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
 			[MaxLength(100, ErrorMessage = "Email cannot be greater than 100 charcters")]
 			public string City { get; set; } = string.Empty;
 			[Required]
-			public int BuildingNum { get; set; }
-			[Required]
 			[MaxLength(100, ErrorMessage = "Street name cannot be greater than 100 charcters")]
 			public string StreetName { get; set; } = string.Empty;
 			[Required]
 			[MaxLength(100, ErrorMessage = "Government cannot be greater than 100 charcters")]
 			public string Government { get; set; } = string.Empty;
 			[Required]
-			public int Floor { get; set; }
 			public int SpecializationId { get; set; }
-
-			[ValidateNever]
 			public IEnumerable<SelectListItem> SpecializationList { get; set; } = default!;
 
 		}
@@ -178,8 +173,6 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
 				user.Email = Input.Email;
 				user.FirstName = Input.FirstName;
 				user.LastName = Input.LastName;
-				user.BuildingNum = Input.BuildingNum;
-				user.Floor = Input.Floor;
 				user.SpecializationId = Input.SpecializationId;
 
 				await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);

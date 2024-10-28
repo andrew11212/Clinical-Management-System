@@ -81,7 +81,6 @@ namespace Clinical_Management_System.Controllers
 			{
 				return NotFound();
 			}
-			// Ensure SelectedRoles is not null or empty
 			if (model.SelectedRoles == null || !model.SelectedRoles.Any())
 			{
 				ModelState.AddModelError(string.Empty, "Please select at least one role.");
@@ -100,7 +99,6 @@ namespace Clinical_Management_System.Controllers
 			return View();
 		}
 
-		// POST: UserManagementController/Delete/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Delete(int id, IFormCollection collection)

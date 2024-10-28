@@ -17,7 +17,7 @@ namespace Clinical_Management_System.Controllers
 		public ScheduleController(ApplicationDbContext context)
 		{
 			_context = context;
-		} 
+		}
 
 		// GET: Schedule
 		// GET: Schedule/Index
@@ -28,14 +28,14 @@ namespace Clinical_Management_System.Controllers
 
 			if (userId == null)
 			{
-				return RedirectToAction("Login", "Account"); 
+				return RedirectToAction("Login", "Account");
 			}
 
 			var schedules = await _context.Schedule
-				.Where(s => s.DoctorId == userId).Include(d => d.Doctor) 
+				.Where(s => s.DoctorId == userId).Include(d => d.Doctor)
 				.ToListAsync();
 
-			return View(schedules); 
+			return View(schedules);
 		}
 
 
@@ -54,10 +54,9 @@ namespace Clinical_Management_System.Controllers
 			var claimIdentity = User.Identity as ClaimsIdentity;
 			var userId = claimIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-			// Check if the user is authenticated and set the DoctorId
 			if (userId != null)
 			{
-				schedule.DoctorId = userId; 
+				schedule.DoctorId = userId;
 			}
 
 			if (ModelState.IsValid)
@@ -96,14 +95,14 @@ namespace Clinical_Management_System.Controllers
 			// Check if the user is authenticated and set the DoctorId
 			if (userId != null)
 			{
-				schedule.DoctorId = userId; 
+				schedule.DoctorId = userId;
 			}
 
 			if (ModelState.IsValid)
 			{
 				try
 				{
-					_context.Schedule.Update(schedule); 
+					_context.Schedule.Update(schedule);
 					await _context.SaveChangesAsync();
 				}
 				catch (DbUpdateConcurrencyException)
@@ -112,7 +111,7 @@ namespace Clinical_Management_System.Controllers
 					{
 						return NotFound();
 					}
-					throw; 
+					throw;
 				}
 				return RedirectToAction(nameof(Index));
 			}
@@ -124,7 +123,7 @@ namespace Clinical_Management_System.Controllers
 		public async Task<IActionResult> Delete(int id)
 		{
 			var schedule = await _context.Schedule
-										  .Include(s => s.Doctor) // Include doctor details if needed
+										  .Include(s => s.Doctor)
 										  .FirstOrDefaultAsync(m => m.Id == id);
 			if (schedule == null)
 			{

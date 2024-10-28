@@ -645,7 +645,7 @@ namespace Clinical_Management_System.Migrations
                     b.HasOne("Clinical_Management_System.Models.DB_Entities.Prescription", "Prescription")
                         .WithMany("Documents")
                         .HasForeignKey("PrescriptionId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Patient");
 

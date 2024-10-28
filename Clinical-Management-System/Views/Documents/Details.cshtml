@@ -19,8 +19,8 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Image)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
+        <dd class="col-sm-10">
+            <img src="@Url.Content($"~/images/document/{Model.Image}")" alt="Document Image" class="img-fluid" />
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Patient)

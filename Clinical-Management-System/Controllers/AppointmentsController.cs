@@ -85,7 +85,11 @@ public class AppointmentsController : Controller
 		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 		var takenSchedules = _context.Appointments.Select(a => a.ScheduleId).ToList();
 
-		ViewData["DoctorList"] = new SelectList(_context.Doctors, "Id", "UserName");
+		ViewData["DoctorList"] = _context.Doctors.Select(c => new SelectListItem
+		{
+			Value = c.Id,
+			Text = $"{c.FirstName} {c.LastName}"
+		});
 
 		return View();
 	}
@@ -105,7 +109,11 @@ public class AppointmentsController : Controller
 			await _context.SaveChangesAsync();
 			return RedirectToAction(nameof(Index));
 		}
-		ViewData["DoctorList"] = new SelectList(_context.Doctors, "Id", "UserName");
+		ViewData["DoctorList"] = _context.Doctors.Select(c=>new SelectListItem
+		{
+			Value = c.Id,
+			Text=$"{c.FirstName} {c.LastName}"
+		});
 		return View(appointment);
 	}
 
@@ -125,7 +133,6 @@ public class AppointmentsController : Controller
 		appointment.Status = "Cancelled";
 		await _context.SaveChangesAsync();
 
-		// Use TempData to trigger the SweetAlert
 		TempData["AppointmentCancelled"] = true;
 
 		return RedirectToAction("Index");

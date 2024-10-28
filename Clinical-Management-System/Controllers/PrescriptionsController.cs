@@ -48,6 +48,7 @@ namespace Clinical_Management_System.Controllers
 
 		public IActionResult Create()
 		{
+			var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 			var takenAppointmentIds = _context.Prescriptions.Select(p => p.AppointmentId).ToList();
 			PrescriptionVM prescriptionVM = new()
 			{
@@ -153,13 +154,12 @@ namespace Clinical_Management_System.Controllers
 						return NotFound();
 					}
 
-					// Update prescription details
 					prescription.AppointmentId = prescriptionVM.AppointmentId;
 					prescription.DateTime = prescriptionVM.DateTime;
 					prescription.DiagnosisName = prescriptionVM.DiagnosisName;
 
-					_context.Update(prescription); // Update the prescription in the context
-					await _context.SaveChangesAsync(); // Save changes
+					_context.Update(prescription); 
+					await _context.SaveChangesAsync(); 
 				}
 				catch (DbUpdateConcurrencyException)
 				{
@@ -175,7 +175,6 @@ namespace Clinical_Management_System.Controllers
 				return RedirectToAction(nameof(Index));
 			}
 
-			// Repopulate the view model if model state is invalid
 			var takenAppointmentIds = _context.Prescriptions.Select(p => p.AppointmentId).ToList();
 			prescriptionVM.Appointments = _context.Appointments
 				.Where(a => !takenAppointmentIds.Contains(a.AppointementId))

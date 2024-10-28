@@ -67,11 +67,9 @@
                                     <a class="nav-link " style=" color: #4f647b; font-size:15px;font-weight:bold" asp-controller="Documents" asp-action="Index">Patient documents</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link " style=" color: #4f647b; font-size:15px;font-weight:bold" asp-controller="Prescriptions" asp-action="Index">Prescription</a>
+                                    <a class="nav-link " style=" color: #4f647b; font-size:15px;font-weight:bold" asp-controller="Prescriptions" asp-action="create">Prescription</a>
                                 </li>
-                                <li>
-                                    <a class="nav-link " style=" color: #4f647b; font-size:15px;font-weight:bold" asp-controller="Medicines" asp-action="Index">Medicines</a>
-                                </li>
+                                
                             }
                             @if (User.IsInRole(Sd.Role_Patient))
                             {

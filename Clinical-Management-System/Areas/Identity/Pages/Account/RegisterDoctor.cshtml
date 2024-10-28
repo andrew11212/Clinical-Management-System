@@ -88,18 +88,6 @@
                     </div>
                     <div class="row">
                         <div class=" mb-1 col-md-6">
-                            <label class="text-muted " asp-for="Input.BuildingNum" style="margin-bottom:-10px; margin-left:20px;">Building Number</label>
-                            <input asp-for="Input.BuildingNum" class="form-control" placeholder="BuildingNum" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:10px; "/>
-                            <span asp-validation-for="Input.BuildingNum" class="text-danger"></span>
-                        </div>
-                        <div class=" mb-1 col-md-6">
-                            <label class="text-muted " asp-for="Input.Floor" style="margin-bottom:-10px; margin-left:20px;">Floor</label>
-                            <input asp-for="Input.Floor" class="form-control" placeholder="Floor" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:10px; " /> 
-                            <span asp-validation-for="Input.Floor" class="text-danger"></span>
-                        </div>
-                        </div>
-                    <div class="row">
-                        <div class=" mb-1 col-md-6">
                             <label class="text-muted " for="SpecializationId" style="margin-bottom:-10px; margin-left:250px;">Specialization</label>
                             <select asp-for="Input.SpecializationId" asp-items="@Model.Input.SpecializationList" class="form-control" id="SpecializationId" style="width:300px; border: 1px solid #ccc; border-radius: 20px; background:#0000; margin-left:240px; ">
                                 <option value="">Select a specialization</option> <!-- Optional default option -->

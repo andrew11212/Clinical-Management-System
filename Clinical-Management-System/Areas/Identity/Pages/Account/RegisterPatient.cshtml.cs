@@ -126,13 +126,7 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
             [MaxLength(100, ErrorMessage = "Street name cannot be greater than 100 charcters")]
             public string StreetName { get; set; } = string.Empty;
 
-            [Required]
-            public int Floor { get; set; }
 
-            [Required]
-            public int BuildingNum { get; set; }
-
-            public byte[]? Photo { get; set; }
 
         }
 
@@ -157,13 +151,11 @@ namespace Clinical_Management_System.Areas.Identity.Pages.Account
 				var user = CreateUser();
 				user.City = Input.City;
 				user.StreetName = Input.StreetName;
-				user.Photo = Input.Photo;
 				user.UserName = Input.UserName;
 				user.Email = Input.Email;
 				user.FirstName = Input.FirstName;
 				user.LastName = Input.LastName;
-				user.BuildingNum=Input.BuildingNum;
-				user.Floor=Input.Floor;
+				
 				
 
 

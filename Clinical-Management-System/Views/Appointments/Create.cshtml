@@ -34,25 +34,26 @@
                 <span asp-validation-for="Notes" class="text-danger"></span>
             </div>
             <div class="mb-3 form-floating">
-                <select asp-for="DoctorId" class="form-control border-0 shadow mb">
+                <select asp-for="DoctorId" asp-items="ViewBag.DoctorList" class="form-control border-0 shadow mb">
                     <option value="">-- Select Doctor --</option>
-                    @foreach (var doctor in ViewData["DoctorList"] as SelectList)
-                    {
-                        <option value="@doctor.Value">@doctor.Text</option>
-                    }
                 </select>
+                <label asp-for="Doctor" class="control-label">Doctors</label>
             </div>
 
             <div class="mb-3 form-floating">
                 <select asp-for="ClinicId" class="form-control border-0 shadow">
                     <option value="">-- Select Clinic --</option>
                 </select>
+                <label asp-for="Doctor" class="control-label">Clinics</label>
+
             </div>
 
             <div class="mb-3 form-floating">
                 <select asp-for="ScheduleId" class="form-control border-0 shadow">
                     <option value="">-- Select Schedule --</option>
                 </select>
+                <label asp-for="Doctor" class="control-label">Schedule</label>
+
             </div>
             <input type="hidden" asp-for="PatientId" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" />
             <div class="mb-3">
