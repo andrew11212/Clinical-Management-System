@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" >
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CreatedDate" class="control-label"></label>
@@ -19,44 +19,27 @@
             </div>
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
-                <input type="file" asp-for="Image" class="form-control" />
+                <input type="file" name="file" class="form-control" required />
             </div>
             <input type="hidden" asp-for="PatientId" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" />
             <div class="form-group">
                 <label asp-for="PrescriptionId" class="control-label"></label>
-                <select asp-for="PrescriptionId" class ="form-control" asp-items="ViewBag.PrescriptionId"></select>
+                <select asp-for="PrescriptionId" class="form-control" asp-items="ViewBag.PrescriptionId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" style=" background: #1f4f5b;
-            color: #fff;
-            font-size: 12px;
-            padding: 10px 45px;
-            border: 1px transparent;
-            border-radius: 8px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            width:200px;
-            margin-top: 30px;
-            margin-left: 20px;
-            cursor: pointer;" />
+                <input type="submit" value="Create" class="btn btn-primary" style=" background: #1f4f5b; color: #fff; font-size: 12px; padding: 10px 45px; border: 1px transparent; border-radius: 8px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; width:200px; margin-top: 30px; margin-left: 20px; cursor: pointer;" />
             </div>
         </form>
     </div>
 </div>
 
-
 <div class="toggle-container">
     <div class="toggle">
-
         <div class="toggle-panel toggle-right">
             <img src="/assets/Medical lab blood test from sample tube in human hand.jpg" alt="Company Logo" id="ilupal" style="width: 150px; height: auto;">
-
             <a asp-action="Index">
-                <button type="submit">Back to List </button>
+                <button type="button">Back to List</button>
             </a>
-
-
         </div>
     </div>
 </div>
