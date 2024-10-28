@@ -41,7 +41,7 @@ namespace Clinical_Management_System.Controllers
         // GET: Documents/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 return NotFound();
             }
@@ -50,20 +50,15 @@ namespace Clinical_Management_System.Controllers
                 .Include(d => d.Patient)
                 .Include(d => d.Prescription)
                 .FirstOrDefaultAsync(m => m.DocumentId == id);
-            if (document == null)
-            {
-                return NotFound();
-            }
 
-            return View(document);
+            return document == null ? NotFound() : View(document);
         }
 
         // GET: Documents/Create
         [Authorize(Policy = Sd.Role_Patient)]
         public IActionResult Create()
         {
-            var claims = User.Identity as ClaimsIdentity;
-            var userId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions.Where(c => c.Appointment.PatientId == userId), "PrescriptionId", "DiagnosisName");
             return View();
         }
@@ -74,95 +69,43 @@ namespace Clinical_Management_System.Controllers
         [Authorize(Policy = Sd.Role_Patient)]
         public async Task<IActionResult> Create(Document document, IFormFile file)
         {
-            var claims = User.Identity as ClaimsIdentity;
-            var userId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId == null)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
             {
                 return NotFound("User ID not found");
             }
             document.PatientId = userId;
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    string wwwRootPath = _webHostEnvironment.WebRootPath;
-                    Console.WriteLine($"wwwRootPath: {wwwRootPath}"); // Debugging line
-                    string documentPath = Path.Combine(wwwRootPath, "images", "document");
-
-                    // Ensure the directory exists
-                    if (!Directory.Exists(documentPath))
-                    {
-                        Directory.CreateDirectory(documentPath);
-                        Console.WriteLine($"Directory created: {documentPath}"); // Debugging line
-                    }
-
-                    if (file != null && file.Length > 0)
-                    {
-                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                        string fullPath = Path.Combine(documentPath, fileName);
-                        Console.WriteLine($"Full file path: {fullPath}"); // Debugging line
-
-                        // Saving the file
-                        using (var fileStream = new FileStream(fullPath, FileMode.Create))
-                        {
-                            await file.CopyToAsync(fileStream);
-                            Console.WriteLine("File saved successfully."); // Debugging line
-                        }
-
-                        // Update the document's image path
-                        document.Image = Path.Combine("images", "document", fileName).Replace("\\", "/");
-                        Console.WriteLine($"Image path to be saved in DB: {document.Image}"); // Debugging line
-                    }
-                    else
-                    {
-                        Console.WriteLine("File is null or has zero length."); // Debugging line
-                    }
-
-                    // Add to context and save
-                    _context.Add(document);
-                    await _context.SaveChangesAsync();
-                    Console.WriteLine("Document saved in the database."); // Debugging line
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"An error occurred: {ex.Message}"); // Log the error
-                    return View(document);
-                }
-            }
-            else
-            {
-                Console.WriteLine("ModelState is not valid."); // Debugging line
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    Console.WriteLine($"Error: {error.ErrorMessage}"); // Log all validation errors
-                }
+                return await HandleInvalidModel(document);
             }
 
-            // If we got this far, something failed; re-display form
-            ViewData["PatientId"] = new SelectList(_context.Patients, "Id", "FirstName", document.PatientId);
-            ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName", document.PrescriptionId);
-            return View(document);
+            try
+            {
+                // Save the file and update the document image path
+                await SaveDocumentAsync(document, file);
+                _context.Add(document);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                ModelState.AddModelError(string.Empty, "An error occurred while saving the document.");
+            }
+
+            return await HandleInvalidModel(document);
         }
 
-
         // GET: Documents/Edit/5
+        [HttpGet]
         [Authorize(Policy = Sd.Role_Patient)]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var claims = User.Identity as ClaimsIdentity;
-            var userId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var document = await _context.Documents.FindAsync(id);
+            if (document == null) return NotFound();
 
-            var document = await _context.Documents.Where(c => c.PatientId == userId).FirstOrDefaultAsync(c => c.DocumentId == id);
-            if (document == null)
-            {
-                return NotFound();
-            }
             ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName", document.PrescriptionId);
             return View(document);
         }
@@ -171,90 +114,58 @@ namespace Clinical_Management_System.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = Sd.Role_Patient)]
-        public async Task<IActionResult> Edit(int id, Document document, IFormFile file)
+        public async Task<IActionResult> Edit(int id, Document document, IFormFile? file)
         {
-            var claims = User.Identity as ClaimsIdentity;
-            var userId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (id != document.DocumentId)
+            if (id != document.DocumentId) return NotFound();
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId) || document.PatientId != userId)
             {
-                return NotFound();
+                return Unauthorized("You are not authorized to edit this document.");
             }
-            document.PatientId = userId;
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    if (file != null && file.Length > 0)
-                    {
-                        string wwwRootPath = _webHostEnvironment.WebRootPath;
-                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                        string documentPath = Path.Combine(wwwRootPath, "images", "document");
+                return await HandleInvalidModel(document);
+            }
 
-                        // Ensure the directory exists
-                        if (!Directory.Exists(documentPath))
-                        {
-                            Directory.CreateDirectory(documentPath);
-                        }
+            try
+            {
+                var existingDocument = await _context.Documents.FindAsync(id);
+                if (existingDocument == null) return NotFound();
 
-                        // Delete old image if it exists
-                        if (!string.IsNullOrEmpty(document.Image))
-                        {
-                            var oldImagePath = Path.Combine(wwwRootPath, document.Image.TrimStart('/'));
-                            if (System.IO.File.Exists(oldImagePath))
-                            {
-                                System.IO.File.Delete(oldImagePath);
-                            }
-                        }
+                // Update fields
+                existingDocument.CreatedDate = document.CreatedDate;
+                existingDocument.PrescriptionId = document.PrescriptionId;
 
-                        using (var fileStream = new FileStream(Path.Combine(documentPath, fileName), FileMode.Create))
-                        {
-                            await file.CopyToAsync(fileStream);
-                        }
-                        document.Image = Path.Combine("images", "document", fileName).Replace("\\", "/");
-                    }
-
-                    _context.Update(document);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!DocumentExists(document.DocumentId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                // Handle file upload
+                await UpdateDocumentImageAsync(existingDocument, file);
+                _context.Update(existingDocument);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName", document.PrescriptionId);
-            return View(document);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                ModelState.AddModelError(string.Empty, "An error occurred while editing the document.");
+            }
+
+            return await HandleInvalidModel(document);
         }
 
         // GET: Documents/Delete/5
         [Authorize(Policy = Sd.Role_Patient)]
         public async Task<IActionResult> Delete(int? id)
         {
-            var claims = User.Identity as ClaimsIdentity;
-            var userId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (!id.HasValue) return NotFound();
 
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var document = await _context.Documents
                 .Include(d => d.Patient)
                 .Include(d => d.Prescription)
-                .Where(c => c.PatientId == userId).FirstOrDefaultAsync(m => m.DocumentId == id);
-            if (document == null)
-            {
-                return NotFound();
-            }
+                .FirstOrDefaultAsync(m => m.DocumentId == id && m.PatientId == userId);
 
-            return View(document);
+            return document == null ? NotFound() : View(document);
         }
 
         // POST: Documents/Delete/5
@@ -263,16 +174,61 @@ namespace Clinical_Management_System.Controllers
         [Authorize(Policy = Sd.Role_Patient)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var claims = User.Identity as ClaimsIdentity;
-            var userId = claims?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var document = await _context.Documents.Where(c => c.PatientId == userId).FirstOrDefaultAsync(m => m.DocumentId == id);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var document = await _context.Documents.FirstOrDefaultAsync(m => m.DocumentId == id && m.PatientId == userId);
             if (document != null)
             {
                 _context.Documents.Remove(document);
+                await _context.SaveChangesAsync();
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task<IActionResult> HandleInvalidModel(Document document)
+        {
+            ViewData["PrescriptionId"] = new SelectList(_context.Prescriptions, "PrescriptionId", "DiagnosisName", document.PrescriptionId);
+            return View(document);
+        }
+
+        private async Task SaveDocumentAsync(Document document, IFormFile file)
+        {
+            if (file != null && file.Length > 0)
+            {
+                string documentPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "document");
+                if (!Directory.Exists(documentPath))
+                {
+                    Directory.CreateDirectory(documentPath);
+                }
+
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                string fullPath = Path.Combine(documentPath, fileName);
+
+                using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                document.Image = Path.Combine("images", "document", fileName).Replace("\\", "/");
+            }
+        }
+
+        private async Task UpdateDocumentImageAsync(Document existingDocument, IFormFile? file)
+        {
+            if (file != null && file.Length > 0)
+            {
+                // Delete old image if exists
+                if (!string.IsNullOrEmpty(existingDocument.Image))
+                {
+                    var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, existingDocument.Image.TrimStart('/'));
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+
+                // Save the new file
+                await SaveDocumentAsync(existingDocument, file);
+            }
         }
 
         private bool DocumentExists(int id)
